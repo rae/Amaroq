@@ -69,7 +69,7 @@
 
 - (void)stopNotificationRefresh
 {
-    [[MSAuthStore sharedStore] unregisterForRemoteNotifications];
+    [MSAuthStore.sharedStore unregisterForRemoteNotifications];
 }
 
 
@@ -97,7 +97,7 @@
     if ([[UIApplication sharedApplication] isRegisteredForRemoteNotifications]) {
         [self connectToFcm];
         
-        [[MSAuthStore sharedStore] registerForRemoteNotificationsWithToken:[[FIRInstanceID instanceID] token]];
+        [MSAuthStore.sharedStore registerForRemoteNotificationsWithToken:[[FIRInstanceID instanceID] token]];
     }
     else
     {
@@ -108,7 +108,7 @@
 
 - (void)checkForNotificationsWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    if (![[MSAuthStore sharedStore] isLoggedIn]) {
+    if (![MSAuthStore.sharedStore isLoggedIn]) {
         // If we aren't logged in we're in an immediate failure
         if (completionHandler != nil) {
             completionHandler(UIBackgroundFetchResultFailed);
@@ -145,7 +145,7 @@
     
     self.fetchingNotifications = YES;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [[MSNotificationStore sharedStore] getNotificationsSinceId:sinceId withCompletion:^(BOOL success, MSTimeline *notifications, NSError *error) {
+        [MSNotificationStore.sharedStore getNotificationsSinceId:sinceId withCompletion:^(BOOL success, MSTimeline *notifications, NSError *error) {
             
             self.fetchingNotifications = NO;
             [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:MS_LAST_BACKGROUND_FETCH_KEY];
@@ -241,7 +241,7 @@
 - (void)messaging:(nonnull FIRMessaging *)messaging didRefreshRegistrationToken:(nonnull NSString *)fcmToken
 {
     [self connectToFcm];
-    [[MSAuthStore sharedStore] registerForRemoteNotificationsWithToken:fcmToken];
+    [MSAuthStore.sharedStore registerForRemoteNotificationsWithToken:fcmToken];
 }
 
 
@@ -258,7 +258,7 @@
     // Connect to FCM since connection may have failed when attempted before having a token.
     [self connectToFcm];
     
-    [[MSAuthStore sharedStore] registerForRemoteNotificationsWithToken:[[FIRInstanceID instanceID] token]];
+    [MSAuthStore.sharedStore registerForRemoteNotificationsWithToken:[[FIRInstanceID instanceID] token]];
 }
 
 

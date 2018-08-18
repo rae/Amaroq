@@ -63,15 +63,15 @@
     
     [sharedClient.reachabilityManager startMonitoring];
     
-    if ([[MSAppStore sharedStore] isRegistered] && !sharedClient.oAuth2Manager) {
+    if ([MSAppStore.sharedStore isRegistered] && !sharedClient.oAuth2Manager) {
         
-        sharedClient.oAuth2Manager = [[AFOAuth2Manager alloc] initWithBaseURL:[NSURL URLWithString:baseAPI] clientID:[[MSAppStore sharedStore] client_id] secret:[[MSAppStore sharedStore] client_secret]];
+        sharedClient.oAuth2Manager = [[AFOAuth2Manager alloc] initWithBaseURL:[NSURL URLWithString:baseAPI] clientID:[MSAppStore.sharedStore client_id] secret:[MSAppStore.sharedStore client_secret]];
         sharedClient.oAuth2Manager.useHTTPBasicAuthentication = NO;
     }
     
-    if ([[MSAuthStore sharedStore] isLoggedIn]) {
+    if ([MSAuthStore.sharedStore isLoggedIn]) {
         
-        [sharedClient.requestSerializer setAuthorizationHeaderFieldWithCredential:[[MSAuthStore sharedStore] credential]];
+        [sharedClient.requestSerializer setAuthorizationHeaderFieldWithCredential:[MSAuthStore.sharedStore credential]];
     }
     
     return sharedClient;
@@ -83,9 +83,9 @@
     NSDictionary *headers = [response allHeaderFields];
     NSString *nextPageUrl = nil;
     
-    if ([headers objectForKey:@"Link"]) {
+    if (headers[@"Link"]) {
         
-        NSArray *components = [[headers objectForKey:@"Link"] componentsSeparatedByString:@", "];
+        NSArray *components = [headers[@"Link"] componentsSeparatedByString:@", "];
         
         if ([[components firstObject] containsString:@"next"]) {
             

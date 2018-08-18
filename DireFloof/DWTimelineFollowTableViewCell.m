@@ -50,7 +50,7 @@
     if (self.showMuteStatus) {
         
         if (!self.followButton.selected) {
-            [[MSUserStore sharedStore] muteUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+            [MSUserStore.sharedStore muteUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
                 self.loadedFollowStatus = YES;
                 
                 if (success) {
@@ -73,7 +73,7 @@
         }
         else
         {
-            [[MSUserStore sharedStore] unmuteUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+            [MSUserStore.sharedStore unmuteUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
                 self.loadedFollowStatus = YES;
                 
                 if (success) {
@@ -99,7 +99,7 @@
         self.followButton.tintColor = DW_BLUE_COLOR;
         
         if ([self.account.username isEqualToString:self.account.acct]) {
-            [[MSUserStore sharedStore] followUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+            [MSUserStore.sharedStore followUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
                 
                 
                 if (success) {
@@ -111,14 +111,14 @@
                 }
                 else
                 {
-                    [[MSUserStore sharedStore] getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
+                    [MSUserStore.sharedStore getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
                         
                         self.loadedFollowStatus = YES;
 
                         if (success) {
                             
-                            BOOL following = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
-                            BOOL requested = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
+                            BOOL following = [relationships[MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
+                            BOOL requested = [relationships[MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
                             
                             self.followButton.selected = following;
                             self.followButton.tintColor = following ? DW_BLUE_COLOR : DW_BASE_ICON_TINT_COLOR;
@@ -140,9 +140,9 @@
         }
         else
         {
-            [[MSUserStore sharedStore] getRemoteUserWithLongformUsername:self.account.acct withCompletion:^(BOOL success, MSAccount *localUser, NSError *error) {
+            [MSUserStore.sharedStore getRemoteUserWithLongformUsername:self.account.acct withCompletion:^(BOOL success, MSAccount *localUser, NSError *error) {
                 if (success) {
-                    [[MSUserStore sharedStore] followUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+                    [MSUserStore.sharedStore followUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
                         
                         self.loadedFollowStatus = YES;
                         
@@ -153,13 +153,13 @@
                         }
                         else
                         {
-                            [[MSUserStore sharedStore] getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
+                            [MSUserStore.sharedStore getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
                                 self.loadedFollowStatus = YES;
                                 
                                 if (success) {
                                     
-                                    BOOL following = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
-                                    BOOL requested = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
+                                    BOOL following = [relationships[MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
+                                    BOOL requested = [relationships[MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
                                     
                                     self.followButton.selected = following;
                                     self.followButton.tintColor = following ? DW_BLUE_COLOR : DW_BASE_ICON_TINT_COLOR;
@@ -181,13 +181,13 @@
                 }
                 else
                 {
-                    [[MSUserStore sharedStore] getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
+                    [MSUserStore.sharedStore getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
                         self.loadedFollowStatus = YES;
 
                         if (success) {
                             
-                            BOOL following = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
-                            BOOL requested = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
+                            BOOL following = [relationships[MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
+                            BOOL requested = [relationships[MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
                             
                             self.followButton.selected = following;
                             self.followButton.tintColor = following ? DW_BLUE_COLOR : DW_BASE_ICON_TINT_COLOR;
@@ -210,13 +210,13 @@
     }
     else if (self.isBlocked)
     {
-        [[MSUserStore sharedStore] unblockUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+        [MSUserStore.sharedStore unblockUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
             
             if (success) {
-                [[MSUserStore sharedStore] getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
+                [MSUserStore.sharedStore getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
                     if (success) {
-                        BOOL following = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
-                        BOOL blocking = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_BLOCKING] integerValue] > 0;
+                        BOOL following = [relationships[MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
+                        BOOL blocking = [relationships[MS_FOLLOW_STATUS_KEY_BLOCKING] integerValue] > 0;
                         self.isBlocked = blocking;
                         self.isFollowing = following;
                         
@@ -245,7 +245,7 @@
         self.followButton.selected = NO;
         self.followButton.tintColor = DW_LINK_TINT_COLOR;
         
-        [[MSUserStore sharedStore] unfollowUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+        [MSUserStore.sharedStore unfollowUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
             
             self.loadedFollowStatus = YES;
             
@@ -268,7 +268,7 @@
 
 - (IBAction)rejectButtonPressed:(id)sender
 {
-    [[MSUserStore sharedStore] rejectFollowRequestWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+    [MSUserStore.sharedStore rejectFollowRequestWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
         [[NSNotificationCenter defaultCenter] postNotificationName:DW_DID_ANSWER_FOLLOW_REQUEST_NOTIFICATION object:self];
     }];
 }
@@ -276,7 +276,7 @@
 
 - (IBAction)authorizeButtonPressed:(id)sender
 {
-    [[MSUserStore sharedStore] authorizeFollowRequestWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+    [MSUserStore.sharedStore authorizeFollowRequestWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
         [[NSNotificationCenter defaultCenter] postNotificationName:DW_DID_ANSWER_FOLLOW_REQUEST_NOTIFICATION object:self];
     }];
 }
@@ -338,9 +338,9 @@
     
     if (follower.avatar) {
         
-        [self.followerAvatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[DWSettingStore sharedStore] disableGifPlayback] ? follower.avatar_static : follower.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+        [self.followerAvatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? follower.avatar_static : follower.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
             self.followerAvatarImageView.image = image;
-            if ([[DWSettingStore sharedStore] disableGifPlayback]) {
+            if ([DWSettingStore.sharedStore disableGifPlayback]) {
                 [self.followerAvatarImageView stopAnimating];
             }
         } failure:nil];
@@ -363,11 +363,11 @@
     if (self.followButton && self.notification) {
         if (!self.loadedFollowStatus && !self.loadingFollowStatus) {
             self.loadingFollowStatus = YES;
-            [[MSUserStore sharedStore] getRelationshipsToUsers:@[follower._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
+            [MSUserStore.sharedStore getRelationshipsToUsers:@[follower._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
                 if (success) {
-                    BOOL following = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
-                    BOOL blocking = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_BLOCKING] integerValue] > 0;
-                    BOOL requested = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
+                    BOOL following = [relationships[MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
+                    BOOL blocking = [relationships[MS_FOLLOW_STATUS_KEY_BLOCKING] integerValue] > 0;
+                    BOOL requested = [relationships[MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
                     
                     self.isBlocked = blocking;
                     self.isFollowing = following;

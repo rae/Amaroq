@@ -41,7 +41,7 @@
             [self.statuses addObject:status];
         }
         
-        self.nextPageUrl = url ? [url stringByReplacingOccurrencesOfString:[[MSAppStore sharedStore] base_api_url_string] withString:@""] : nil;
+        self.nextPageUrl = url ? [url stringByReplacingOccurrencesOfString:[MSAppStore.sharedStore base_api_url_string] withString:@""] : nil;
     }
     
     return self;
@@ -62,7 +62,7 @@
             [self.statuses addObject:status];
         }
         
-        self.nextPageUrl = [url stringByReplacingOccurrencesOfString:[[MSAppStore sharedStore] base_api_url_string] withString:@""];
+        self.nextPageUrl = [url stringByReplacingOccurrencesOfString:[MSAppStore.sharedStore base_api_url_string] withString:@""];
         
         self.isNotificationTimeline = YES;
     }
@@ -76,7 +76,7 @@
 - (void)loadNextPageWithCompletion:(void (^)(BOOL, NSError *))completion
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:self.nextPageUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:self.nextPageUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                 for (NSDictionary *statusJSON in responseObject) {
@@ -97,7 +97,7 @@
                 
                 if (nextPageUrl) {
                     
-                    nextPageUrl = [nextPageUrl stringByReplacingOccurrencesOfString:[[MSAppStore sharedStore] base_api_url_string] withString:@""];
+                    nextPageUrl = [nextPageUrl stringByReplacingOccurrencesOfString:[MSAppStore.sharedStore base_api_url_string] withString:@""];
                     
                     self.nextPageUrl = [nextPageUrl isEqualToString:self.nextPageUrl] ? nil : nextPageUrl;
                 }
@@ -147,19 +147,19 @@
     
     NSMutableArray *notificationFilters = [@[] mutableCopy];
     
-    if (![[DWSettingStore sharedStore] newFollowerNotifications]) {
+    if (![DWSettingStore.sharedStore newFollowerNotifications]) {
         [notificationFilters addObject:MS_NOTIFICATION_TYPE_FOLLOW];
     }
     
-    if (![[DWSettingStore sharedStore] boostNotifications]) {
+    if (![DWSettingStore.sharedStore boostNotifications]) {
         [notificationFilters addObject:MS_NOTIFICATION_TYPE_REBLOG];
     }
     
-    if (![[DWSettingStore sharedStore] mentionNotifications]) {
+    if (![DWSettingStore.sharedStore mentionNotifications]) {
         [notificationFilters addObject:MS_NOTIFICATION_TYPE_MENTION];
     }
     
-    if (![[DWSettingStore sharedStore] favoriteNotifications]) {
+    if (![DWSettingStore.sharedStore favoriteNotifications]) {
         [notificationFilters addObject:MS_NOTIFICATION_TYPE_FAVORITE];
     }
     

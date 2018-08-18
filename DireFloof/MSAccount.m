@@ -46,41 +46,41 @@
         
         params = [params removeNullValues];
         
-        self._id = [[params objectForKey:@"id"] isKindOfClass:[NSNumber class]] ? [[params objectForKey:@"id"] stringValue] : [params objectForKey:@"id"];
-        self.username = [params objectForKey:@"username"];
-        self.acct = [params objectForKey:@"acct"];
+        self._id = [params[@"id"] isKindOfClass:[NSNumber class]] ? [params[@"id"] stringValue] : params[@"id"];
+        self.username = params[@"username"];
+        self.acct = params[@"acct"];
         
-        NSString *display_name = [params objectForKey:@"display_name"];
+        NSString *display_name = params[@"display_name"];
         
         if (display_name) {
             self.display_name = [Emojione shortnameToUnicode:display_name];
         }
         
-        NSString *note = [params objectForKey:@"note"];
+        NSString *note = params[@"note"];
         
         if (note) {
             self.note = [note removeHTML];
         }
         
-        self.url = [params objectForKey:@"url"];
-        self.avatar = [[params objectForKey:@"avatar"] containsString:MS_MISSING_AVATAR_URL] ? [MS_BASE_URL_STRING stringByAppendingString:MS_MISSING_AVATAR_URL] : [params objectForKey:@"avatar"];
-        self.avatar_static = [[params objectForKey:@"avatar_static"] containsString:MS_MISSING_AVATAR_URL] ? [MS_BASE_URL_STRING stringByAppendingString:MS_MISSING_AVATAR_URL] : [params objectForKey:@"avatar_static"];
+        self.url = params[@"url"];
+        self.avatar = [params[@"avatar"] containsString:MS_MISSING_AVATAR_URL] ? [MS_BASE_URL_STRING stringByAppendingString:MS_MISSING_AVATAR_URL] : params[@"avatar"];
+        self.avatar_static = [params[@"avatar_static"] containsString:MS_MISSING_AVATAR_URL] ? [MS_BASE_URL_STRING stringByAppendingString:MS_MISSING_AVATAR_URL] : params[@"avatar_static"];
         
         if (!self.avatar_static) {
             self.avatar_static = self.avatar;
         }
         
-        self.header = [params objectForKey:@"header"];
-        self.header_static = [params objectForKey:@"header_static"];
+        self.header = params[@"header"];
+        self.header_static = params[@"header_static"];
         
         if (!self.header_static) {
             self.header_static = self.header;
         }
         
-        self.locked = [[params objectForKey:@"locked"] boolValue];
-        self.followers_count = [params objectForKey:@"followers_count"];
-        self.following_count = [params objectForKey:@"following_count"];
-        self.statuses_count = [params objectForKey:@"statuses_count"];
+        self.locked = [params[@"locked"] boolValue];
+        self.followers_count = params[@"followers_count"];
+        self.following_count = params[@"following_count"];
+        self.statuses_count = params[@"statuses_count"];
     }
     
     return self;
@@ -94,57 +94,57 @@
     NSMutableDictionary *params = [@{} mutableCopy];
     
     if (self._id) {
-        [params setObject:self._id forKey:@"id"];
+        params[@"id"] = self._id;
     }
     
     if (self.username) {
-        [params setObject:self.username forKey:@"username"];
+        params[@"username"] = self.username;
     }
     
     if (self.acct) {
-        [params setObject:self.acct forKey:@"acct"];
+        params[@"acct"] = self.acct;
     }
     
     if (self.display_name) {
-        [params setObject:self.display_name forKey:@"display_name"];
+        params[@"display_name"] = self.display_name;
     }
     
     if (self.note) {
-        [params setObject:self.note forKey:@"note"];
+        params[@"note"] = self.note;
     }
     
     if (self.url) {
-        [params setObject:self.url forKey:@"url"];
+        params[@"url"] = self.url;
     }
     
     if (self.avatar) {
-        [params setObject:self.avatar forKey:@"avatar"];
+        params[@"avatar"] = self.avatar;
     }
     
     if (self.avatar_static) {
-        [params setObject:self.avatar_static forKey:@"avatar_static"];
+        params[@"avatar_static"] = self.avatar_static;
     }
     
     if (self.header) {
-        [params setObject:self.header forKey:@"header"];
+        params[@"header"] = self.header;
     }
     
     if (self.header_static) {
-        [params setObject:self.header_static forKey:@"header_static"];
+        params[@"header_static"] = self.header_static;
     }
     
-    [params setObject:@(self.locked) forKey:@"locked"];
+    params[@"locked"] = @(self.locked);
     
     if (self.followers_count) {
-        [params setObject:self.followers_count forKey:@"followers_count"];
+        params[@"followers_count"] = self.followers_count;
     }
     
     if (self.following_count) {
-        [params setObject:self.following_count forKey:@"following_count"];
+        params[@"following_count"] = self.following_count;
     }
     
     if (self.statuses_count) {
-        [params setObject:self.statuses_count forKey:@"statuses_count"];
+        params[@"statuses_count"] = self.statuses_count;
     }
     
     return params;

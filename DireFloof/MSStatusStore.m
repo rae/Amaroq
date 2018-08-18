@@ -49,28 +49,28 @@ static CGFloat maxDimensions = 1024.0f;
 {
     self.progressBlock = progress;
     
-    NSMutableDictionary *params = [@{} mutableCopy];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
     
     if (!status || !status.length) {
         status = @"\u200B";
     }
     
-    [params setObject:status forKey:@"status"];
+    params[@"status"] = status;
     
     if (statusId) {
-        [params setObject:statusId forKey:@"in_reply_to_id"];
+        params[@"in_reply_to_id"] = statusId;
     }
     
     if (sensitive) {
-        [params setObject:@(YES) forKey:@"sensitive"];
+        params[@"sensitive"] = @(YES);
     }
     
     if (visibilityType) {
-        [params setObject:visibilityType forKey:@"visibility"];
+        params[@"visibility"] = visibilityType;
     }
     
     if (spoilerText) {
-        [params setObject:spoilerText forKey:@"spoiler_text"];
+        params[@"spoiler_text"] = spoilerText;
     }
     
 
@@ -78,7 +78,7 @@ static CGFloat maxDimensions = 1024.0f;
         
         [self uploadMedia:media withCompletion:^(BOOL success, NSArray *mediaIds, NSArray *mediaUrls) {
             if (success) {
-                [params setObject:mediaIds forKey:@"media_ids"];
+                params[@"media_ids"] = mediaIds;
                 
                 [self postStatusWithParameters:params withCompletion:completion];
             }
@@ -106,7 +106,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] DELETE:requestUrl parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] DELETE:requestUrl parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -122,7 +122,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/reblog", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -138,7 +138,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/unreblog", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -155,7 +155,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/favourite", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -171,7 +171,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/unfavourite", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -193,18 +193,18 @@ static CGFloat maxDimensions = 1024.0f;
             completion(NO, noIdError);
         }
     }
-    [params setObject:status.account._id forKey:@"account_id"];
-    [params setObject:@[status._id] forKey:@"status_ids"];
+    params[@"account_id"] = status.account._id;
+    params[@"status_ids"] = @[status._id];
     
     if (!comments || !comments.length) {
         comments = @"\u200B";
     }
     
     if (comments.length) {
-        [params setObject:comments forKey:@"comment"];
+        params[@"comment"] = comments;
     }
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:@"reports" parameters:params constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:@"reports" parameters:params constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         if (completion != nil) {
             completion(YES, nil);
@@ -223,7 +223,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/mute", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -239,7 +239,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/unmute", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -255,7 +255,7 @@ static CGFloat maxDimensions = 1024.0f;
 
 - (void)postStatusWithParameters:(NSDictionary *)params withCompletion:(void (^)(BOOL, NSDictionary *, NSError *))completion
 {
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:@"statuses" parameters:params constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:@"statuses" parameters:params constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         self.progressBlock = nil;
         
@@ -285,8 +285,8 @@ static CGFloat maxDimensions = 1024.0f;
     
     for (NSDictionary *mediaDict in media) {
         
-        PHAsset *mediaObject = [mediaDict objectForKey:MS_MEDIA_ATTACHMENT_MEDIA_KEY];
-        NSString *mediaDescription = [mediaDict objectForKey:MS_MEDIA_ATTACHMENT_DESCRIPTION_KEY];
+        PHAsset *mediaObject = mediaDict[MS_MEDIA_ATTACHMENT_MEDIA_KEY];
+        NSString *mediaDescription = mediaDict[MS_MEDIA_ATTACHMENT_DESCRIPTION_KEY];
         
         NSUInteger uploadIndex = [media indexOfObject:mediaDict];
         
@@ -328,7 +328,7 @@ static CGFloat maxDimensions = 1024.0f;
                     }
                 }
                 
-                [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:@"media" parameters:@{@"description": mediaDescription} constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:@"media" parameters:@{@"description": mediaDescription} constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                     
                     [formData appendPartWithFileData:optimizedImageData ? optimizedImageData : imageData name:@"file" fileName:filename mimeType:MIME];
                 } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -342,13 +342,13 @@ static CGFloat maxDimensions = 1024.0f;
                     numberUploaded += 1;
                     
                     if (mediaIds.count > uploadIndex) {
-                        [mediaIds insertObject:[responseObject objectForKey:@"id"] atIndex:uploadIndex];
-                        [mediaUrls insertObject:[responseObject objectForKey:@"text_url"] atIndex:uploadIndex];
+                        [mediaIds insertObject:responseObject[@"id"] atIndex:uploadIndex];
+                        [mediaUrls insertObject:responseObject[@"text_url"] atIndex:uploadIndex];
                     }
                     else
                     {
-                        [mediaIds addObject:[responseObject objectForKey:@"id"]];
-                        [mediaUrls addObject:[responseObject objectForKey:@"text_url"]];
+                        [mediaIds addObject:responseObject[@"id"]];
+                        [mediaUrls addObject:responseObject[@"text_url"]];
                     }
                     
                     if (numberUploaded + numberFailed >= numberToUpload) {
@@ -429,7 +429,7 @@ static CGFloat maxDimensions = 1024.0f;
                         
                         totalProgress += 1.0f/(CGFloat)numberToUpload * 0.5f;
                         
-                        [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:@"media" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                        [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:@"media" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                             
                             
                             [formData appendPartWithFileURL:[NSURL fileURLWithPath:filePath] name:@"file" fileName:@"file.mp4" mimeType:@"video/mp4" error:nil];
@@ -447,8 +447,8 @@ static CGFloat maxDimensions = 1024.0f;
                             totalProgress += 1.0f/(CGFloat)numberToUpload * 0.5f;
                             
                             numberUploaded += 1;
-                            [mediaIds addObject:[responseObject objectForKey:@"id"]];
-                            [mediaUrls addObject:[responseObject objectForKey:@"text_url"]];
+                            [mediaIds addObject:responseObject[@"id"]];
+                            [mediaUrls addObject:responseObject[@"text_url"]];
                             
                             if (numberUploaded + numberFailed >= numberToUpload) {
                                 if (numberFailed > 0) {

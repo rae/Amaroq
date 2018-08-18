@@ -40,7 +40,7 @@
         params = @{@"since_id": notificationId};
     }
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:@"notifications" parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:@"notifications" parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
@@ -66,7 +66,7 @@
 
 - (void)clearNotificationsWithCompletion:(void (^)(BOOL, NSError *))completion
 {
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:@"notifications/clear" parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:@"notifications/clear" parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }

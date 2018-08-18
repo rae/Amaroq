@@ -94,7 +94,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         self.followingButton.tintColor = DW_BLUE_COLOR;
         
         if ([self.account.username isEqualToString:self.account.acct]) {
-            [[MSUserStore sharedStore] followUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+            [MSUserStore.sharedStore followUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
                 if (success) {
                     self.loadedFollowedStatus = YES;
 
@@ -103,14 +103,14 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
                 }
                 else
                 {
-                    [[MSUserStore sharedStore] getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
+                    [MSUserStore.sharedStore getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
                         self.loadedFollowedStatus = YES;
 
                         if (success) {
                             
-                            BOOL following = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
-                            BOOL followingYou = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_FOLLOWED_BY] integerValue] > 0;
-                            BOOL requested = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
+                            BOOL following = [relationships[MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
+                            BOOL followingYou = [relationships[MS_FOLLOW_STATUS_KEY_FOLLOWED_BY] integerValue] > 0;
+                            BOOL requested = [relationships[MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
                             
                             self.followingButton.selected = following;
                             self.followingButton.tintColor = following ? DW_BLUE_COLOR : DW_BASE_ICON_TINT_COLOR;
@@ -121,8 +121,8 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
                                 self.followingButton.userInteractionEnabled = NO;
                             }
                             
-                            self.blocking = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_BLOCKING] integerValue] > 0;
-                            self.muting = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_MUTING] integerValue] > 0;
+                            self.blocking = [relationships[MS_FOLLOW_STATUS_KEY_BLOCKING] integerValue] > 0;
+                            self.muting = [relationships[MS_FOLLOW_STATUS_KEY_MUTING] integerValue] > 0;
                         }
                         else
                         {
@@ -133,9 +133,9 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         }
         else
         {
-            [[MSUserStore sharedStore] getRemoteUserWithLongformUsername:self.account.acct withCompletion:^(BOOL success, MSAccount *localUser, NSError *error) {
+            [MSUserStore.sharedStore getRemoteUserWithLongformUsername:self.account.acct withCompletion:^(BOOL success, MSAccount *localUser, NSError *error) {
                 if (success) {
-                    [[MSUserStore sharedStore] followUserWithId:localUser._id withCompletion:^(BOOL success, NSError *error) {
+                    [MSUserStore.sharedStore followUserWithId:localUser._id withCompletion:^(BOOL success, NSError *error) {
                         
                         self.loadedFollowedStatus = YES;
                         
@@ -145,14 +145,14 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
                         }
                         else
                         {
-                            [[MSUserStore sharedStore] getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
+                            [MSUserStore.sharedStore getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
                                 self.loadedFollowedStatus = YES;
                                 
                                 if (success) {
                                     
-                                    BOOL following = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
-                                    BOOL followingYou = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_FOLLOWED_BY] integerValue] > 0;
-                                    BOOL requested = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
+                                    BOOL following = [relationships[MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
+                                    BOOL followingYou = [relationships[MS_FOLLOW_STATUS_KEY_FOLLOWED_BY] integerValue] > 0;
+                                    BOOL requested = [relationships[MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
                                     
                                     self.followingButton.selected = following;
                                     self.followingButton.tintColor = following ? DW_BLUE_COLOR : DW_BASE_ICON_TINT_COLOR;
@@ -162,8 +162,8 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
                                         [self.followingButton setImage:[UIImage imageNamed:@"HourglassIcon"] forState:UIControlStateNormal];
                                     }
                                     
-                                    self.blocking = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_BLOCKING] integerValue] > 0;
-                                    self.muting = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_MUTING] integerValue] > 0;
+                                    self.blocking = [relationships[MS_FOLLOW_STATUS_KEY_BLOCKING] integerValue] > 0;
+                                    self.muting = [relationships[MS_FOLLOW_STATUS_KEY_MUTING] integerValue] > 0;
                                 }
                                 else
                                 {
@@ -174,14 +174,14 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
                 }
                 else
                 {
-                    [[MSUserStore sharedStore] getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
+                    [MSUserStore.sharedStore getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
                         self.loadedFollowedStatus = YES;
 
                         if (success) {
                             
-                            BOOL following = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
-                            BOOL followingYou = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_FOLLOWED_BY] integerValue] > 0;
-                            BOOL requested = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
+                            BOOL following = [relationships[MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
+                            BOOL followingYou = [relationships[MS_FOLLOW_STATUS_KEY_FOLLOWED_BY] integerValue] > 0;
+                            BOOL requested = [relationships[MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
                             
                             self.followingButton.selected = following;
                             self.followingButton.tintColor = following ? DW_BLUE_COLOR : DW_BASE_ICON_TINT_COLOR;
@@ -191,8 +191,8 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
                                 [self.followingButton setImage:[UIImage imageNamed:@"HourglassIcon"] forState:UIControlStateNormal];
                             }
                             
-                            self.blocking = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_BLOCKING] integerValue] > 0;
-                            self.muting = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_MUTING] integerValue] > 0;
+                            self.blocking = [relationships[MS_FOLLOW_STATUS_KEY_BLOCKING] integerValue] > 0;
+                            self.muting = [relationships[MS_FOLLOW_STATUS_KEY_MUTING] integerValue] > 0;
                         }
                         else
                         {
@@ -206,7 +206,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
     {
         self.followingButton.selected = NO;
         self.followingButton.tintColor = DW_BASE_ICON_TINT_COLOR;
-        [[MSUserStore sharedStore] unfollowUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+        [MSUserStore.sharedStore unfollowUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
             
             self.loadedFollowedStatus = YES;
             
@@ -246,11 +246,11 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         
     }]];
     
-    if ([self.account._id isEqualToString:[[[MSUserStore sharedStore] currentUser] _id]]) {
+    if ([self.account._id isEqualToString:[[MSUserStore.sharedStore currentUser] _id]]) {
         
         [optionController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Edit Profile", @"Edit Profile") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
-            [[MSAuthStore sharedStore] requestEditProfile];
+            [MSAuthStore.sharedStore requestEditProfile];
         }]];
     }
     else
@@ -264,7 +264,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         [optionController addAction:[UIAlertAction actionWithTitle:self.muting ? NSLocalizedString(@"Unmute", @"Unmute") : NSLocalizedString(@"Mute", @"Mute") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
             if (!self.muting) {
-                [[MSUserStore sharedStore] muteUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+                [MSUserStore.sharedStore muteUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
                     
                     if (success) {
                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -283,7 +283,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
             }
             else
             {
-                [[MSUserStore sharedStore] unmuteUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+                [MSUserStore.sharedStore unmuteUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
                     if (success) {
                         self.muting = NO;
                     }
@@ -301,7 +301,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         [optionController addAction:[UIAlertAction actionWithTitle:self.blocking ? NSLocalizedString(@"Unblock", @"Unblock") : NSLocalizedString(@"Block", @"Block") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             
             if (!self.blocking) {
-                [[MSUserStore sharedStore] blockUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+                [MSUserStore.sharedStore blockUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
                     
                     if (success) {
                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -322,7 +322,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
             }
             else
             {
-                [[MSUserStore sharedStore] unblockUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
+                [MSUserStore.sharedStore unblockUserWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
                     if (success) {
                         self.blocking = NO;
                     }
@@ -345,7 +345,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
             
             [optionController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Block entire domain", @"Block entire domain") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
                 
-                [[MSAppStore sharedStore] blockMastodonInstance:domain withCompletion:^(BOOL success, NSError *error) {
+                [MSAppStore.sharedStore blockMastodonInstance:domain withCompletion:^(BOOL success, NSError *error) {
                     
                     if (success) {
                         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Blocked domain", @"Blocked domain") message:NSLocalizedString(@"Users of this domain will no longer show in public or local timelines.", @"Users of this domain will no longer show in public or local timelines.") preferredStyle:UIAlertControllerStyleAlert];
@@ -687,7 +687,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
     if (self.currentSection == DWProfileSectionTypePosts) {
         MSStatus *status = [self.timeline.statuses objectAtIndex:indexPath.row];
         
-        NSNumber *cachedHeight = [self.cachedEstimatedHeights objectForKey:status._id];
+        NSNumber *cachedHeight = self.cachedEstimatedHeights[status._id];
         if (cachedHeight) {
             return cachedHeight.floatValue;
         }
@@ -715,7 +715,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         case DWProfileSectionTypePosts:
         {
             MSStatus *status = [self.timeline.statuses objectAtIndex:indexPath.row];
-            [self.cachedEstimatedHeights setObject:@(cell.bounds.size.height) forKey:status._id];
+            self.cachedEstimatedHeights[status._id] = @(cell.bounds.size.height);
             
             if (indexPath.row >= self.timeline.statuses.count - 10 && self.timeline.nextPageUrl) {
                 [self loadNextPage];
@@ -806,7 +806,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
 
 - (void)timelineCell:(DWTimelineTableViewCell *)cell didSelectUser:(NSString *)user
 {
-    [[MSUserStore sharedStore] getUserWithId:user withCompletion:^(BOOL success, MSAccount *user, NSError *error) {
+    [MSUserStore.sharedStore getUserWithId:user withCompletion:^(BOOL success, MSAccount *user, NSError *error) {
         if (success) {
             [self performSegueWithIdentifier:@"ProfileSegue" sender:user];
         }
@@ -841,16 +841,16 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
 
 - (void)configureViews
 {
-    [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[DWSettingStore sharedStore] disableGifPlayback] ? self.account.avatar_static : self.account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+    [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? self.account.avatar_static : self.account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
         self.avatarImageView.image = image;
-        if ([[DWSettingStore sharedStore] disableGifPlayback]) {
+        if ([DWSettingStore.sharedStore disableGifPlayback]) {
             [self.avatarImageView stopAnimating];
         }
     } failure:nil];
     
-    [self.headerImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[DWSettingStore sharedStore] disableGifPlayback] ? self.account.header_static : self.account.header]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+    [self.headerImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? self.account.header_static : self.account.header]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
         self.headerImageView.image = image;
-        if ([[DWSettingStore sharedStore] disableGifPlayback]) {
+        if ([DWSettingStore.sharedStore disableGifPlayback]) {
             [self.headerImageView stopAnimating];
         }
     } failure:nil];
@@ -873,7 +873,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
     self.postCountLabel.text = [self.account.statuses_count stringValue];
     self.followingCountLabel.text = [self.account.following_count stringValue];
     self.followerCountLabel.text = [self.account.followers_count stringValue];
-    self.followingButton.hidden = [self.account._id isEqualToString:[[MSUserStore sharedStore] currentUser]._id];
+    self.followingButton.hidden = [self.account._id isEqualToString:[MSUserStore.sharedStore currentUser]._id];
     
     self.loadedFollowedStatus = NO;
     
@@ -892,13 +892,13 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         [self.tableView.tableHeaderView layoutIfNeeded];
     }
     
-    [[MSUserStore sharedStore] getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
+    [MSUserStore.sharedStore getRelationshipsToUsers:@[self.account._id] withCompletion:^(BOOL success, NSDictionary *relationships, NSError *error) {
         if (success) {
             self.loadedFollowedStatus = YES;
             
-            BOOL following = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
-            BOOL followingYou = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_FOLLOWED_BY] integerValue] > 0;
-            BOOL requested = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
+            BOOL following = [relationships[MS_FOLLOW_STATUS_KEY_FOLLOWING] integerValue] > 0;
+            BOOL followingYou = [relationships[MS_FOLLOW_STATUS_KEY_FOLLOWED_BY] integerValue] > 0;
+            BOOL requested = [relationships[MS_FOLLOW_STATUS_KEY_REQUESTED] integerValue] > 0;
             
             self.followingButton.selected = following;
             self.followingButton.tintColor = following ? DW_BLUE_COLOR : DW_BASE_ICON_TINT_COLOR;
@@ -910,8 +910,8 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
                 [self.followingButton setImage:[UIImage imageNamed:@"HourglassIcon"] forState:UIControlStateNormal];
             }
             
-            self.blocking = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_BLOCKING] integerValue] > 0;
-            self.muting = [[relationships objectForKey:MS_FOLLOW_STATUS_KEY_MUTING] integerValue] > 0;
+            self.blocking = [relationships[MS_FOLLOW_STATUS_KEY_BLOCKING] integerValue] > 0;
+            self.muting = [relationships[MS_FOLLOW_STATUS_KEY_MUTING] integerValue] > 0;
         }
         else
         {
@@ -954,7 +954,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
 {
     [self.pageLoadingView startAnimating];
     
-    [[MSUserStore sharedStore] getUserWithId:self.account._id withCompletion:^(BOOL success, MSAccount *user, NSError *error) {
+    [MSUserStore.sharedStore getUserWithId:self.account._id withCompletion:^(BOOL success, MSAccount *user, NSError *error) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {
@@ -977,7 +977,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         });
     }];
     
-    [[MSTimelineStore sharedStore] getStatusesForUserId:self.account._id withCompletion:^(BOOL success, MSTimeline *statuses, NSError *error) {
+    [MSTimelineStore.sharedStore getStatusesForUserId:self.account._id withCompletion:^(BOOL success, MSTimeline *statuses, NSError *error) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
@@ -1001,7 +1001,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         });
     }];
     
-    [[MSUserStore sharedStore] getFollowersForUserWithId:self.account._id withCompletion:^(BOOL success, NSArray *followers, NSString *nextPageUrl, NSError *error) {
+    [MSUserStore.sharedStore getFollowersForUserWithId:self.account._id withCompletion:^(BOOL success, NSArray *followers, NSString *nextPageUrl, NSError *error) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
@@ -1018,7 +1018,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         });
     }];
     
-    [[MSUserStore sharedStore] getFollowingForUserWithId:self.account._id withCompletion:^(BOOL success, NSArray *following, NSString *nextPageUrl, NSError *error) {
+    [MSUserStore.sharedStore getFollowingForUserWithId:self.account._id withCompletion:^(BOOL success, NSArray *following, NSString *nextPageUrl, NSError *error) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {

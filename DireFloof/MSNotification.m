@@ -33,10 +33,10 @@
         
         params = [params removeNullValues];
         
-        self._id = [params objectForKey:@"id"];
-        self.type = [params objectForKey:@"type"];
-        self.account = [[MSAccount alloc] initWithParams:[params objectForKey:@"account"]];
-        self.status = [params objectForKey:@"status"] ? [[MSStatus alloc] initWithParams:[params objectForKey:@"status"]] : nil;
+        self._id = params[@"id"];
+        self.type = params[@"type"];
+        self.account = [[MSAccount alloc] initWithParams:params[@"account"]];
+        self.status = params[@"status"] ? [[MSStatus alloc] initWithParams:params[@"status"]] : nil;
     }
     
     return self;

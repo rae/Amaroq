@@ -92,7 +92,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[[MSAppStore sharedStore] availableInstances] count] + (tableView.isEditing ? 0 : 1);
+    return [[MSAppStore.sharedStore availableInstances] count] + (tableView.isEditing ? 0 : 1);
 }
 
 
@@ -112,14 +112,14 @@
         return;
     }
     
-    if (indexPath.row >= [[[MSAppStore sharedStore] availableInstances] count]) {
-        [[MSAuthStore sharedStore] requestAddInstanceAccount];
+    if (indexPath.row >= [[MSAppStore.sharedStore availableInstances] count]) {
+        [MSAuthStore.sharedStore requestAddInstanceAccount];
     }
     else
     {
-        NSDictionary *availableInstance = [[[MSAppStore sharedStore] availableInstances] objectAtIndex:indexPath.row];
+        NSDictionary *availableInstance = [[MSAppStore.sharedStore availableInstances] objectAtIndex:indexPath.row];
         
-        [[MSAuthStore sharedStore] switchToInstance:[availableInstance objectForKey:MS_INSTANCE_KEY] withCompletion:^(BOOL success) {
+        [MSAuthStore.sharedStore switchToInstance:availableInstance[MS_INSTANCE_KEY] withCompletion:^(BOOL success) {
             [[NSNotificationCenter defaultCenter] postNotificationName:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
         }];
     }
@@ -129,13 +129,13 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row >= [[[MSAppStore sharedStore] availableInstances] count] || !tableView.isEditing) {
+    if (indexPath.row >= [[MSAppStore.sharedStore availableInstances] count] || !tableView.isEditing) {
         return NO;
     }
     
-    NSDictionary *availableInstance = [[[MSAppStore sharedStore] availableInstances] objectAtIndex:indexPath.row];
+    NSDictionary *availableInstance = [[MSAppStore.sharedStore availableInstances] objectAtIndex:indexPath.row];
     
-    return ![[availableInstance objectForKey:MS_INSTANCE_KEY] isEqualToString:[[MSAppStore sharedStore] instance]];
+    return ![availableInstance[MS_INSTANCE_KEY] isEqualToString:[MSAppStore.sharedStore instance]];
 }
 
 
@@ -149,9 +149,9 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
-        NSDictionary *availableInstance = [[[MSAppStore sharedStore] availableInstances] objectAtIndex:indexPath.row];
+        NSDictionary *availableInstance = [[MSAppStore.sharedStore availableInstances] objectAtIndex:indexPath.row];
 
-        [[MSAuthStore sharedStore] logoutOfInstance:[availableInstance objectForKey:MS_INSTANCE_KEY]];
+        [MSAuthStore.sharedStore logoutOfInstance:availableInstance[MS_INSTANCE_KEY]];
         [self.tableView reloadData];
     }
 }
@@ -163,18 +163,18 @@
 {
     NSString *instanceItem = @"";
     
-    if (indexPath.row >= [[[MSAppStore sharedStore] availableInstances] count]) {
+    if (indexPath.row >= [[MSAppStore.sharedStore availableInstances] count]) {
         instanceItem = NSLocalizedString(@"Add instance", @"Add instance");
         
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     else
     {
-        NSDictionary *availableInstance = [[[MSAppStore sharedStore] availableInstances] objectAtIndex:indexPath.row];
+        NSDictionary *availableInstance = [[MSAppStore.sharedStore availableInstances] objectAtIndex:indexPath.row];
         
-        instanceItem = [availableInstance objectForKey:MS_INSTANCE_KEY];
+        instanceItem = availableInstance[MS_INSTANCE_KEY];
         
-        cell.accessoryType = [[[MSAppStore sharedStore] instance] isEqualToString:instanceItem] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        cell.accessoryType = [[MSAppStore.sharedStore instance] isEqualToString:instanceItem] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
     
     cell.titleImageView.image = nil;

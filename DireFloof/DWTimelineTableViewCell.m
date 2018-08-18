@@ -66,7 +66,7 @@
         
         self.retootButton.tintColor = DW_BASE_ICON_TINT_COLOR;
         self.retootButton.accessibilityLabel = NSLocalizedString(@"Boost", @"Boost");
-        [[MSStatusStore sharedStore] unreblogStatusWithId:status._id withCompletion:^(BOOL success, NSError *error) {
+        [MSStatusStore.sharedStore unreblogStatusWithId:status._id withCompletion:^(BOOL success, NSError *error) {
             if (success) {
                 status.reblogged = NO;
                 self.retootButton.tintColor = DW_BASE_ICON_TINT_COLOR;
@@ -79,7 +79,7 @@
     {
         self.retootButton.tintColor = DW_BLUE_COLOR;
         self.retootButton.accessibilityLabel = NSLocalizedString(@"Unboost", @"Unboost");
-        [[MSStatusStore sharedStore] reblogStatusWithId:status._id withCompletion:^(BOOL success, NSError *error) {
+        [MSStatusStore.sharedStore reblogStatusWithId:status._id withCompletion:^(BOOL success, NSError *error) {
             if (success) {
                 status.reblogged = YES;
                 self.retootButton.tintColor = DW_BLUE_COLOR;
@@ -105,7 +105,7 @@
         
         self.favoriteButton.tintColor = DW_BASE_ICON_TINT_COLOR;
         self.favoriteButton.accessibilityLabel = NSLocalizedString(@"Favorite", @"Favorite");
-        [[MSStatusStore sharedStore] unfavoriteStatusWithId:status._id withCompletion:^(BOOL success, NSError *error) {
+        [MSStatusStore.sharedStore unfavoriteStatusWithId:status._id withCompletion:^(BOOL success, NSError *error) {
             if (success) {
                 status.favourited = NO;
                 self.favoriteButton.tintColor = DW_BASE_ICON_TINT_COLOR;
@@ -118,7 +118,7 @@
     {
         self.favoriteButton.tintColor = DW_FAVORITED_ICON_TINT_COLOR;
         self.favoriteButton.accessibilityLabel = NSLocalizedString(@"Unfavorite", @"Unfavorite");
-        [[MSStatusStore sharedStore] favoriteStatusWithId:status._id withCompletion:^(BOOL success, NSError *error) {
+        [MSStatusStore.sharedStore favoriteStatusWithId:status._id withCompletion:^(BOOL success, NSError *error) {
             if (success) {
                 status.favourited = YES;
                 self.favoriteButton.tintColor = DW_FAVORITED_ICON_TINT_COLOR;
@@ -173,7 +173,7 @@
             
             NSString *language = [NSLocale preferredLanguages].firstObject;
             NSDictionary *languageDic = [NSLocale componentsFromLocaleIdentifier:language];
-            NSString *languageCode = [languageDic objectForKey:@"kCFLocaleLanguageCodeKey"];
+            NSString *languageCode = languageDic[@"kCFLocaleLanguageCodeKey"];
             
             url = [NSString stringWithFormat:@"https://translate.google.com/#auto/%@/%@", languageCode, encodedStatus];
         }
@@ -191,7 +191,7 @@
         
         [optionController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Mute conversation", @"Mute conversation") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
-            [[MSStatusStore sharedStore] muteStatusWithId:status._id withCompletion:^(BOOL success, NSError *error) {
+            [MSStatusStore.sharedStore muteStatusWithId:status._id withCompletion:^(BOOL success, NSError *error) {
                 
                 if (success) {
                     status.muted = YES;
@@ -203,7 +203,7 @@
     {
         [optionController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Unmute conversation", @"Unmute conversation") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
-            [[MSStatusStore sharedStore] unmuteStatusWithId:status._id withCompletion:^(BOOL success, NSError *error) {
+            [MSStatusStore.sharedStore unmuteStatusWithId:status._id withCompletion:^(BOOL success, NSError *error) {
                 
                 if (success) {
                     status.muted = NO;
@@ -212,11 +212,11 @@
         }]];
     }
     
-    if ([self.status.account._id isEqualToString:[[[MSUserStore sharedStore] currentUser] _id]]) {
+    if ([self.status.account._id isEqualToString:[[MSUserStore.sharedStore currentUser] _id]]) {
         
         [optionController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete", @"Delete") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             
-            [[MSStatusStore sharedStore] deleteStatusWithId:self.status._id withCompletion:^(BOOL success, NSError *error) {
+            [MSStatusStore.sharedStore deleteStatusWithId:self.status._id withCompletion:^(BOOL success, NSError *error) {
                 
                 if (success) {
                     [self.delegate timelineCell:self didDeleteStatus:self.status];
@@ -244,7 +244,7 @@
         
         [optionController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Mute", @"Mute") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
-            [[MSUserStore sharedStore] muteUserWithId:status.account._id withCompletion:^(BOOL success, NSError *error) {
+            [MSUserStore.sharedStore muteUserWithId:status.account._id withCompletion:^(BOOL success, NSError *error) {
                 
                 if (success) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -267,7 +267,7 @@
         
         [optionController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Block", @"Block") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             
-            [[MSUserStore sharedStore] blockUserWithId:status.account._id withCompletion:^(BOOL success, NSError *error) {
+            [MSUserStore.sharedStore blockUserWithId:status.account._id withCompletion:^(BOOL success, NSError *error) {
                 
                 if (success) {
                     
@@ -484,9 +484,9 @@
     self.isThreadStatus = self.retootCountLabel != nil;
     
     if (author.avatar) {
-        [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[DWSettingStore sharedStore] disableGifPlayback] ? status.account.avatar_static : status.account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+        [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? status.account.avatar_static : status.account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
             self.avatarImageView.image = image;
-            if ([[DWSettingStore sharedStore] disableGifPlayback]) {
+            if ([DWSettingStore.sharedStore disableGifPlayback]) {
                 [self.avatarImageView stopAnimating];
             }
         } failure:nil];
@@ -496,7 +496,7 @@
         self.displayLabel.text = author.display_name.length ? author.display_name : author.username;
         
         if (!self.status.in_reply_to_id && !self.status.reblog) {
-            self.displayLabel.accessibilityLabel = [self.displayLabel.text stringByAppendingFormat:@" %@ %@ ", [DWSettingStore sharedStore].awooMode ? NSLocalizedString(@"howled", @"howled") : NSLocalizedString(@"tooted", @"tooted"), self.isThreadStatus ? [NSString stringWithFormat:@" %@ %@ ", [status.created_at formattedDateWithStyle:NSDateFormatterMediumStyle], [status.created_at formattedDateWithFormat:@"HH:mm"]] : [status.created_at timeAgoSinceNow]];
+            self.displayLabel.accessibilityLabel = [self.displayLabel.text stringByAppendingFormat:@" %@ %@ ", DWSettingStore.sharedStore.awooMode ? NSLocalizedString(@"howled", @"howled") : NSLocalizedString(@"tooted", @"tooted"), self.isThreadStatus ? [NSString stringWithFormat:@" %@ %@ ", [status.created_at formattedDateWithStyle:NSDateFormatterMediumStyle], [status.created_at formattedDateWithFormat:@"HH:mm"]] : [status.created_at timeAgoSinceNow]];
         }
         else
         {
@@ -506,7 +506,7 @@
     
     if (author.acct) {
         self.usernameLabel.text = [NSString stringWithFormat:@"@%@", author.acct];
-        self.usernameLabel.accessibilityLabel = [NSString stringWithFormat:@"%@ %@", [DWSettingStore sharedStore].awooMode ? NSLocalizedString(@"Howled by", @"Howled by") : NSLocalizedString(@"Tooted by", @"Tooted by"), author.acct];
+        self.usernameLabel.accessibilityLabel = [NSString stringWithFormat:@"%@ %@", DWSettingStore.sharedStore.awooMode ? NSLocalizedString(@"Howled by", @"Howled by") : NSLocalizedString(@"Tooted by", @"Tooted by"), author.acct];
     }
     else
     {
@@ -566,7 +566,7 @@
         [[AFImageDownloader defaultInstance] downloadImageForURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:emoji.static_url]] success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull responseObject) {
             
             if (responseObject) {
-                [emojis setObject:responseObject forKey:emoji.shortcode.copy];
+                emojis[emoji.shortcode.copy] = responseObject;
             }
             
             emojiLoadCount++;
@@ -577,8 +577,8 @@
                 
                 // This seems really inefficient still but at least we're off the main thread... progress
                 for (MSEmoji *emoji in status.emojis) {
-                    contentStringWithImage = [contentStringWithImage attributedStringByReplacingOccurancesOfString:emoji.shortcode withInlineImage:[emojis objectForKey:emoji.shortcode] scale:0];
-                    warningStringWithImage = [warningStringWithImage attributedStringByReplacingOccurancesOfString:emoji.shortcode withInlineImage:[emojis objectForKey:emoji.shortcode] scale:0];
+                    contentStringWithImage = [contentStringWithImage attributedStringByReplacingOccurancesOfString:emoji.shortcode withInlineImage:emojis[emoji.shortcode] scale:0];
+                    warningStringWithImage = [warningStringWithImage attributedStringByReplacingOccurancesOfString:emoji.shortcode withInlineImage:emojis[emoji.shortcode] scale:0];
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), ^{

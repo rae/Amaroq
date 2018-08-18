@@ -201,7 +201,7 @@
         
         if (media.type != MSMediaTypeImage) {
             
-            NSURL *cachedURL = [[DWMediaStore sharedStore] cachedURLForGifvMedia:[NSURL URLWithString:mediaURL]];
+            NSURL *cachedURL = [DWMediaStore.sharedStore cachedURLForGifvMedia:[NSURL URLWithString:mediaURL]];
             
             if (cachedURL) {
                 mediaURL = [cachedURL absoluteString];
@@ -277,9 +277,9 @@
     
     if (media.type != MSMediaTypeImage && [mediaUrl containsString:@"mp4"]) {
         
-        if (media.type == MSMediaTypeGifv && ![[DWSettingStore sharedStore] disableGifPlayback] && status.media_attachments.count == 1 && !status.sensitive && !status.spoiler_text.length) {
+        if (media.type == MSMediaTypeGifv && ![DWSettingStore.sharedStore disableGifPlayback] && status.media_attachments.count == 1 && !status.sensitive && !status.spoiler_text.length) {
             
-            [[DWMediaStore sharedStore] downloadGifvMedia:[NSURL URLWithString:mediaUrl] withCompletion:^(BOOL success, NSURL *localURL, NSError *error) {
+            [DWMediaStore.sharedStore downloadGifvMedia:[NSURL URLWithString:mediaUrl] withCompletion:^(BOOL success, NSURL *localURL, NSError *error) {
                 if (success) {
                     
                     if ([cell.identifier isEqual:status._id]) {
@@ -339,7 +339,7 @@
 
     cell.mediaImageView.accessibilityLabel = media._description;
     cell.mediaImageView.isAccessibilityElement = media._description ? YES : NO;
-    [cell.mediaImageView sd_setImageWithURL:[NSURL URLWithString:media.preview_url ? media.preview_url : media.remote_url] placeholderImage:[[DWMediaStore sharedStore] placeholderImage]];
+    [cell.mediaImageView sd_setImageWithURL:[NSURL URLWithString:media.preview_url ? media.preview_url : media.remote_url] placeholderImage:[DWMediaStore.sharedStore placeholderImage]];
 }
 
 @end

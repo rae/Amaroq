@@ -31,8 +31,8 @@
         
         params = [params removeNullValues];
         
-        self.name = [params objectForKey:@"name"];
-        self.website = [params objectForKey:@"website"];
+        self.name = params[@"name"];
+        self.website = params[@"website"];
     }
     
     return self;
@@ -46,11 +46,11 @@
     NSMutableDictionary *params = [@{} mutableCopy];
     
     if (self.name) {
-        [params setObject:self.name forKey:@"name"];
+        params[@"name"] = self.name;
     }
     
     if (self.website) {
-        [params setObject:self.website forKey:@"website"];
+        params[@"website"] = self.website;
     }
     
     return params;

@@ -38,10 +38,10 @@
     [FIRApp configure];
     
     [DWAppearanceProxies configureAppearanceProxies];
-    [[DWSettingStore sharedStore] performSettingMaintenance];
+    [DWSettingStore.sharedStore performSettingMaintenance];
     
     // Kicks the notification store to initialize the notification delegate on launch
-    [DWNotificationStore sharedStore];
+    DWNotificationStore.sharedStore;
     
     return YES;
 }
@@ -56,8 +56,8 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    [[NSNotificationCenter defaultCenter] postNotificationName:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
-    [[FIRMessaging messaging] setShouldEstablishDirectChannel:NO];
+    [NSNotificationCenter.defaultCenter postNotificationName:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
+    [FIRMessaging.messaging setShouldEstablishDirectChannel:NO];
 }
 
 
@@ -70,12 +70,12 @@
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [DWAppearanceProxies configureAppearanceProxies];
     
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    [[DWNotificationStore sharedStore] registerForNotifications];
+    [UIApplication.sharedApplication setApplicationIconBadgeNumber:0];
+    [DWNotificationStore.sharedStore registerForNotifications];
     
     // Kicks the login screen if we're resuming from suspension
-    if ([[[UIApplication sharedApplication] topController] isKindOfClass:[DWLoginViewController class]]) {
-        [[[UIApplication sharedApplication] topController] viewDidAppear:NO];
+    if ([[UIApplication.sharedApplication topController] isKindOfClass:[DWLoginViewController class]]) {
+        [[UIApplication.sharedApplication topController] viewDidAppear:NO];
     }
 }
 
@@ -89,7 +89,7 @@
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     completionHandler(UIBackgroundFetchResultNoData);
-    //[[DWNotificationStore sharedStore] checkForNotificationsWithCompletionHandler:completionHandler];
+    //[DWNotificationStore.sharedStore checkForNotificationsWithCompletionHandler:completionHandler];
 }
 
 
@@ -98,8 +98,8 @@
     
     // With swizzling disabled you must set the APNs token here.
     
-    [[FIRMessaging messaging] setAPNSToken:deviceToken type:FIRMessagingAPNSTokenTypeUnknown];
-    [[MSAuthStore sharedStore] registerForRemoteNotificationsWithToken:[[FIRInstanceID instanceID] token]];
+    [FIRMessaging.messaging setAPNSToken:deviceToken type:FIRMessagingAPNSTokenTypeUnknown];
+    [MSAuthStore.sharedStore registerForRemoteNotificationsWithToken:[[FIRInstanceID instanceID] token]];
 }
 
 
@@ -111,7 +111,7 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    [DWNotificationStore sharedStore].notificationBadge.hidden = NO;
+    DWNotificationStore.sharedStore.notificationBadge.hidden = NO;
 }
 
 @end

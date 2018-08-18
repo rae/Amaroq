@@ -34,13 +34,13 @@
         
         params = [params removeNullValues];
         
-        self.url = [params objectForKey:@"url"];
+        self.url = params[@"url"];
         
-        self.preview_url = [params objectForKey:@"preview_url"];
-        self.remote_url = [params objectForKey:@"remote_url"];
-        self._description = [params objectForKey:@"description"];
+        self.preview_url = params[@"preview_url"];
+        self.remote_url = params[@"remote_url"];
+        self._description = params[@"description"];
         
-        NSString *type = [params objectForKey:@"type"];
+        NSString *type = params[@"type"];
         
         self.type = [type isEqualToString:@"image"] ? MSMediaTypeImage : [type isEqualToString:@"gifv"] ? MSMediaTypeGifv : MSMediaTypeVideo;
     }
@@ -56,18 +56,18 @@
     NSMutableDictionary *params = [@{} mutableCopy];
     
     if (self.url) {
-        [params setObject:self.url forKey:@"url"];
+        params[@"url"] = self.url;
     }
     
     if (self.preview_url) {
-        [params setObject:self.preview_url forKey:@"preview_url"];
+        params[@"preview_url"] = self.preview_url;
     }
     
     if (self.remote_url) {
-        [params setObject:self.remote_url forKey:@"remote_url"];
+        params[@"remote_url"] = self.remote_url;
     }
     
-    [params setObject:self.type == MSMediaTypeImage ? @"image" : self.type == MSMediaTypeGifv ? @"gifv" : @"video" forKey:@"type"];
+    params[@"type"] = self.type == MSMediaTypeImage ? @"image" : self.type == MSMediaTypeGifv ? @"gifv" : @"video";
         
     return params;
 }

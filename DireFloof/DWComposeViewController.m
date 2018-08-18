@@ -134,7 +134,7 @@ static NSInteger mediaUploadLimit = 4;
         [media addObject:@{MS_MEDIA_ATTACHMENT_MEDIA_KEY:[self.imagesToUpload objectAtIndex:3], MS_MEDIA_ATTACHMENT_DESCRIPTION_KEY: self.image4DescriptionField.text ? self.image4DescriptionField.text : @""}];
     }
     
-    [[MSStatusStore sharedStore] postStatusWithText:self.contentField.text inReplyToId:self.replyToStatus ? self.replyToStatus._id : nil withMedia:(media.count ? media : nil) isSensitive:(self.sensitiveMediaSwitch.on && !self.sensitiveMediaSwitch.superview.hidden) withVisibility:self.privacyState andSpoilerText:(self.contentWarningSwitch.on ? self.contentWarningField.text : nil) withProgress:^(CGFloat progress) {
+    [MSStatusStore.sharedStore postStatusWithText:self.contentField.text inReplyToId:self.replyToStatus ? self.replyToStatus._id : nil withMedia:(media.count ? media : nil) isSensitive:(self.sensitiveMediaSwitch.on && !self.sensitiveMediaSwitch.superview.hidden) withVisibility:self.privacyState andSpoilerText:(self.contentWarningSwitch.on ? self.contentWarningField.text : nil) withProgress:^(CGFloat progress) {
     
         [self.progressBar setProgress:progress animated:YES];
         
@@ -177,7 +177,7 @@ static NSInteger mediaUploadLimit = 4;
     self.tootButton.enabled = NO;
     [self.statusUploadingIndicator startAnimating];
 
-    [[MSStatusStore sharedStore] reportStatus:self.replyToStatus withComments:self.contentField.text withCompletion:^(BOOL success, NSError *error) {
+    [MSStatusStore.sharedStore reportStatus:self.replyToStatus withComments:self.contentField.text withCompletion:^(BOOL success, NSError *error) {
         self.tootButton.enabled = YES;
         [self.statusUploadingIndicator stopAnimating];
 
@@ -203,7 +203,7 @@ static NSInteger mediaUploadLimit = 4;
 - (IBAction)cancelButtonPressed:(id)sender
 {
     if (!self.reporting) {
-        [[DWDraftStore sharedStore] setDraft:self.contentField.text forPostId:self.replyToStatus ? self.replyToStatus._id : self.mentionedUser];
+        [DWDraftStore.sharedStore setDraft:self.contentField.text forPostId:self.replyToStatus ? self.replyToStatus._id : self.mentionedUser];
     }
     
     if (self.postCompleteBlock) {
@@ -607,9 +607,9 @@ static NSInteger mediaUploadLimit = 4;
 {
     MSAccount *account = [self.accountSearchResults objectAtIndex:indexPath.row];
     
-    [cell.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[DWSettingStore sharedStore] disableGifPlayback] ? account.avatar_static : account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+    [cell.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? account.avatar_static : account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
         cell.avatarImageView.image = image;
-        if ([[DWSettingStore sharedStore] disableGifPlayback]) {
+        if ([DWSettingStore.sharedStore disableGifPlayback]) {
             [cell.avatarImageView stopAnimating];
         }
     } failure:nil];
@@ -642,7 +642,7 @@ static NSInteger mediaUploadLimit = 4;
     }
     
     self.pendingQuery = YES;
-    [[MSUserStore sharedStore] searchForUsersWithQuery:query withCompletion:^(BOOL success, NSArray *users, NSError *error) {
+    [MSUserStore.sharedStore searchForUsersWithQuery:query withCompletion:^(BOOL success, NSArray *users, NSError *error) {
         
         if (success) {
             self.accountSearchResults = self.currentQueryRange ? users : @[];
@@ -663,17 +663,17 @@ static NSInteger mediaUploadLimit = 4;
 
 - (void)configureViews
 {
-    MSAccount *currentUser = [[MSUserStore sharedStore] currentUser];
+    MSAccount *currentUser = [MSUserStore.sharedStore currentUser];
 
     if (!self.reporting) {
-        [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[DWSettingStore sharedStore] disableGifPlayback] ? currentUser.avatar_static : currentUser.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+        [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? currentUser.avatar_static : currentUser.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
             self.avatarImageView.image = image;
-            if ([[DWSettingStore sharedStore] disableGifPlayback]) {
+            if ([DWSettingStore.sharedStore disableGifPlayback]) {
                 [self.avatarImageView stopAnimating];
             }
         } failure:nil];
 
-        self.usernameLabel.text = [[MSAppStore sharedStore] instance];
+        self.usernameLabel.text = [MSAppStore.sharedStore instance];
     }
     else
     {
@@ -707,10 +707,10 @@ static NSInteger mediaUploadLimit = 4;
     self.contentWarningSwitch.on = NO;
     self.sensitiveMediaSwitch.on = NO;
     
-    if ([[DWSettingStore sharedStore] alwaysPrivate]) {
+    if ([DWSettingStore.sharedStore alwaysPrivate]) {
         self.privacyState = MS_VISIBILITY_TYPE_PRIVATE;
     }
-    else if (![[DWSettingStore sharedStore] alwaysPublic])
+    else if (![DWSettingStore.sharedStore alwaysPublic])
     {
         self.privacyState = MS_VISIBILITY_TYPE_UNLISTED;
     }
@@ -730,7 +730,7 @@ static NSInteger mediaUploadLimit = 4;
     
     self.progressBar.hidden = YES;
     
-    if ([[DWSettingStore sharedStore] awooMode] && !self.reporting) {
+    if ([DWSettingStore.sharedStore awooMode] && !self.reporting) {
         [self.tootButton setTitle:@"AWOO" forState:UIControlStateNormal];
         [self.tootButton setTitle:@"AWOO!" forState:UIControlStateSelected];
     }
@@ -749,20 +749,20 @@ static NSInteger mediaUploadLimit = 4;
         self.replyToUsernameLabel.text = [NSString stringWithFormat:@"@%@", self.replyToStatus.account.acct];
         self.replyToDisplayNameLabel.text = self.replyToStatus.account.display_name.length ? self.replyToStatus.account.display_name : self.replyToStatus.account.username;
         
-        [self.replyToAvatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[DWSettingStore sharedStore] disableGifPlayback] ? self.replyToStatus.account.avatar_static : self.replyToStatus.account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+        [self.replyToAvatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? self.replyToStatus.account.avatar_static : self.replyToStatus.account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
             self.replyToAvatarImageView.image = image;
-            if ([[DWSettingStore sharedStore] disableGifPlayback]) {
+            if ([DWSettingStore.sharedStore disableGifPlayback]) {
                 [self.replyToAvatarImageView stopAnimating];
             }
         } failure:nil];
                 
-        NSString *replyToText = [self.replyToStatus.account.acct isEqualToString:[[MSUserStore sharedStore] currentAccountString]] ? @"" : [NSString stringWithFormat:@"@%@ ", self.replyToStatus.account.acct];
+        NSString *replyToText = [self.replyToStatus.account.acct isEqualToString:[MSUserStore.sharedStore currentAccountString]] ? @"" : [NSString stringWithFormat:@"@%@ ", self.replyToStatus.account.acct];
                 
         for (MSMention *entity in self.replyToStatus.mentions) {
             
             NSString *username = entity.acct;
             
-            if (![replyToText containsString:username] && ![entity.acct isEqualToString:[[MSUserStore sharedStore] currentAccountString]]) {
+            if (![replyToText containsString:username] && ![entity.acct isEqualToString:[MSUserStore.sharedStore currentAccountString]]) {
                 replyToText = [replyToText stringByAppendingFormat:@"@%@ ", username];
             }
         }
@@ -782,7 +782,7 @@ static NSInteger mediaUploadLimit = 4;
     }
     
     if (!self.reporting) {
-        NSString *draftText = [[DWDraftStore sharedStore] draftForPostId:self.replyToStatus ? self.replyToStatus._id : self.mentionedUser];
+        NSString *draftText = [DWDraftStore.sharedStore draftForPostId:self.replyToStatus ? self.replyToStatus._id : self.mentionedUser];
         
         if (draftText) {
             self.contentField.text = draftText;

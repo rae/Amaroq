@@ -56,43 +56,43 @@
         
         params = [params removeNullValues];
         
-        self._id = [[params objectForKey:@"id"] isKindOfClass:[NSString class]] ? [params objectForKey:@"id"] : [[params objectForKey:@"id"] stringValue]; // If we're receiving statuses from a pre-2.0 server it'll be a NSNumber - have it dump its stringValue to correct this.
-        self.uri = [params objectForKey:@"uri"];
-        self.url = [params objectForKey:@"url"];
-        self.account = [[MSAccount alloc] initWithParams:[params objectForKey:@"account"]];
-        self.in_reply_to_id = [params objectForKey:@"in_reply_to_id"];
-        self.in_reply_to_account_id = [params objectForKey:@"in_reply_to_account_id"];
-        self.reblog = [params objectForKey:@"reblog"] ? [[MSStatus alloc] initWithParams:[params objectForKey:@"reblog"]] : nil;
+        self._id = [params[@"id"] isKindOfClass:[NSString class]] ? params[@"id"] : [params[@"id"] stringValue]; // If we're receiving statuses from a pre-2.0 server it'll be a NSNumber - have it dump its stringValue to correct this.
+        self.uri = params[@"uri"];
+        self.url = params[@"url"];
+        self.account = [[MSAccount alloc] initWithParams:params[@"account"]];
+        self.in_reply_to_id = params[@"in_reply_to_id"];
+        self.in_reply_to_account_id = params[@"in_reply_to_account_id"];
+        self.reblog = params[@"reblog"] ? [[MSStatus alloc] initWithParams:params[@"reblog"]] : nil;
         
-        NSString *content = [params objectForKey:@"content"];
-        NSNumber *cleansed = [params objectForKey:@"__cleansed"];
+        NSString *content = params[@"content"];
+        NSNumber *cleansed = params[@"__cleansed"];
         
         if (content) {
             
             self.content = cleansed ? content : [content removeHTML];
             
-            if ([[DWSettingStore sharedStore] awooMode]) {
+            if ([DWSettingStore.sharedStore awooMode]) {
                 self.content = [self.content awooString];
             }
         }
         
-        self.created_at = [params objectForKey:@"created_at"] ? [NSDate dateWithString:[params objectForKey:@"created_at"] formatString:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]] : nil;
-        self.reblogs_count = [params objectForKey:@"reblogs_count"];
-        self.favourites_count = [params objectForKey:@"favourites_count"];
-        self.reblogged = [[params objectForKey:@"reblogged"] boolValue];
-        self.favourited = [[params objectForKey:@"favourited"] boolValue];
-        self.sensitive = [[params objectForKey:@"sensitive"] boolValue];
-        self.muted = [[params objectForKey:@"muted"] boolValue];
+        self.created_at = params[@"created_at"] ? [NSDate dateWithString:params[@"created_at"] formatString:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]] : nil;
+        self.reblogs_count = params[@"reblogs_count"];
+        self.favourites_count = params[@"favourites_count"];
+        self.reblogged = [params[@"reblogged"] boolValue];
+        self.favourited = [params[@"favourited"] boolValue];
+        self.sensitive = [params[@"sensitive"] boolValue];
+        self.muted = [params[@"muted"] boolValue];
         
-        NSString *spoiler_text = [params objectForKey:@"spoiler_text"];
+        NSString *spoiler_text = params[@"spoiler_text"];
         
         if (spoiler_text) {
             self.spoiler_text = [Emojione shortnameToUnicode:spoiler_text];
         }
         
-        self.visibility = [params objectForKey:@"visibility"];
+        self.visibility = params[@"visibility"];
         
-        NSArray *media_attachmentsJSON = [params objectForKey:@"media_attachments"];
+        NSArray *media_attachmentsJSON = params[@"media_attachments"];
         
         if (media_attachmentsJSON) {
             
@@ -107,7 +107,7 @@
             self.media_attachments = media_attachments;
         }
         
-        NSArray *mentionsJSON = [params objectForKey:@"mentions"];
+        NSArray *mentionsJSON = params[@"mentions"];
         
         if (mentionsJSON) {
             
@@ -122,9 +122,9 @@
             self.mentions = mentions;
         }
         
-        self.application = [params objectForKey:@"application"] ? [[MSApplication alloc] initWithParams:[params objectForKey:@"application"]] : nil;
+        self.application = params[@"application"] ? [[MSApplication alloc] initWithParams:params[@"application"]] : nil;
         
-        NSArray *emojisJSON = [params objectForKey:@"emojis"];
+        NSArray *emojisJSON = params[@"emojis"];
         
         if (emojisJSON) {
             
@@ -175,61 +175,61 @@
     NSMutableDictionary *params = [@{} mutableCopy];
     
     if (self._id) {
-        [params setObject:self._id forKey:@"id"];
+        params[@"id"] = self._id;
     }
     
     if (self.uri) {
-        [params setObject:self.uri forKey:@"uri"];
+        params[@"uri"] = self.uri;
     }
     
     if (self.url) {
-        [params setObject:self.url forKey:@"url"];
+        params[@"url"] = self.url;
     }
     
     if (self.account) {
-        [params setObject:[self.account toJSON] forKey:@"account"];
+        params[@"account"] = [self.account toJSON];
     }
     
     if (self.in_reply_to_id) {
-        [params setObject:self.in_reply_to_id forKey:@"in_reply_to_id"];
+        params[@"in_reply_to_id"] = self.in_reply_to_id;
     }
     
     if (self.in_reply_to_account_id) {
-        [params setObject:self.in_reply_to_account_id forKey:@"in_reply_to_account_id"];
+        params[@"in_reply_to_account_id"] = self.in_reply_to_account_id;
     }
     
     if (self.reblog) {
-        [params setObject:[self.reblog toJSON] forKey:@"reblog"];
+        params[@"reblog"] = [self.reblog toJSON];
     }
     
     if (self.content) {
-        [params setObject:self.content forKey:@"content"];
-        [params setObject:@(YES) forKey:@"__cleansed"];
+        params[@"content"] = self.content;
+        params[@"__cleansed"] = @(YES);
     }
     
     if (self.created_at) {
-        [params setObject:[self.created_at formattedDateWithFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]] forKey:@"created_at"];
+        params[@"created_at"] = [self.created_at formattedDateWithFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     }
     
     if (self.reblogs_count) {
-        [params setObject:self.reblogs_count forKey:@"reblogs_count"];
+        params[@"reblogs_count"] = self.reblogs_count;
     }
     
     if (self.favourites_count) {
-        [params setObject:self.favourites_count forKey:@"favourites_count"];
+        params[@"favourites_count"] = self.favourites_count;
     }
     
-    [params setObject:@(self.reblogged) forKey:@"reblogged"];
-    [params setObject:@(self.favourited) forKey:@"favourited"];
-    [params setObject:@(self.sensitive) forKey:@"sensitive"];
-    [params setObject:@(self.muted) forKey:@"muted"];
+    params[@"reblogged"] = @(self.reblogged);
+    params[@"favourited"] = @(self.favourited);
+    params[@"sensitive"] = @(self.sensitive);
+    params[@"muted"] = @(self.muted);
     
     if (self.spoiler_text) {
-        [params setObject:self.spoiler_text forKey:@"spoiler_text"];
+        params[@"spoiler_text"] = self.spoiler_text;
     }
     
     if (self.visibility) {
-        [params setObject:self.visibility forKey:@"visibility"];
+        params[@"visibility"] = self.visibility;
     }
     
     if (self.media_attachments) {
@@ -240,7 +240,7 @@
             [mediaAttachmentsJSON addObject:[mediaAttachment toJSON]];
         }
         
-        [params setObject:mediaAttachmentsJSON forKey:@"media_attachments"];
+        params[@"media_attachments"] = mediaAttachmentsJSON;
     }
     
     if (self.mentions) {
@@ -250,11 +250,11 @@
             [mentionsJSON addObject:[mention toJSON]];
         }
         
-        [params setObject:mentionsJSON forKey:@"mentions"];
+        params[@"mentions"] = mentionsJSON;
     }
     
     if (self.application) {
-        [params setObject:[self.application toJSON] forKey:@"application"];
+        params[@"application"] = [self.application toJSON];
     }
     
     if (self.emojis) {
@@ -264,7 +264,7 @@
             [emojisJSON addObject:[emoji toJSON]];
         }
         
-        [params setObject:emojisJSON forKey:@"emojis"];
+        params[@"emojis"] = emojisJSON;
     }
     
     return params;

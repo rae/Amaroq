@@ -214,9 +214,9 @@ typedef NS_ENUM(NSUInteger, DWSearchSectionType) {
 {
     MSAccount *account = [self.accountSearchResults objectAtIndex:indexPath.row];
     
-    [cell.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[DWSettingStore sharedStore] disableGifPlayback] ? account.avatar_static : account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+    [cell.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? account.avatar_static : account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
         cell.avatarImageView.image = image;
-        if ([[DWSettingStore sharedStore] disableGifPlayback]) {
+        if ([DWSettingStore.sharedStore disableGifPlayback]) {
             [cell.avatarImageView stopAnimating];
         }
     } failure:nil];
@@ -245,7 +245,7 @@ typedef NS_ENUM(NSUInteger, DWSearchSectionType) {
     self.accountSearchResults = @[];
     [self.tableView reloadData];
     
-    [[MSUserStore sharedStore] searchForUsersWithQuery:query withCompletion:^(BOOL success, NSArray *users, NSError *error) {
+    [MSUserStore.sharedStore searchForUsersWithQuery:query withCompletion:^(BOOL success, NSArray *users, NSError *error) {
         
         if (success) {
             

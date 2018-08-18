@@ -39,8 +39,8 @@
 
 - (BOOL)isLoggedIn
 {
-    if (!self.credential && [[MSAppStore sharedStore] isRegistered]) {
-        AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[[MSAppStore sharedStore] base_api_url_string]];
+    if (!self.credential && [MSAppStore.sharedStore isRegistered]) {
+        AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[MSAppStore.sharedStore base_api_url_string]];
         
         if (credential) {
             self.credential = credential;
@@ -72,7 +72,7 @@
 {
     if (self.credential) {
         
-        [[MSUserStore sharedStore] getCurrentUserWithCompletion:^(BOOL success, MSAccount *user, NSError *error) {
+        [MSUserStore.sharedStore getCurrentUserWithCompletion:^(BOOL success, MSAccount *user, NSError *error) {
             if (completion != nil) {
                 completion([self isLoggedIn]);
             }
@@ -81,14 +81,14 @@
     }
     else
     {
-        if ([[MSAppStore sharedStore] isRegistered]) {
+        if ([MSAppStore.sharedStore isRegistered]) {
             
-            AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[[MSAppStore sharedStore] base_api_url_string]];
+            AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[MSAppStore.sharedStore base_api_url_string]];
             
             if (credential) {
                 self.credential = credential;
                 
-                [[MSUserStore sharedStore] getCurrentUserWithCompletion:^(BOOL success, MSAccount *user, NSError *error) {
+                [MSUserStore.sharedStore getCurrentUserWithCompletion:^(BOOL success, MSAccount *user, NSError *error) {
                     if (completion != nil) {
                         completion([self isLoggedIn]);
                     }
@@ -103,7 +103,7 @@
         }
         else
         {
-            [[MSAppStore sharedStore] registerApp:^(BOOL success) {
+            [MSAppStore.sharedStore registerApp:^(BOOL success) {
                 // If this fails we're SOL, for now I'm going to loop this chitz
                 if (success) {
                     self.loginBlock = completion;
@@ -128,13 +128,13 @@
         return;
     }
     
-    NSDictionary *params = @{@"instance_url": [[MSAppStore sharedStore] base_url_string],
+    NSDictionary *params = @{@"instance_url": [MSAppStore.sharedStore base_url_string],
                              @"access_token": self.credential.accessToken,
                              @"device_token": token,
-                             @"followers": @([[DWSettingStore sharedStore] newFollowerNotifications]),
-                             @"favorites": @([[DWSettingStore sharedStore] favoriteNotifications]),
-                             @"mentions": @([[DWSettingStore sharedStore] mentionNotifications]),
-                             @"boosts": @([[DWSettingStore sharedStore] boostNotifications])
+                             @"followers": @([DWSettingStore.sharedStore newFollowerNotifications]),
+                             @"favorites": @([DWSettingStore.sharedStore favoriteNotifications]),
+                             @"mentions": @([DWSettingStore.sharedStore mentionNotifications]),
+                             @"boosts": @([DWSettingStore.sharedStore boostNotifications])
                              };
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -155,11 +155,11 @@
 
 - (void)unregisterForRemoteNotifications
 {
-    if (![[MSAppStore sharedStore] base_url_string] || !self.credential.accessToken) {
+    if (![MSAppStore.sharedStore base_url_string] || !self.credential.accessToken) {
         return;
     }
     
-    NSDictionary *params = @{@"instance_url": [[MSAppStore sharedStore] base_url_string],
+    NSDictionary *params = @{@"instance_url": [MSAppStore.sharedStore base_url_string],
                              @"access_token": self.credential.accessToken};
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -176,29 +176,29 @@
 
 - (void)requestEditProfile
 {
-    [[[UIApplication sharedApplication] topController] openWebURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@settings/profile", [[MSAppStore sharedStore] base_url_string]]]];
+    [[[UIApplication sharedApplication] topController] openWebURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@settings/profile", [MSAppStore.sharedStore base_url_string]]]];
 }
 
 
 - (void)requestPreferences
 {
-    [[[UIApplication sharedApplication] topController] openWebURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@settings/preferences", [[MSAppStore sharedStore] base_url_string]]]];
+    [[[UIApplication sharedApplication] topController] openWebURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@settings/preferences", [MSAppStore.sharedStore base_url_string]]]];
 }
 
 
 - (void)logout
 {
-    [[DWNotificationStore sharedStore] stopNotificationRefresh];
+    [DWNotificationStore.sharedStore stopNotificationRefresh];
 
     [[NSURLSession sharedSession] resetWithCompletionHandler:^{
         
         self.credential = nil;
-        [AFOAuthCredential deleteCredentialWithIdentifier:[[MSAppStore sharedStore] base_api_url_string]];
-        [[[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] requestSerializer] setAuthorizationHeaderFieldWithCredential:nil];
+        [AFOAuthCredential deleteCredentialWithIdentifier:[MSAppStore.sharedStore base_api_url_string]];
+        [[[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] requestSerializer] setAuthorizationHeaderFieldWithCredential:nil];
         
-        for (NSDictionary *instance in [[MSAppStore sharedStore] availableInstances]) {
-            [AFOAuthCredential deleteCredentialWithIdentifier:[instance objectForKey:MS_BASE_API_URL_STRING_KEY]];
-            [[MSAppStore sharedStore] removeMastodonInstance:[instance objectForKey:MS_INSTANCE_KEY]];
+        for (NSDictionary *instance in [MSAppStore.sharedStore availableInstances]) {
+            [AFOAuthCredential deleteCredentialWithIdentifier:instance[MS_BASE_API_URL_STRING_KEY]];
+            [MSAppStore.sharedStore removeMastodonInstance:instance[MS_INSTANCE_KEY]];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -210,7 +210,7 @@
 
 - (void)logoutOfInstance:(NSString *)instance
 {
-    NSDictionary *instanceToRemove = [[[[MSAppStore sharedStore] availableInstances] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"MS_INSTANCE_KEY LIKE[cd] %@", instance]] firstObject];
+    NSDictionary *instanceToRemove = [[[MSAppStore.sharedStore availableInstances] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"MS_INSTANCE_KEY LIKE[cd] %@", instance]] firstObject];
     
     if (instanceToRemove) {
         
@@ -223,25 +223,25 @@
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [AFOAuthCredential deleteCredentialWithIdentifier:[instanceToRemove objectForKey:MS_BASE_API_URL_STRING_KEY]];
-        [[[MSAPIClient sharedClientWithBaseAPI:[instanceToRemove objectForKey:MS_BASE_API_URL_STRING_KEY]] requestSerializer] setAuthorizationHeaderFieldWithCredential:nil];
-        [[MSAppStore sharedStore] removeMastodonInstance:instance];
+        [AFOAuthCredential deleteCredentialWithIdentifier:instanceToRemove[MS_BASE_API_URL_STRING_KEY]];
+        [[[MSAPIClient sharedClientWithBaseAPI:instanceToRemove[MS_BASE_API_URL_STRING_KEY]] requestSerializer] setAuthorizationHeaderFieldWithCredential:nil];
+        [MSAppStore.sharedStore removeMastodonInstance:instance];
     }
 }
 
 
 - (void)switchToInstance:(NSString *)instance withCompletion:(void (^)(BOOL))completion
 {
-    [[DWNotificationStore sharedStore] stopNotificationRefresh];
+    [DWNotificationStore.sharedStore stopNotificationRefresh];
     
     self.credential = nil;
-    [[[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] requestSerializer] setAuthorizationHeaderFieldWithCredential:nil];
+    [[[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] requestSerializer] setAuthorizationHeaderFieldWithCredential:nil];
 
-    [[MSAppStore sharedStore] setMastodonInstance:instance];
+    [MSAppStore.sharedStore setMastodonInstance:instance];
     
     if ([self isLoggedIn]) {
         
-        [[DWNotificationStore sharedStore] registerForNotifications];
+        [DWNotificationStore.sharedStore registerForNotifications];
         
         if (completion != nil) {
             completion(YES);
@@ -252,7 +252,7 @@
         [self login:^(BOOL success) {
             
             if (success) {
-                [[DWNotificationStore sharedStore] registerForNotifications];
+                [DWNotificationStore.sharedStore registerForNotifications];
             }
             
             if (completion != nil) {
@@ -270,7 +270,7 @@
     loginController.modalPresentationStyle = UIModalPresentationOverFullScreen;
     loginController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
-    [[DWNotificationStore sharedStore] stopNotificationRefresh];
+    [DWNotificationStore.sharedStore stopNotificationRefresh];
     [[[UIApplication sharedApplication] topController] presentViewController:loginController animated:YES completion:nil];
 }
 
@@ -279,9 +279,9 @@
 
 - (void)didAuthorized:(NSDictionary *)dictResponse {
     
-    self.credential = [[AFOAuthCredential alloc] initWithOAuthToken:[dictResponse objectForKey:kOAuth_AccessToken] tokenType:@"Bearer"];
+    self.credential = [[AFOAuthCredential alloc] initWithOAuthToken:dictResponse[kOAuth_AccessToken] tokenType:@"Bearer"];
     [self.credential setExpiration:[NSDate distantFuture]];
-    [AFOAuthCredential storeCredential:self.credential withIdentifier:[[MSAppStore sharedStore] base_api_url_string]];
+    [AFOAuthCredential storeCredential:self.credential withIdentifier:[MSAppStore.sharedStore base_api_url_string]];
     
     if (self.loginBlock != nil) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -296,12 +296,12 @@
 - (void)performWebviewLogin
 {
     NSMutableDictionary *dictService = [NSMutableDictionary dictionary];
-    [dictService setObject:[NSString stringWithFormat:@"%@oauth/authorize", [[MSAppStore sharedStore] base_url_string]] forKey:kOAuth_AuthorizeURL];
-    [dictService setObject:[NSString stringWithFormat:@"%@oauth/token", [[MSAppStore sharedStore] base_url_string]] forKey:kOAuth_TokenURL];
-    [dictService setObject:[[MSAppStore sharedStore] client_id] forKey:kOAuth_ClientId];
-    [dictService setObject:[[MSAppStore sharedStore] client_secret] forKey:kOAuth_Secret];
-    [dictService setObject:@"amaroq://authorize" forKey:kOAuth_Callback];
-    [dictService setObject:@"read write follow" forKey:kOAuth_Scope];
+    dictService[kOAuth_AuthorizeURL] = [NSString stringWithFormat:@"%@oauth/authorize", MSAppStore.sharedStore.base_url_string];
+    dictService[kOAuth_TokenURL] = [NSString stringWithFormat:@"%@oauth/token", MSAppStore.sharedStore.base_url_string];
+    dictService[kOAuth_ClientId] = MSAppStore.sharedStore.client_id;
+    dictService[kOAuth_Secret] = MSAppStore.sharedStore.client_secret;
+    dictService[kOAuth_Callback] = @"amaroq://authorize";
+    dictService[kOAuth_Scope] = @"read write follow";
     
     [[NSNotificationCenter defaultCenter] postNotificationName:DW_DID_CANCEL_LOGIN_NOTIFICATION object:nil];
     

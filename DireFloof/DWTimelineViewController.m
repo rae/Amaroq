@@ -69,9 +69,9 @@ IB_DESIGNABLE
 
 - (IBAction)timelineSwitchPressed:(id)sender
 {
-    [[DWSettingStore sharedStore] setShowLocalTimeline:![[DWSettingStore sharedStore] showLocalTimeline]];
+    [DWSettingStore.sharedStore setShowLocalTimeline:![DWSettingStore.sharedStore showLocalTimeline]];
     
-    if ([[DWSettingStore sharedStore] showLocalTimeline]) {
+    if ([DWSettingStore.sharedStore showLocalTimeline]) {
         self.publicTimelineSwitch.image = [UIImage imageNamed:@"PublicIcon"];
         self.publicTimelineSwitch.accessibilityLabel = NSLocalizedString(@"Federated timeline", @"Federated timeline");
         self.publicTimelineNavigationItem.title = NSLocalizedString(@"Local", @"Local");
@@ -83,8 +83,8 @@ IB_DESIGNABLE
         self.publicTimelineNavigationItem.title = NSLocalizedString(@"Federated", @"Federated");
     }
     
-    [self.navigationController.tabBarItem setImage:[[DWSettingStore sharedStore] showLocalTimeline] ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
-    [self.navigationController.tabBarItem setSelectedImage:[[DWSettingStore sharedStore] showLocalTimeline] ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
+    [self.navigationController.tabBarItem setImage:[DWSettingStore.sharedStore showLocalTimeline] ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
+    [self.navigationController.tabBarItem setSelectedImage:[DWSettingStore.sharedStore showLocalTimeline] ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
     
     [self clearData];
     [self configureData];
@@ -312,7 +312,7 @@ IB_DESIGNABLE
 {
     MSStatus *status = [self.timeline.statuses objectAtIndex:indexPath.row];
     
-    NSNumber *cachedHeight = [self.cachedEstimatedHeights objectForKey:status._id];
+    NSNumber *cachedHeight = self.cachedEstimatedHeights[status._id];
     if (cachedHeight) {
         return cachedHeight.floatValue;
     }
@@ -444,7 +444,7 @@ IB_DESIGNABLE
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MSStatus *status = [self.timeline.statuses objectAtIndex:indexPath.row];
-    [self.cachedEstimatedHeights setObject:@(cell.bounds.size.height) forKey:status._id];
+    self.cachedEstimatedHeights[status._id] = @(cell.bounds.size.height);
     
     if (indexPath.row >= self.timeline.statuses.count - 10 && self.timeline.nextPageUrl) {
         [self loadNextPage];
@@ -511,7 +511,7 @@ IB_DESIGNABLE
 
 - (void)timelineCell:(DWTimelineTableViewCell *)cell didSelectUser:(NSString *)user
 {
-    [[MSUserStore sharedStore] getUserWithId:user withCompletion:^(BOOL success, MSAccount *user, NSError *error) {
+    [MSUserStore.sharedStore getUserWithId:user withCompletion:^(BOOL success, MSAccount *user, NSError *error) {
         if (success) {
             [self performSegueWithIdentifier:@"ProfileSegue" sender:user];
         }
@@ -571,7 +571,7 @@ IB_DESIGNABLE
         self.title = [NSString stringWithFormat:@"#%@", self.hashtag];
     }
     
-    if ([[DWSettingStore sharedStore] showLocalTimeline]) {
+    if ([DWSettingStore.sharedStore showLocalTimeline]) {
         self.publicTimelineSwitch.image = [UIImage imageNamed:@"PublicIcon"];
         self.publicTimelineSwitch.accessibilityLabel = NSLocalizedString(@"Federated timeline", @"Federated timeline");
         self.publicTimelineNavigationItem.title = NSLocalizedString(@"Local", @"Local");
@@ -591,7 +591,7 @@ IB_DESIGNABLE
         self.closeButton.accessibilityLabel = NSLocalizedString(@"Close", @"Close");
     }
     
-    [self.scrollToTopButton setTitle:[[DWSettingStore sharedStore] awooMode] ? NSLocalizedString(@"See new awoos", @"See new awoos") : NSLocalizedString(@"See new toots", @"See new toots") forState:UIControlStateNormal];
+    [self.scrollToTopButton setTitle:[DWSettingStore.sharedStore awooMode] ? NSLocalizedString(@"See new awoos", @"See new awoos") : NSLocalizedString(@"See new toots", @"See new toots") forState:UIControlStateNormal];
 }
 
 
@@ -607,7 +607,7 @@ IB_DESIGNABLE
     
     if (self.hashtag) {
         
-        [[MSTimelineStore sharedStore] getHashtagTimelineWithHashtag:self.hashtag withCompletion:^(BOOL success, MSTimeline *timeline, NSError *error) {
+        [MSTimelineStore.sharedStore getHashtagTimelineWithHashtag:self.hashtag withCompletion:^(BOOL success, MSTimeline *timeline, NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {
                     UIRefreshControl *refreshControl = [self.tableView viewWithTag:9001];
@@ -654,7 +654,7 @@ IB_DESIGNABLE
     }
     else if (self.favorites)
     {
-        [[MSTimelineStore sharedStore] getFavoriteStatusesWithCompletion:^(BOOL success, MSTimeline *favoriteStatuses, NSError *error) {
+        [MSTimelineStore.sharedStore getFavoriteStatusesWithCompletion:^(BOOL success, MSTimeline *favoriteStatuses, NSError *error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {
@@ -688,7 +688,7 @@ IB_DESIGNABLE
     }
     else if (self.threadStatus)
     {
-        [[MSTimelineStore sharedStore] getThreadForStatus:self.threadStatus withCompletion:^(BOOL success, MSTimeline *statusThread, NSError *error) {
+        [MSTimelineStore.sharedStore getThreadForStatus:self.threadStatus withCompletion:^(BOOL success, MSTimeline *statusThread, NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {
                     UIRefreshControl *refreshControl = [self.tableView viewWithTag:9001];
@@ -720,7 +720,7 @@ IB_DESIGNABLE
     }
     else
     {
-        [[MSTimelineStore sharedStore] getTimelineForTimelineType:(self.isPublic ? ([[DWSettingStore sharedStore] showLocalTimeline] ? MSTimelineTypeLocal : MSTimelineTypePublic) : MSTimelineTypeHome) withCompletion:^(BOOL success, MSTimeline *timeline, NSError *error) {
+        [MSTimelineStore.sharedStore getTimelineForTimelineType:(self.isPublic ? ([DWSettingStore.sharedStore showLocalTimeline] ? MSTimelineTypeLocal : MSTimelineTypePublic) : MSTimelineTypeHome) withCompletion:^(BOOL success, MSTimeline *timeline, NSError *error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {

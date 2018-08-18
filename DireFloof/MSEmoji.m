@@ -32,14 +32,14 @@
         
         params = [params removeNullValues];
         
-        NSString *shortcode = [params objectForKey:@"shortcode"];
+        NSString *shortcode = params[@"shortcode"];
         
         if (shortcode.length) {
             self.shortcode = [NSString stringWithFormat:@":%@:", shortcode];
         }
         
-        self.static_url = [params objectForKey:@"static_url"];
-        self.url = [params objectForKey:@"url"];
+        self.static_url = params[@"static_url"];
+        self.url = params[@"url"];
     }
     
     return self;
@@ -53,15 +53,15 @@
     NSMutableDictionary *params = [@{} mutableCopy];
     
     if (self.url) {
-        [params setObject:self.url forKey:@"url"];
+        params[@"url"] = self.url;
     }
     
     if (self.static_url) {
-        [params setObject:self.static_url forKey:@"static_url"];
+        params[@"static_url"] = self.static_url;
     }
     
     if (self.shortcode) {
-        [params setObject:[self.shortcode stringByReplacingOccurrencesOfString:@":" withString:@""] forKey:@"shortcode"];
+        params[@"shortcode"] = [self.shortcode stringByReplacingOccurrencesOfString:@":" withString:@""];
     }
     
     return params;

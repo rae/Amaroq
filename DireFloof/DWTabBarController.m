@@ -57,7 +57,7 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
     
     self.previousSelectedIndex = 0;
     
-    [[DWNotificationStore sharedStore] registerForNotifications];
+    [DWNotificationStore.sharedStore registerForNotifications];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configureViews) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
 }
@@ -173,8 +173,8 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
         item.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
         
         if ([self.tabBar.items indexOfObject:item] == DWTabItemPublic) {
-            [item setImage:[[DWSettingStore sharedStore] showLocalTimeline] ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
-            [item setSelectedImage:[[DWSettingStore sharedStore] showLocalTimeline] ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
+            [item setImage:[DWSettingStore.sharedStore showLocalTimeline] ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
+            [item setSelectedImage:[DWSettingStore.sharedStore showLocalTimeline] ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
 
         }
     }
@@ -196,7 +196,7 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
         [self.notificationBadge autoSetDimensionsToSize:CGSizeMake(10, 10)];
         [self.notificationBadge autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tabBar withOffset:10.0f];
         [self.notificationBadge autoAlignAxis:ALAxisVertical toSameAxisOfView:self.tabBar withOffset:8.0f + width/5.0f];
-        [[DWNotificationStore sharedStore] setNotificationBadge:self.notificationBadge];
+        [DWNotificationStore.sharedStore setNotificationBadge:self.notificationBadge];
     }
     
     if (!self.centerTabOverlay) {
@@ -250,13 +250,13 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
     
     __weak UIImageView *__avatarImageView = self.avatarImageView;
     __weak DWTabBarController *__self = self;
-    [[MSUserStore sharedStore] getCurrentUserWithCompletion:^(BOOL success, MSAccount *user, NSError *error) {
+    [MSUserStore.sharedStore getCurrentUserWithCompletion:^(BOOL success, MSAccount *user, NSError *error) {
         if (success) {
-            [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[DWSettingStore sharedStore] disableGifPlayback] ? user.avatar_static : user.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+            [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? user.avatar_static : user.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
                 
                 if (image) {
                     __avatarImageView.image = image;
-                    if ([[DWSettingStore sharedStore] disableGifPlayback]) {
+                    if ([DWSettingStore.sharedStore disableGifPlayback]) {
                         [__avatarImageView stopAnimating];
                     }
                 }

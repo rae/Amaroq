@@ -33,7 +33,6 @@
     return sharedStore;
 }
 
-
 #pragma mark - Initializers
 
 - (id)init
@@ -53,7 +52,7 @@
 
 - (NSString *)draftForPostId:(NSString *)postId
 {
-    NSString *draftText = [self.draftDict objectForKey:postId ? postId : kNewDraftKey];
+    NSString *draftText = self.draftDict[postId ? postId : kNewDraftKey];
     
     if (draftText) {
         [self.draftDict removeObjectForKey:postId ? postId : kNewDraftKey];
@@ -62,12 +61,11 @@
     return draftText;
 }
 
-
 - (void)setDraft:(NSString *)draftText forPostId:(NSString *)postId
 {
     if (draftText.length) {
         
-        [self.draftDict setObject:draftText forKey:postId ? postId : kNewDraftKey];
+        self.draftDict[postId ? postId : kNewDraftKey] = draftText;
     }
 }
 

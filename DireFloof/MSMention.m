@@ -32,9 +32,9 @@
         
         params = [params removeNullValues];
         
-        self.url = [params objectForKey:@"url"];
-        self.acct = [params objectForKey:@"acct"];
-        self._id = [params objectForKey:@"id"];
+        self.url = params[@"url"];
+        self.acct = params[@"acct"];
+        self._id = params[@"id"];
     }
     
     return self;
@@ -48,15 +48,15 @@
     NSMutableDictionary *params = [@{} mutableCopy];
     
     if (self.url) {
-        [params setObject:self.url forKey:@"url"];
+        params[@"url"] = self.url;
     }
     
     if (self.acct) {
-        [params setObject:self.acct forKey:@"acct"];
+        params[@"acct"] = self.acct;
     }
     
     if (self._id) {
-        [params setObject:self._id forKey:@"id"];
+        params[@"id"] = self._id;
     }
     
     return params;

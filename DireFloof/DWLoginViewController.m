@@ -38,9 +38,9 @@
     [self.loginActivityIndicator startAnimating];
     self.loginButton.hidden = YES;
     
-    [[MSAppStore sharedStore] setMastodonInstance:self.instanceField.text];
+    [MSAppStore.sharedStore setMastodonInstance:self.instanceField.text];
     
-    [[MSAuthStore sharedStore] login:^(BOOL success) {
+    [MSAuthStore.sharedStore login:^(BOOL success) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
             self.loginButton.hidden = NO;
@@ -51,7 +51,7 @@
                 if (self.addAccount) {
                     // Notify the app to clear all its contents for refresh
                     [[NSNotificationCenter defaultCenter] postNotificationName:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
-                    [[DWNotificationStore sharedStore] registerForNotifications];
+                    [DWNotificationStore.sharedStore registerForNotifications];
                     [self dismissViewControllerAnimated:YES completion:nil];
                 }
                 else
@@ -76,9 +76,9 @@
 - (IBAction)cancelLoginPressed:(id)sender
 {
     if (self.lastInstance) {
-        [[MSAppStore sharedStore] setMastodonInstance:self.lastInstance];
-        [[DWNotificationStore sharedStore] registerForNotifications];
-        [[MSAuthStore sharedStore] isLoggedIn];
+        [MSAppStore.sharedStore setMastodonInstance:self.lastInstance];
+        [DWNotificationStore.sharedStore registerForNotifications];
+        [MSAuthStore.sharedStore isLoggedIn];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -100,9 +100,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.lastInstance = [[[MSAppStore sharedStore] instance] copy];
+    self.lastInstance = [[MSAppStore.sharedStore instance] copy];
     
-    self.instanceField.text = [[MSAppStore sharedStore] instance];
+    self.instanceField.text = [MSAppStore.sharedStore instance];
     
     self.placeholderField.hidden = self.instanceField.text.length;
     
@@ -119,7 +119,7 @@
 {
     [super viewDidAppear:animated];
     
-    if ([[MSAuthStore sharedStore] isLoggedIn] && !self.addAccount) {
+    if ([MSAuthStore.sharedStore isLoggedIn] && !self.addAccount) {
         [self performSegueWithIdentifier:@"LoginSegue" sender:self];
     }
 }

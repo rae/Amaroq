@@ -49,14 +49,14 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configureViews) name:UIContentSizeCategoryDidChangeNotification object:nil];
     
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    NSString *buildVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    NSString *appVersion = NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"];
+    NSString *buildVersion = NSBundle.mainBundle.infoDictionary[@"CFBundleVersion"];
     
     self.versionLabel.text = [NSString stringWithFormat:@"v%@ (%@)", appVersion, buildVersion];
     
     NSString *textToDisplay = NSLocalizedString(@"Amaroq is named after an Inuit legend of a giant wolf, which is fitting as a companion to our friend the mastodon. May we all howl across the fediverse!\n\nAmaroq is built and maintained by a love of the Mastodon idea, which sorely has needed a mobile outlet for our iOS friends. Got a suggestion, found a bug, or just want to voice some support? You can reach us at amaroq.feedback@gmail.com. Or hit up the dev, @eurasierboy on the mastodon.social instance. Happy tooting!", @"Amaroq is named after an Inuit legend of a giant wolf, which is fitting as a companion to our friend the mastodon. May we all howl across the fediverse!\n\nAmaroq is built and maintained by a love of the Mastodon idea, which sorely has needed a mobile outlet for our iOS friends. Got a suggestion, found a bug, or just want to voice some support? You can reach us at amaroq.feedback@gmail.com. Or hit up the dev, @eurasierboy on the mastodon.social instance. Happy tooting!");
     
-    if ([[DWSettingStore sharedStore] awooMode]) {
+    if ([DWSettingStore.sharedStore awooMode]) {
         textToDisplay = [textToDisplay awooString];
     }
     

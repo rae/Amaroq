@@ -41,7 +41,7 @@
     
     NSString *selectedDomain = [self.blockedUsers objectAtIndex:selectedIndex.row];
     
-    [[MSAppStore sharedStore] unblockMastodonInstance:selectedDomain withCompletion:^(BOOL success, NSError *error) {
+    [MSAppStore.sharedStore unblockMastodonInstance:selectedDomain withCompletion:^(BOOL success, NSError *error) {
         if (success) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -206,7 +206,7 @@
     [self.pageLoadingView startAnimating];
     
     if (self.mutes) {
-        [[MSUserStore sharedStore] getMutedUsersWithCompletion:^(BOOL success, NSArray *blockedUsers, NSString *nextPageUrl, NSError *error) {
+        [MSUserStore.sharedStore getMutedUsersWithCompletion:^(BOOL success, NSArray *blockedUsers, NSString *nextPageUrl, NSError *error) {
             if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {
                 UIRefreshControl *refreshControl = [self.tableView viewWithTag:9001];
                 [refreshControl endRefreshing];
@@ -228,7 +228,7 @@
     }
     else if (self.requests)
     {
-        [[MSUserStore sharedStore] getFollowRequestUsersWithCompletion:^(BOOL success, NSArray *requests, NSString *nextPageUrl, NSError *error) {
+        [MSUserStore.sharedStore getFollowRequestUsersWithCompletion:^(BOOL success, NSArray *requests, NSString *nextPageUrl, NSError *error) {
             if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {
                 UIRefreshControl *refreshControl = [self.tableView viewWithTag:9001];
                 [refreshControl endRefreshing];
@@ -250,7 +250,7 @@
     }
     else if (self.domains)
     {
-        [[MSAppStore sharedStore] getBlockedInstancesWithCompletion:^(BOOL success, NSArray *instances, NSString *nextPageUrl, NSError *error) {
+        [MSAppStore.sharedStore getBlockedInstancesWithCompletion:^(BOOL success, NSArray *instances, NSString *nextPageUrl, NSError *error) {
             if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {
                 UIRefreshControl *refreshControl = [self.tableView viewWithTag:9001];
                 [refreshControl endRefreshing];
@@ -272,7 +272,7 @@
     }
     else
     {
-        [[MSUserStore sharedStore] getBlockedUsersWithCompletion:^(BOOL success, NSArray *blockedUsers, NSString *nextPageUrl, NSError *error) {
+        [MSUserStore.sharedStore getBlockedUsersWithCompletion:^(BOOL success, NSArray *blockedUsers, NSString *nextPageUrl, NSError *error) {
             
             if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {
                 UIRefreshControl *refreshControl = [self.tableView viewWithTag:9001];

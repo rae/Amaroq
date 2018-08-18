@@ -94,7 +94,7 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
     if ([segue.identifier isEqualToString:@"ProfileSegue"]) {
         
         DWProfileViewController *destinationViewController = segue.destinationViewController;
-        destinationViewController.account = [[MSUserStore sharedStore] currentUser];
+        destinationViewController.account = [MSUserStore.sharedStore currentUser];
     }
     else if ([segue.identifier isEqualToString:@"FavoriteSegue"])
     {
@@ -150,12 +150,12 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
     switch (indexPath.row) {
         case DWMenuRowTypeProfile:
         {
-            if ([[MSUserStore sharedStore] currentUser]) {
+            if ([MSUserStore.sharedStore currentUser]) {
                 [self performSegueWithIdentifier:@"ProfileSegue" sender:[tableView cellForRowAtIndexPath:indexPath]];
             }
             else
             {
-                [[MSUserStore sharedStore] getCurrentUserWithCompletion:^(BOOL success, MSAccount *user, NSError *error) {
+                [MSUserStore.sharedStore getCurrentUserWithCompletion:^(BOOL success, MSAccount *user, NSError *error) {
                     if (success) {
                         [self performSegueWithIdentifier:@"ProfileSegue" sender:[tableView cellForRowAtIndexPath:indexPath]];
                     }
@@ -175,7 +175,7 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
             [self performSegueWithIdentifier:@"InstanceSegue" sender:[tableView cellForRowAtIndexPath:indexPath]];
             break;
         case DWMenuRowTypePreferences:
-            [[MSAuthStore sharedStore] requestPreferences];
+            [MSAuthStore.sharedStore requestPreferences];
             break;
         case DWMenuRowTypeAppSettings:
             [self performSegueWithIdentifier:@"AppSegue" sender:[tableView cellForRowAtIndexPath:indexPath]];
@@ -191,11 +191,11 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
             break;
         case DWMenuRowTypeInformation:
         {
-            [self openWebURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@about/more", [[MSAppStore sharedStore] base_url_string]]]];
+            [self openWebURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@about/more", [MSAppStore.sharedStore base_url_string]]]];
         }
             break;
         case DWMenuRowTypeLogout:
-            [[MSAuthStore sharedStore] logout];
+            [MSAuthStore.sharedStore logout];
             break;
         default:
             break;
@@ -228,9 +228,9 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
 {
     NSDictionary *menuItem = [self.menuItems objectAtIndex:indexPath.row];
     cell.titleImageView.image = nil;
-    cell.titleImageView.image = [menuItem objectForKey:DW_MENU_ITEM_IMAGE_KEY];
+    cell.titleImageView.image = menuItem[DW_MENU_ITEM_IMAGE_KEY];
     
-    cell.titleLabel.text = [menuItem objectForKey:DW_MENU_ITEM_TITLE_KEY];
+    cell.titleLabel.text = menuItem[DW_MENU_ITEM_TITLE_KEY];
     
     cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     cell.titleLabel.numberOfLines = 0;
@@ -241,14 +241,14 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
     cell.detailTitleLabel.textColor = DW_LINK_TINT_COLOR;
     
     if (indexPath.row == DWMenuRowTypeAppInformation) {
-        NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-        NSString *buildVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+        NSString *appVersion = NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"];
+        NSString *buildVersion = NSBundle.mainBundle.infoDictionary[@"CFBundleVersion"];
         
         cell.detailTitleLabel.text = [NSString stringWithFormat:@"v%@ (%@)", appVersion, buildVersion];
     }
     else if (indexPath.row == DWMenuRowTypeInstances)
     {
-        cell.detailTitleLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Currently logged into:", @"Currently logged into:"), [[MSAppStore sharedStore] instance]];
+        cell.detailTitleLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Currently logged into:", @"Currently logged into:"), [MSAppStore.sharedStore instance]];
     }
 }
 

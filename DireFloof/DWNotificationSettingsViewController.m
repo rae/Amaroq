@@ -95,16 +95,16 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
 {
     switch (indexPath.row) {
         case DWMenuRowTypeBoosts:
-            [[DWSettingStore sharedStore] setBoostNotifications:![[DWSettingStore sharedStore] boostNotifications]];
+            [DWSettingStore.sharedStore setBoostNotifications:![DWSettingStore.sharedStore boostNotifications]];
             break;
         case DWMenuRowTypeMentions:
-            [[DWSettingStore sharedStore] setMentionNotifications:![[DWSettingStore sharedStore] mentionNotifications]];
+            [DWSettingStore.sharedStore setMentionNotifications:![DWSettingStore.sharedStore mentionNotifications]];
             break;
         case DWMenuRowTypeFavorites:
-            [[DWSettingStore sharedStore] setFavoriteNotifications:![[DWSettingStore sharedStore] favoriteNotifications]];
+            [DWSettingStore.sharedStore setFavoriteNotifications:![DWSettingStore.sharedStore favoriteNotifications]];
             break;
         case DWMenuRowTypeFollowers:
-            [[DWSettingStore sharedStore] setNewFollowerNotifications:![[DWSettingStore sharedStore] newFollowerNotifications]];
+            [DWSettingStore.sharedStore setNewFollowerNotifications:![DWSettingStore.sharedStore newFollowerNotifications]];
             break;
         default:
             break;
@@ -112,8 +112,8 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
     
     [self.tableView reloadData];
     
-    [[DWNotificationStore sharedStore] stopNotificationRefresh];
-    [[DWNotificationStore sharedStore] registerForNotifications];
+    [DWNotificationStore.sharedStore stopNotificationRefresh];
+    [DWNotificationStore.sharedStore registerForNotifications];
 }
 
 
@@ -146,16 +146,16 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
     
     switch (indexPath.row) {
         case DWMenuRowTypeFollowers:
-            cell.accessoryType = [[DWSettingStore sharedStore] newFollowerNotifications] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = [DWSettingStore.sharedStore newFollowerNotifications] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             break;
         case DWMenuRowTypeFavorites:
-            cell.accessoryType = [[DWSettingStore sharedStore] favoriteNotifications] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = [DWSettingStore.sharedStore favoriteNotifications] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             break;
         case DWMenuRowTypeMentions:
-            cell.accessoryType = [[DWSettingStore sharedStore] mentionNotifications] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = [DWSettingStore.sharedStore mentionNotifications] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             break;
         case DWMenuRowTypeBoosts:
-            cell.accessoryType = [[DWSettingStore sharedStore] boostNotifications] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = [DWSettingStore.sharedStore boostNotifications] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             break;
         default:
             cell.accessoryType = UITableViewCellAccessoryNone;

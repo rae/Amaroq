@@ -109,19 +109,19 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
 {
     switch (indexPath.row) {
         case DWMenuRowTypePrivate:
-            [[DWSettingStore sharedStore] setAlwaysPrivate:![[DWSettingStore sharedStore] alwaysPrivate]];
+            [DWSettingStore.sharedStore setAlwaysPrivate:![DWSettingStore.sharedStore alwaysPrivate]];
             break;
         case DWMenuRowTypePublic:
-            [[DWSettingStore sharedStore] setAlwaysPublic:![[DWSettingStore sharedStore] alwaysPublic]];
+            [DWSettingStore.sharedStore setAlwaysPublic:![DWSettingStore.sharedStore alwaysPublic]];
             break;
         case DWMenuRowTypeAwoo:
-            [[DWSettingStore sharedStore] setAwooMode:![[DWSettingStore sharedStore] awooMode]];
+            [DWSettingStore.sharedStore setAwooMode:![DWSettingStore.sharedStore awooMode]];
             break;
         case DWMenuRowTypeGif:
-            [[DWSettingStore sharedStore] setDisableGifPlayback:![[DWSettingStore sharedStore] disableGifPlayback]];
+            [DWSettingStore.sharedStore setDisableGifPlayback:![DWSettingStore.sharedStore disableGifPlayback]];
             break;
         case DWMenuRowTypeCache:
-            [[DWSettingStore sharedStore] purgeCaches];
+            [DWSettingStore.sharedStore purgeCaches];
             break;
         case DWMenuRowTypeNotifications:
             [self performSegueWithIdentifier:@"NotificationSegue" sender:[tableView cellForRowAtIndexPath:indexPath]];
@@ -152,8 +152,8 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
 - (void)configureCell:(DWMenuTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *menuItem = [self.menuItems objectAtIndex:indexPath.row];
-    cell.titleImageView.image = [menuItem objectForKey:DW_MENU_ITEM_IMAGE_KEY];
-    cell.titleLabel.text = [menuItem objectForKey:DW_MENU_ITEM_TITLE_KEY];
+    cell.titleImageView.image = menuItem[DW_MENU_ITEM_IMAGE_KEY];
+    cell.titleLabel.text = menuItem[DW_MENU_ITEM_TITLE_KEY];
     
     cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     cell.titleLabel.numberOfLines = 0;
@@ -164,7 +164,7 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
     cell.detailTitleLabel.textColor = DW_LINK_TINT_COLOR;
     
     if (indexPath.row == DWMenuRowTypeCache) {
-        cell.detailTitleLabel.text = [[DWSettingStore sharedStore] cacheSizeString];
+        cell.detailTitleLabel.text = [DWSettingStore.sharedStore cacheSizeString];
     }
     else if (indexPath.row == DWMenuRowTypeNotifications)
     {
@@ -172,21 +172,21 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
     }
     else
     {
-        cell.detailTitleLabel.text = [menuItem objectForKey:DW_MENU_ITEM_SUB_KEY];
+        cell.detailTitleLabel.text = menuItem[DW_MENU_ITEM_SUB_KEY];
     }
     
     switch (indexPath.row) {
         case DWMenuRowTypePrivate:
-            cell.accessoryType = [[DWSettingStore sharedStore] alwaysPrivate] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = [DWSettingStore.sharedStore alwaysPrivate] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             break;
         case DWMenuRowTypePublic:
-            cell.accessoryType = [[DWSettingStore sharedStore] alwaysPublic] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = [DWSettingStore.sharedStore alwaysPublic] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             break;
         case DWMenuRowTypeAwoo:
-            cell.accessoryType = [[DWSettingStore sharedStore] awooMode] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = [DWSettingStore.sharedStore awooMode] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             break;
         case DWMenuRowTypeGif:
-            cell.accessoryType = [[DWSettingStore sharedStore] disableGifPlayback] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = [DWSettingStore.sharedStore disableGifPlayback] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             break;
         case DWMenuRowTypeNotifications:
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

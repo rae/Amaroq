@@ -55,7 +55,7 @@
 
 + (void)loadNextPage:(NSString *)nextPageUrl withCompletion:(void (^)(NSArray *, NSString *, NSError *))completion
 {
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:[nextPageUrl stringByReplacingOccurrencesOfString:[[MSAppStore sharedStore] base_api_url_string] withString:@""] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:[nextPageUrl stringByReplacingOccurrencesOfString:[MSAppStore.sharedStore base_api_url_string] withString:@""] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
@@ -143,14 +143,14 @@
             NSDictionary *availableInstance = [[self.availableInstances filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"MS_INSTANCE_KEY LIKE[cd] %@", self.instance]] firstObject];
             
             if (availableInstance) {
-                self.client_id = [availableInstance objectForKey:MS_CLIENT_ID_KEY];
-                self.client_secret = [availableInstance objectForKey:MS_CLIENT_SECRET_KEY];
+                self.client_id = availableInstance[MS_CLIENT_ID_KEY];
+                self.client_secret = availableInstance[MS_CLIENT_SECRET_KEY];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:self.client_id forKey:MS_CLIENT_ID_KEY];
                 [[NSUserDefaults standardUserDefaults] setObject:self.client_secret forKey:MS_CLIENT_SECRET_KEY];
             }
             
-            [[MSAuthStore sharedStore] setCredential:nil];
+            [MSAuthStore.sharedStore setCredential:nil];
         }
     }
     else
@@ -158,7 +158,7 @@
         AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[self base_api_url_string]];
         
         if (credential) {
-            [[MSAuthStore sharedStore] setCredential:nil];
+            [MSAuthStore.sharedStore setCredential:nil];
         }
         
         [AFOAuthCredential deleteCredentialWithIdentifier:[self base_api_url_string]];
@@ -194,10 +194,10 @@
         
         NSString *requestUrl = [NSString stringWithFormat:@"%@%@", self.base_api_url_string, @"apps"];
         
-        [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:params constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:params constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
-            self.client_id = [responseObject objectForKey:@"client_id"];
-            self.client_secret = [responseObject objectForKey:@"client_secret"];
+            self.client_id = responseObject[@"client_id"];
+            self.client_secret = responseObject[@"client_secret"];
             
             [[NSUserDefaults standardUserDefaults] setObject:self.client_id forKey:MS_CLIENT_ID_KEY];
             [[NSUserDefaults standardUserDefaults] setObject:self.client_secret forKey:MS_CLIENT_SECRET_KEY];

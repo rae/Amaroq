@@ -33,7 +33,7 @@
 
 + (void)loadNextPage:(NSString *)nextPageUrl withCompletion:(void (^)(NSArray *, NSString *, NSError *))completion
 {
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:[nextPageUrl stringByReplacingOccurrencesOfString:[[MSAppStore sharedStore] base_api_url_string] withString:@""] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:[nextPageUrl stringByReplacingOccurrencesOfString:[MSAppStore.sharedStore base_api_url_string] withString:@""] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
@@ -69,7 +69,7 @@
 
 - (void)getCurrentUserWithCompletion:(void (^)(BOOL, MSAccount *, NSError *))completion
 {
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:@"accounts/verify_credentials" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:@"accounts/verify_credentials" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         self.currentUser = [[MSAccount alloc] initWithParams:responseObject];
         
         [[NSUserDefaults standardUserDefaults] setObject:self.currentUser.acct forKey:MS_CURRENT_USER_KEY];
@@ -91,7 +91,7 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"accounts/%@", userId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         MSAccount *user = [[MSAccount alloc] initWithParams:responseObject];
         
@@ -110,7 +110,7 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"accounts/%@/followers", userId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
@@ -138,7 +138,7 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"accounts/%@/following", userId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
@@ -164,7 +164,7 @@
 
 - (void)getBlockedUsersWithCompletion:(void (^)(BOOL, NSArray *, NSString *, NSError *))completion
 {
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:@"blocks" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:@"blocks" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
@@ -191,7 +191,7 @@
 
 - (void)getMutedUsersWithCompletion:(void (^)(BOOL, NSArray *, NSString *, NSError *))completion
 {
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:@"mutes" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:@"mutes" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
@@ -220,7 +220,7 @@
 {
     NSDictionary *params = @{@"id":userIds};
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:@"accounts/relationships" parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:@"accounts/relationships" parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, [responseObject firstObject], nil);
         }
@@ -236,7 +236,7 @@
 {
     NSDictionary *params = @{@"q":query, @"limit": @(5)};
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:@"accounts/search" parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:@"accounts/search" parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSMutableArray *accounts = [@[] mutableCopy];
 
@@ -263,7 +263,7 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/reblogged_by", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSMutableArray *users = [@[] mutableCopy];
         
         for (NSDictionary *userJSON in responseObject) {
@@ -287,7 +287,7 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/favourited_by", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSMutableArray *users = [@[] mutableCopy];
         
         for (NSDictionary *userJSON in responseObject) {
@@ -311,7 +311,7 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"accounts/%@/follow", userId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -327,7 +327,7 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"accounts/%@/unfollow", userId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -343,7 +343,7 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"accounts/%@/block", userId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -359,7 +359,7 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"accounts/%@/unblock", userId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -375,7 +375,7 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"accounts/%@/mute", userId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -392,7 +392,7 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"accounts/%@/unmute", userId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -409,7 +409,7 @@
 {
     NSDictionary *params = @{@"uri": username};
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:@"follows" parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:@"follows" parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MSAccount *user = [[MSAccount alloc] initWithParams:responseObject];
         
         if (completion != nil) {
@@ -425,7 +425,7 @@
 
 - (void)getFollowRequestUsersWithCompletion:(void (^)(BOOL, NSArray *, NSString *, NSError *))completion
 {
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] GET:@"follow_requests" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:@"follow_requests" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
         
@@ -453,7 +453,7 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"follow_requests/%@/authorize", userId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -469,7 +469,7 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"follow_requests/%@/reject", userId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[[MSAppStore sharedStore] base_api_url_string]] POST:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
