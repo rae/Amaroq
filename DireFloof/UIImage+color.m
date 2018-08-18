@@ -15,12 +15,12 @@
 
 + (UIImage *)imageWithColor:(UIColor *)color
 {
-    CGFloat windowWidth = [UIApplication sharedApplication].keyWindow.bounds.size.width - 20.0f;
+    CGFloat windowWidth = UIApplication.sharedApplication.keyWindow.bounds.size.width - 20.0f;
     CGRect rect = CGRectMake(0.0f, 0.0f, windowWidth, windowWidth);
     UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextSetFillColorWithColor(context, color.CGColor);
     CGContextFillRect(context, rect);
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();

@@ -46,8 +46,8 @@
     
     self.title = NSLocalizedString(@"My instances", @"My instances");
     
-    [[NSNotificationCenter defaultCenter] addObserver:self.tableView selector:@selector(reloadData) name:UIContentSizeCategoryDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self.tableView selector:@selector(reloadData) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self.tableView selector:@selector(reloadData) name:UIContentSizeCategoryDidChangeNotification object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self.tableView selector:@selector(reloadData) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
 }
 
 
@@ -68,7 +68,7 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self.tableView];
+    [NSNotificationCenter.defaultCenter removeObserver:self.tableView];
 }
 
 /*
@@ -76,7 +76,7 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
+    // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
 }
 */
@@ -92,7 +92,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[MSAppStore.sharedStore availableInstances] count] + (tableView.isEditing ? 0 : 1);
+    return [MSAppStore.sharedStore.availableInstances count] + (tableView.isEditing ? 0 : 1);
 }
 
 
@@ -112,15 +112,15 @@
         return;
     }
     
-    if (indexPath.row >= [[MSAppStore.sharedStore availableInstances] count]) {
+    if (indexPath.row >= [MSAppStore.sharedStore.availableInstances count]) {
         [MSAuthStore.sharedStore requestAddInstanceAccount];
     }
     else
     {
-        NSDictionary *availableInstance = [[MSAppStore.sharedStore availableInstances] objectAtIndex:indexPath.row];
+        NSDictionary *availableInstance = [MSAppStore.sharedStore.availableInstances objectAtIndex:indexPath.row];
         
         [MSAuthStore.sharedStore switchToInstance:availableInstance[MS_INSTANCE_KEY] withCompletion:^(BOOL success) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
+            [NSNotificationCenter.defaultCenter postNotificationName:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
         }];
     }
     
@@ -129,13 +129,13 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row >= [[MSAppStore.sharedStore availableInstances] count] || !tableView.isEditing) {
+    if (indexPath.row >= [MSAppStore.sharedStore.availableInstances count] || !tableView.isEditing) {
         return NO;
     }
     
-    NSDictionary *availableInstance = [[MSAppStore.sharedStore availableInstances] objectAtIndex:indexPath.row];
+    NSDictionary *availableInstance = [MSAppStore.sharedStore.availableInstances objectAtIndex:indexPath.row];
     
-    return ![availableInstance[MS_INSTANCE_KEY] isEqualToString:[MSAppStore.sharedStore instance]];
+    return ![availableInstance[MS_INSTANCE_KEY] isEqualToString:MSAppStore.sharedStore.instance];
 }
 
 
@@ -149,7 +149,7 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
-        NSDictionary *availableInstance = [[MSAppStore.sharedStore availableInstances] objectAtIndex:indexPath.row];
+        NSDictionary *availableInstance = [MSAppStore.sharedStore.availableInstances objectAtIndex:indexPath.row];
 
         [MSAuthStore.sharedStore logoutOfInstance:availableInstance[MS_INSTANCE_KEY]];
         [self.tableView reloadData];
@@ -163,18 +163,18 @@
 {
     NSString *instanceItem = @"";
     
-    if (indexPath.row >= [[MSAppStore.sharedStore availableInstances] count]) {
+    if (indexPath.row >= [MSAppStore.sharedStore.availableInstances count]) {
         instanceItem = NSLocalizedString(@"Add instance", @"Add instance");
         
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     else
     {
-        NSDictionary *availableInstance = [[MSAppStore.sharedStore availableInstances] objectAtIndex:indexPath.row];
+        NSDictionary *availableInstance = [MSAppStore.sharedStore.availableInstances objectAtIndex:indexPath.row];
         
         instanceItem = availableInstance[MS_INSTANCE_KEY];
         
-        cell.accessoryType = [[MSAppStore.sharedStore instance] isEqualToString:instanceItem] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        cell.accessoryType = [MSAppStore.sharedStore.instance isEqualToString:instanceItem] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
     
     cell.titleImageView.image = nil;
@@ -184,7 +184,7 @@
     cell.detailTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     cell.detailTitleLabel.numberOfLines = 0;
     
-    cell.titleLabel.textColor = [UIColor whiteColor];
+    cell.titleLabel.textColor = UIColor.whiteColor;
 }
 
 

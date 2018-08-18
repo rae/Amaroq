@@ -71,8 +71,8 @@
             
             self.content = cleansed ? content : [content removeHTML];
             
-            if ([DWSettingStore.sharedStore awooMode]) {
-                self.content = [self.content awooString];
+            if (DWSettingStore.sharedStore.awooMode) {
+                self.content = self.content.awooString;
             }
         }
         
@@ -151,10 +151,10 @@
     
     if (self) {
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusFavorited:) name:DW_STATUS_FAVORITED_NOTIFICATION object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusUnfavorited:) name:DW_STATUS_UNFAVORITED_NOTIFICATION object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBoosted:) name:DW_STATUS_BOOSTED_NOTIFICATION object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusUnboosted:) name:DW_STATUS_UNBOOSTED_NOTIFICATION object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(statusFavorited:) name:DW_STATUS_FAVORITED_NOTIFICATION object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(statusUnfavorited:) name:DW_STATUS_UNFAVORITED_NOTIFICATION object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(statusBoosted:) name:DW_STATUS_BOOSTED_NOTIFICATION object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(statusUnboosted:) name:DW_STATUS_UNBOOSTED_NOTIFICATION object:nil];
 
     }
     
@@ -164,7 +164,7 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
 
@@ -187,7 +187,7 @@
     }
     
     if (self.account) {
-        params[@"account"] = [self.account toJSON];
+        params[@"account"] = self.account.toJSON;
     }
     
     if (self.in_reply_to_id) {
@@ -199,7 +199,7 @@
     }
     
     if (self.reblog) {
-        params[@"reblog"] = [self.reblog toJSON];
+        params[@"reblog"] = self.reblog.toJSON;
     }
     
     if (self.content) {
@@ -237,7 +237,7 @@
         NSMutableArray *mediaAttachmentsJSON = [@[] mutableCopy];
         
         for (MSMediaAttachment *mediaAttachment in self.media_attachments) {
-            [mediaAttachmentsJSON addObject:[mediaAttachment toJSON]];
+            [mediaAttachmentsJSON addObject:mediaAttachment.toJSON];
         }
         
         params[@"media_attachments"] = mediaAttachmentsJSON;
@@ -247,21 +247,21 @@
         NSMutableArray *mentionsJSON = [@[] mutableCopy];
         
         for (MSMention *mention in self.mentions) {
-            [mentionsJSON addObject:[mention toJSON]];
+            [mentionsJSON addObject:mention.toJSON];
         }
         
         params[@"mentions"] = mentionsJSON;
     }
     
     if (self.application) {
-        params[@"application"] = [self.application toJSON];
+        params[@"application"] = self.application.toJSON;
     }
     
     if (self.emojis) {
         NSMutableArray *emojisJSON = [@[] mutableCopy];
         
         for (MSEmoji *emoji in self.emojis) {
-            [emojisJSON addObject:[emoji toJSON]];
+            [emojisJSON addObject:emoji.toJSON];
         }
         
         params[@"emojis"] = emojisJSON;

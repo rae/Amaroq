@@ -69,9 +69,9 @@ IB_DESIGNABLE
 
 - (IBAction)timelineSwitchPressed:(id)sender
 {
-    [DWSettingStore.sharedStore setShowLocalTimeline:![DWSettingStore.sharedStore showLocalTimeline]];
+    [DWSettingStore.sharedStore setShowLocalTimeline:!DWSettingStore.sharedStore.showLocalTimeline];
     
-    if ([DWSettingStore.sharedStore showLocalTimeline]) {
+    if (DWSettingStore.sharedStore.showLocalTimeline) {
         self.publicTimelineSwitch.image = [UIImage imageNamed:@"PublicIcon"];
         self.publicTimelineSwitch.accessibilityLabel = NSLocalizedString(@"Federated timeline", @"Federated timeline");
         self.publicTimelineNavigationItem.title = NSLocalizedString(@"Local", @"Local");
@@ -83,8 +83,8 @@ IB_DESIGNABLE
         self.publicTimelineNavigationItem.title = NSLocalizedString(@"Federated", @"Federated");
     }
     
-    [self.navigationController.tabBarItem setImage:[DWSettingStore.sharedStore showLocalTimeline] ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
-    [self.navigationController.tabBarItem setSelectedImage:[DWSettingStore.sharedStore showLocalTimeline] ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
+    [self.navigationController.tabBarItem setImage:DWSettingStore.sharedStore.showLocalTimeline ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
+    [self.navigationController.tabBarItem setSelectedImage:DWSettingStore.sharedStore.showLocalTimeline ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
     
     [self clearData];
     [self configureData];
@@ -96,15 +96,15 @@ IB_DESIGNABLE
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.cachedEstimatedHeights = [NSMutableDictionary dictionary];
+    self.cachedEstimatedHeights = NSMutableDictionary.dictionary;
     
     [self configureViews];
     [self configureData];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearData) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCleanupNotification:) name:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adjustFonts) name:UIContentSizeCategoryDidChangeNotification object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(clearData) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(refreshData) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didReceiveCleanupNotification:) name:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(adjustFonts) name:UIContentSizeCategoryDidChangeNotification object:nil];
 }
 
 
@@ -141,17 +141,17 @@ IB_DESIGNABLE
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? UIInterfaceOrientationMaskPortrait : [topController supportedInterfaceOrientations];
+    return topController == self ? UIInterfaceOrientationMaskPortrait : topController.supportedInterfaceOrientations;
 }
 
 
 - (BOOL)shouldAutorotate
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? NO : [topController shouldAutorotate];
+    return topController == self ? NO : topController.shouldAutorotate;
 }
 
 
@@ -170,7 +170,7 @@ IB_DESIGNABLE
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
 
@@ -178,7 +178,7 @@ IB_DESIGNABLE
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
+    // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
     
     if ([segue.identifier isEqualToString:@"ComposeSegue"]) {
@@ -186,7 +186,7 @@ IB_DESIGNABLE
         DWComposeViewController *destinationController = segue.destinationViewController;
         destinationController.postCompleteBlock = ^(BOOL success) {
             
-            if (success && [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
+            if (success && [self.tableView.indexPathsForVisibleRows containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
                 [self refreshData];
             }
             
@@ -206,7 +206,7 @@ IB_DESIGNABLE
         destinationController.replyToStatus = selectedStatus;
         destinationController.postCompleteBlock = ^(BOOL success) {
             
-            if (success && [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
+            if (success && [self.tableView.indexPathsForVisibleRows containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
                 [self refreshData];
             }
             
@@ -266,7 +266,7 @@ IB_DESIGNABLE
         destinationController.mentionedUser = sender;
         destinationController.postCompleteBlock = ^(BOOL success) {
             
-            if (success && [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
+            if (success && [self.tableView.indexPathsForVisibleRows containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
                 [self refreshData];
             }
             
@@ -333,7 +333,7 @@ IB_DESIGNABLE
             cell.delegate = self;
             cell.accessibilityCustomActions = nil;
             
-            NSString *statusId = [status._id copy];
+            NSString *statusId = status._id.copy;
             [DWAccessibilityAction accessibilityActionsForStatus:status atIndexPath:indexPath withTarget:self andSelector:@selector(cellAccessibilityActionSelected:) withCompletion:^(MSStatus *status, NSArray *actions) {
                 if ([status._id isEqualToString:statusId]) {
                     cell.accessibilityCustomActions = actions;
@@ -350,7 +350,7 @@ IB_DESIGNABLE
             cell.delegate = self;
             cell.accessibilityCustomActions = nil;
             
-            NSString *statusId = [status._id copy];
+            NSString *statusId = status._id.copy;
             [DWAccessibilityAction accessibilityActionsForStatus:status atIndexPath:indexPath withTarget:self andSelector:@selector(cellAccessibilityActionSelected:) withCompletion:^(MSStatus *status, NSArray *actions) {
                 if ([status._id isEqualToString:statusId]) {
                     cell.accessibilityCustomActions = actions;
@@ -368,7 +368,7 @@ IB_DESIGNABLE
             cell.delegate = self;
             cell.accessibilityCustomActions = nil;
             
-            NSString *statusId = [status._id copy];
+            NSString *statusId = status._id.copy;
             [DWAccessibilityAction accessibilityActionsForStatus:status atIndexPath:indexPath withTarget:self andSelector:@selector(cellAccessibilityActionSelected:) withCompletion:^(MSStatus *status, NSArray *actions) {
                 if ([status._id isEqualToString:statusId]) {
                     cell.accessibilityCustomActions = actions;
@@ -385,7 +385,7 @@ IB_DESIGNABLE
             cell.delegate = self;
             cell.accessibilityCustomActions = nil;
             
-            NSString *statusId = [status._id copy];
+            NSString *statusId = status._id.copy;
             [DWAccessibilityAction accessibilityActionsForStatus:status atIndexPath:indexPath withTarget:self andSelector:@selector(cellAccessibilityActionSelected:) withCompletion:^(MSStatus *status, NSArray *actions) {
                 if ([status._id isEqualToString:statusId]) {
                     cell.accessibilityCustomActions = actions;
@@ -410,7 +410,7 @@ IB_DESIGNABLE
             cell.delegate = self;
             cell.accessibilityCustomActions = nil;
             
-            NSString *statusId = [status._id copy];
+            NSString *statusId = status._id.copy;
             [DWAccessibilityAction accessibilityActionsForStatus:status atIndexPath:indexPath withTarget:self andSelector:@selector(cellAccessibilityActionSelected:) withCompletion:^(MSStatus *status, NSArray *actions) {
                 if ([status._id isEqualToString:statusId]) {
                     cell.accessibilityCustomActions = actions;
@@ -427,7 +427,7 @@ IB_DESIGNABLE
             cell.delegate = self;
             cell.accessibilityCustomActions = nil;
             
-            NSString *statusId = [status._id copy];
+            NSString *statusId = status._id.copy;
             [DWAccessibilityAction accessibilityActionsForStatus:status atIndexPath:indexPath withTarget:self andSelector:@selector(cellAccessibilityActionSelected:) withCompletion:^(MSStatus *status, NSArray *actions) {
                 if ([status._id isEqualToString:statusId]) {
                     cell.accessibilityCustomActions = actions;
@@ -555,7 +555,7 @@ IB_DESIGNABLE
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.tintColor = [UIColor whiteColor];
+    refreshControl.tintColor = UIColor.whiteColor;
     refreshControl.tag = 9001;
     [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     
@@ -571,7 +571,7 @@ IB_DESIGNABLE
         self.title = [NSString stringWithFormat:@"#%@", self.hashtag];
     }
     
-    if ([DWSettingStore.sharedStore showLocalTimeline]) {
+    if (DWSettingStore.sharedStore.showLocalTimeline) {
         self.publicTimelineSwitch.image = [UIImage imageNamed:@"PublicIcon"];
         self.publicTimelineSwitch.accessibilityLabel = NSLocalizedString(@"Federated timeline", @"Federated timeline");
         self.publicTimelineNavigationItem.title = NSLocalizedString(@"Local", @"Local");
@@ -591,7 +591,7 @@ IB_DESIGNABLE
         self.closeButton.accessibilityLabel = NSLocalizedString(@"Close", @"Close");
     }
     
-    [self.scrollToTopButton setTitle:[DWSettingStore.sharedStore awooMode] ? NSLocalizedString(@"See new awoos", @"See new awoos") : NSLocalizedString(@"See new toots", @"See new toots") forState:UIControlStateNormal];
+    [self.scrollToTopButton setTitle:DWSettingStore.sharedStore.awooMode ? NSLocalizedString(@"See new awoos", @"See new awoos") : NSLocalizedString(@"See new toots", @"See new toots") forState:UIControlStateNormal];
 }
 
 
@@ -720,7 +720,7 @@ IB_DESIGNABLE
     }
     else
     {
-        [MSTimelineStore.sharedStore getTimelineForTimelineType:(self.isPublic ? ([DWSettingStore.sharedStore showLocalTimeline] ? MSTimelineTypeLocal : MSTimelineTypePublic) : MSTimelineTypeHome) withCompletion:^(BOOL success, MSTimeline *timeline, NSError *error) {
+        [MSTimelineStore.sharedStore getTimelineForTimelineType:(self.isPublic ? (DWSettingStore.sharedStore.showLocalTimeline ? MSTimelineTypeLocal : MSTimelineTypePublic) : MSTimelineTypeHome) withCompletion:^(BOOL success, MSTimeline *timeline, NSError *error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {
@@ -847,11 +847,11 @@ IB_DESIGNABLE
     switch (sender.actionType) {
         case DWAccessibilityActionTypeOpenHashtag:
             {
-                DWTimelineViewController *hashtagController = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"HashtagController"];
+                DWTimelineViewController *hashtagController = [[UIStoryboard storyboardWithName:@"Main" bundle:NSBundle.mainBundle] instantiateViewControllerWithIdentifier:@"HashtagController"];
                 hashtagController.hashtag = sender.hashtag;
                 DWNavigationViewController *navController = [[DWNavigationViewController alloc] initWithRootViewController:hashtagController];
                 
-                [[[UIApplication sharedApplication] topController] presentViewController:navController animated:YES completion:nil];
+                [[UIApplication.sharedApplication topController] presentViewController:navController animated:YES completion:nil];
             }
             
             return YES;

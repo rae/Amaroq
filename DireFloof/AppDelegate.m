@@ -74,8 +74,8 @@
     [DWNotificationStore.sharedStore registerForNotifications];
     
     // Kicks the login screen if we're resuming from suspension
-    if ([[UIApplication.sharedApplication topController] isKindOfClass:[DWLoginViewController class]]) {
-        [[UIApplication.sharedApplication topController] viewDidAppear:NO];
+    if ([UIApplication.sharedApplication.topController isKindOfClass:[DWLoginViewController class]]) {
+        [UIApplication.sharedApplication.topController viewDidAppear:NO];
     }
 }
 
@@ -99,7 +99,7 @@
     // With swizzling disabled you must set the APNs token here.
     
     [FIRMessaging.messaging setAPNSToken:deviceToken type:FIRMessagingAPNSTokenTypeUnknown];
-    [MSAuthStore.sharedStore registerForRemoteNotificationsWithToken:[[FIRInstanceID instanceID] token]];
+    [MSAuthStore.sharedStore registerForRemoteNotificationsWithToken:[FIRInstanceID.instanceID token]];
 }
 
 

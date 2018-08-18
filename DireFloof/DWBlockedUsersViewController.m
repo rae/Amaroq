@@ -68,10 +68,10 @@
     [self configureViews];
     [self configureData];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self.tableView selector:@selector(reloadData) name:UIContentSizeCategoryDidChangeNotification object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self.tableView selector:@selector(reloadData) name:UIContentSizeCategoryDidChangeNotification object:nil];
     
     if (self.requests) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestRespondedNotification:) name:DW_DID_ANSWER_FOLLOW_REQUEST_NOTIFICATION object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(requestRespondedNotification:) name:DW_DID_ANSWER_FOLLOW_REQUEST_NOTIFICATION object:nil];
     }
 }
 
@@ -92,8 +92,8 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self.tableView];
+    [NSNotificationCenter.defaultCenter removeObserver:self];
+    [NSNotificationCenter.defaultCenter removeObserver:self.tableView];
 }
 
 
@@ -101,7 +101,7 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
+    // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
     
     if ([segue.identifier isEqualToString:@"ProfileSegue"])
@@ -160,7 +160,7 @@
 - (void)requestRespondedNotification:(NSNotification *)notification
 {
     NSIndexPath *selectedIndex = [self.tableView indexPathForCell:notification.object];
-    NSMutableArray *mutableBlockedUsers = [self.blockedUsers mutableCopy];
+    NSMutableArray *mutableBlockedUsers = self.blockedUsers.mutableCopy;
     [mutableBlockedUsers removeObjectAtIndex:selectedIndex.row];
     self.blockedUsers = mutableBlockedUsers;
     [self.tableView reloadData];
@@ -187,7 +187,7 @@
     self.tableView.estimatedRowHeight = 96.0f;
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.tintColor = [UIColor whiteColor];
+    refreshControl.tintColor = UIColor.whiteColor;
     refreshControl.tag = 9001;
     [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     
@@ -379,7 +379,7 @@
     
     cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     cell.titleLabel.numberOfLines = 0;
-    cell.titleLabel.textColor = [UIColor whiteColor];
+    cell.titleLabel.textColor = UIColor.whiteColor;
     
     cell.titleLabel.text = domain;
 

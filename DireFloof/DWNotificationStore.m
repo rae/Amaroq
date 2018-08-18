@@ -48,11 +48,11 @@
     if (self) {
         
 #if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
-        self.notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+        self.notificationCenter = UNUserNotificationCenter.currentNotificationCenter;
         self.notificationCenter.delegate = self;
 #endif
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tokenRefreshNotification:) name:kFIRInstanceIDTokenRefreshNotification object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(tokenRefreshNotification:) name:kFIRInstanceIDTokenRefreshNotification object:nil];
     }
     
     return self;
@@ -61,7 +61,7 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
 
@@ -80,7 +80,7 @@
         (UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge);
         UIUserNotificationSettings *settings =
         [UIUserNotificationSettings settingsForTypes:allNotificationTypes categories:nil];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        [UIApplication.sharedApplication registerUserNotificationSettings:settings];
     } else {
         // iOS 10 or later
 #if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
@@ -89,26 +89,26 @@
         }];
         
         // For iOS 10 data message (sent via FCM)
-        [FIRMessaging messaging].delegate = self;
+        FIRMessaging.messaging.delegate = self;
 #endif
     }
     
     // If we're already registered for whatever reason, we won't hit our delegate, but we also know we already have a token. Use it and treat the app as already registered - because it is.
-    if ([[UIApplication sharedApplication] isRegisteredForRemoteNotifications]) {
+    if ([UIApplication.sharedApplication isRegisteredForRemoteNotifications]) {
         [self connectToFcm];
         
-        [MSAuthStore.sharedStore registerForRemoteNotificationsWithToken:[[FIRInstanceID instanceID] token]];
+        [MSAuthStore.sharedStore registerForRemoteNotificationsWithToken:[FIRInstanceID.instanceID token]];
     }
     else
     {
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
+        [UIApplication.sharedApplication registerForRemoteNotifications];
     }
 }
 
 
 - (void)checkForNotificationsWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    if (![MSAuthStore.sharedStore isLoggedIn]) {
+    if (!MSAuthStore.sharedStore.isLoggedIn) {
         // If we aren't logged in we're in an immediate failure
         if (completionHandler != nil) {
             completionHandler(UIBackgroundFetchResultFailed);
@@ -117,15 +117,15 @@
         return;
     }
     
-    NSString *sinceId = [[NSUserDefaults standardUserDefaults] objectForKey:MS_LAST_NOTIFICATION_ID_KEY];
-    NSDate *lastBackgroundFetch = [[NSUserDefaults standardUserDefaults] objectForKey:MS_LAST_BACKGROUND_FETCH_KEY];
+    NSString *sinceId = [NSUserDefaults.standardUserDefaults objectForKey:MS_LAST_NOTIFICATION_ID_KEY];
+    NSDate *lastBackgroundFetch = [NSUserDefaults.standardUserDefaults objectForKey:MS_LAST_BACKGROUND_FETCH_KEY];
     
     if (!sinceId && self.notificationTimeline) {
-        sinceId = [[self.notificationTimeline.statuses firstObject] _id];
+        sinceId = [self.notificationTimeline.statuses.firstObject _id];
     }
     
     if (lastBackgroundFetch) {
-        if (self.fetchingNotifications && fabs([lastBackgroundFetch timeIntervalSinceNow]) > 60) {
+        if (self.fetchingNotifications && fabs(lastBackgroundFetch.timeIntervalSinceNow) > 60) {
             self.fetchingNotifications = NO;
         }
     }
@@ -148,8 +148,8 @@
         [MSNotificationStore.sharedStore getNotificationsSinceId:sinceId withCompletion:^(BOOL success, MSTimeline *notifications, NSError *error) {
             
             self.fetchingNotifications = NO;
-            [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:MS_LAST_BACKGROUND_FETCH_KEY];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            [NSUserDefaults.standardUserDefaults setObject:NSDate.date forKey:MS_LAST_BACKGROUND_FETCH_KEY];
+            [NSUserDefaults.standardUserDefaults synchronize];
             
             if (success) {
                 
@@ -158,9 +158,9 @@
                 if (notifications.statuses.count) {
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [[NSNotificationCenter defaultCenter] postNotificationName:DW_NEEDS_REFRESH_NOTIFICATION object:nil];
+                        [NSNotificationCenter.defaultCenter postNotificationName:DW_NEEDS_REFRESH_NOTIFICATION object:nil];
 
-                        if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive && completionHandler != nil) {
+                        if ([UIApplication.sharedApplication applicationState] != UIApplicationStateActive && completionHandler != nil) {
                             [self queuePendingNotifications:notifications withCompletionHandler:completionHandler];
                         }
                         else if (self.notificationBadge)
@@ -258,7 +258,7 @@
     // Connect to FCM since connection may have failed when attempted before having a token.
     [self connectToFcm];
     
-    [MSAuthStore.sharedStore registerForRemoteNotificationsWithToken:[[FIRInstanceID instanceID] token]];
+    [MSAuthStore.sharedStore registerForRemoteNotificationsWithToken:[FIRInstanceID.instanceID token]];
 }
 
 
@@ -276,7 +276,7 @@
     else
     {
         // Personalized notification since there's only one
-        MSNotification *notification = [notifications.statuses firstObject];
+        MSNotification *notification = notifications.statuses.firstObject;
         
         title = notification.account.display_name.length ? notification.account.display_name : notification.account.username;
         
@@ -325,7 +325,7 @@
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {
         UILocalNotification *localNotification = [[UILocalNotification alloc] init];
         localNotification.soundName = UILocalNotificationDefaultSoundName;
-        localNotification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + notifications.statuses.count;
+        localNotification.applicationIconBadgeNumber = UIApplication.sharedApplication.applicationIconBadgeNumber + notifications.statuses.count;
         
         if (title) {
             localNotification.alertTitle = title;
@@ -335,7 +335,7 @@
             localNotification.alertBody = title;
         }
         
-        [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+        [UIApplication.sharedApplication presentLocalNotificationNow:localNotification];
         if (completionHandler != nil) {
             completionHandler(UIBackgroundFetchResultNewData);
         }
@@ -343,8 +343,8 @@
     else
     {
         UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-        content.sound = [UNNotificationSound defaultSound];
-        content.badge = @([UIApplication sharedApplication].applicationIconBadgeNumber + notifications.statuses.count);
+        content.sound = UNNotificationSound.defaultSound;
+        content.badge = @(UIApplication.sharedApplication.applicationIconBadgeNumber + notifications.statuses.count);
         
         if (title) {
             content.title = title;
@@ -369,13 +369,13 @@
 - (void)connectToFcm
 {
     // Won't connect since there is no token
-    if (![[FIRInstanceID instanceID] token]) {
+    if (![FIRInstanceID.instanceID token]) {
         return;
     }
     
     // Disconnect previous FCM connection if it exists.
-    [[FIRMessaging messaging] setShouldEstablishDirectChannel:NO];
-    [[FIRMessaging messaging] setShouldEstablishDirectChannel:YES];
+    [FIRMessaging.messaging setShouldEstablishDirectChannel:NO];
+    [FIRMessaging.messaging setShouldEstablishDirectChannel:YES];
 }
 
 @end

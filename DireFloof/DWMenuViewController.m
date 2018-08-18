@@ -59,8 +59,8 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
     self.tableView.estimatedRowHeight = self.tableView.rowHeight;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self.tableView selector:@selector(reloadData) name:UIContentSizeCategoryDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self.tableView selector:@selector(reloadData) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self.tableView selector:@selector(reloadData) name:UIContentSizeCategoryDidChangeNotification object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self.tableView selector:@selector(reloadData) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
 }
 
 
@@ -80,7 +80,7 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self.tableView];
+    [NSNotificationCenter.defaultCenter removeObserver:self.tableView];
 }
 
 
@@ -88,13 +88,13 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
+    // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
     
     if ([segue.identifier isEqualToString:@"ProfileSegue"]) {
         
         DWProfileViewController *destinationViewController = segue.destinationViewController;
-        destinationViewController.account = [MSUserStore.sharedStore currentUser];
+        destinationViewController.account = MSUserStore.sharedStore.currentUser;
     }
     else if ([segue.identifier isEqualToString:@"FavoriteSegue"])
     {
@@ -150,7 +150,7 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
     switch (indexPath.row) {
         case DWMenuRowTypeProfile:
         {
-            if ([MSUserStore.sharedStore currentUser]) {
+            if (MSUserStore.sharedStore.currentUser) {
                 [self performSegueWithIdentifier:@"ProfileSegue" sender:[tableView cellForRowAtIndexPath:indexPath]];
             }
             else
@@ -191,7 +191,7 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
             break;
         case DWMenuRowTypeInformation:
         {
-            [self openWebURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@about/more", [MSAppStore.sharedStore base_url_string]]]];
+            [self openWebURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@about/more", MSAppStore.sharedStore.base_url_string]]];
         }
             break;
         case DWMenuRowTypeLogout:
@@ -237,7 +237,7 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
     cell.detailTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     cell.detailTitleLabel.numberOfLines = 0;
 
-    cell.titleLabel.textColor = [UIColor whiteColor];
+    cell.titleLabel.textColor = UIColor.whiteColor;
     cell.detailTitleLabel.textColor = DW_LINK_TINT_COLOR;
     
     if (indexPath.row == DWMenuRowTypeAppInformation) {
@@ -248,7 +248,7 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
     }
     else if (indexPath.row == DWMenuRowTypeInstances)
     {
-        cell.detailTitleLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Currently logged into:", @"Currently logged into:"), [MSAppStore.sharedStore instance]];
+        cell.detailTitleLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Currently logged into:", @"Currently logged into:"), MSAppStore.sharedStore.instance];
     }
 }
 

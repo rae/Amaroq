@@ -39,8 +39,8 @@
 
 - (BOOL)isLoggedIn
 {
-    if (!self.credential && [MSAppStore.sharedStore isRegistered]) {
-        AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[MSAppStore.sharedStore base_api_url_string]];
+    if (!self.credential && MSAppStore.sharedStore.isRegistered) {
+        AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:MSAppStore.sharedStore.base_api_url_string];
         
         if (credential) {
             self.credential = credential;
@@ -74,23 +74,23 @@
         
         [MSUserStore.sharedStore getCurrentUserWithCompletion:^(BOOL success, MSAccount *user, NSError *error) {
             if (completion != nil) {
-                completion([self isLoggedIn]);
+                completion(self.isLoggedIn);
             }
         }];
         
     }
     else
     {
-        if ([MSAppStore.sharedStore isRegistered]) {
+        if (MSAppStore.sharedStore.isRegistered) {
             
-            AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[MSAppStore.sharedStore base_api_url_string]];
+            AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:MSAppStore.sharedStore.base_api_url_string];
             
             if (credential) {
                 self.credential = credential;
                 
                 [MSUserStore.sharedStore getCurrentUserWithCompletion:^(BOOL success, MSAccount *user, NSError *error) {
                     if (completion != nil) {
-                        completion([self isLoggedIn]);
+                        completion(self.isLoggedIn);
                     }
                 }];
             }
@@ -124,28 +124,28 @@
 
 - (void)registerForRemoteNotificationsWithToken:(NSString *)token
 {
-    if (!token || ![self isLoggedIn]) {
+    if (!token || !self.isLoggedIn) {
         return;
     }
     
-    NSDictionary *params = @{@"instance_url": [MSAppStore.sharedStore base_url_string],
+    NSDictionary *params = @{@"instance_url": MSAppStore.sharedStore.base_url_string,
                              @"access_token": self.credential.accessToken,
                              @"device_token": token,
-                             @"followers": @([DWSettingStore.sharedStore newFollowerNotifications]),
-                             @"favorites": @([DWSettingStore.sharedStore favoriteNotifications]),
-                             @"mentions": @([DWSettingStore.sharedStore mentionNotifications]),
-                             @"boosts": @([DWSettingStore.sharedStore boostNotifications])
+                             @"followers": @(DWSettingStore.sharedStore.newFollowerNotifications),
+                             @"favorites": @(DWSettingStore.sharedStore.favoriteNotifications),
+                             @"mentions": @(DWSettingStore.sharedStore.mentionNotifications),
+                             @"boosts": @(DWSettingStore.sharedStore.boostNotifications)
                              };
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    AFHTTPSessionManager *manager = AFHTTPSessionManager.manager;
+    manager.responseSerializer = AFHTTPResponseSerializer.serializer;
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
 
     [manager POST:[NSString stringWithFormat:@"%@register", MS_APNS_URL_STRING] parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //NSLog(@"Registered for APNS!");
         
-        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:MS_LAST_APNS_REFRESH_KEY];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [NSUserDefaults.standardUserDefaults setObject:NSDate.date forKey:MS_LAST_APNS_REFRESH_KEY];
+        [NSUserDefaults.standardUserDefaults synchronize];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         //NSLog(@"Failed to register for APNS!");
@@ -155,15 +155,15 @@
 
 - (void)unregisterForRemoteNotifications
 {
-    if (![MSAppStore.sharedStore base_url_string] || !self.credential.accessToken) {
+    if (!MSAppStore.sharedStore.base_url_string || !self.credential.accessToken) {
         return;
     }
     
-    NSDictionary *params = @{@"instance_url": [MSAppStore.sharedStore base_url_string],
+    NSDictionary *params = @{@"instance_url": MSAppStore.sharedStore.base_url_string,
                              @"access_token": self.credential.accessToken};
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    AFHTTPSessionManager *manager = AFHTTPSessionManager.manager;
+    manager.responseSerializer = AFHTTPResponseSerializer.serializer;
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
     
     [manager POST:[NSString stringWithFormat:@"%@unregister", MS_APNS_URL_STRING] parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -176,13 +176,13 @@
 
 - (void)requestEditProfile
 {
-    [[[UIApplication sharedApplication] topController] openWebURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@settings/profile", [MSAppStore.sharedStore base_url_string]]]];
+    [[UIApplication.sharedApplication topController] openWebURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@settings/profile", MSAppStore.sharedStore.base_url_string]]];
 }
 
 
 - (void)requestPreferences
 {
-    [[[UIApplication sharedApplication] topController] openWebURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@settings/preferences", [MSAppStore.sharedStore base_url_string]]]];
+    [[UIApplication.sharedApplication topController] openWebURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@settings/preferences", MSAppStore.sharedStore.base_url_string]]];
 }
 
 
@@ -190,19 +190,19 @@
 {
     [DWNotificationStore.sharedStore stopNotificationRefresh];
 
-    [[NSURLSession sharedSession] resetWithCompletionHandler:^{
+    [NSURLSession.sharedSession resetWithCompletionHandler:^{
         
         self.credential = nil;
-        [AFOAuthCredential deleteCredentialWithIdentifier:[MSAppStore.sharedStore base_api_url_string]];
-        [[[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] requestSerializer] setAuthorizationHeaderFieldWithCredential:nil];
+        [AFOAuthCredential deleteCredentialWithIdentifier:MSAppStore.sharedStore.base_api_url_string];
+        [[[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] requestSerializer] setAuthorizationHeaderFieldWithCredential:nil];
         
-        for (NSDictionary *instance in [MSAppStore.sharedStore availableInstances]) {
+        for (NSDictionary *instance in MSAppStore.sharedStore.availableInstances) {
             [AFOAuthCredential deleteCredentialWithIdentifier:instance[MS_BASE_API_URL_STRING_KEY]];
             [MSAppStore.sharedStore removeMastodonInstance:instance[MS_INSTANCE_KEY]];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[[[UIApplication sharedApplication] keyWindow] rootViewController] dismissViewControllerAnimated:YES completion:nil];
+            [[[UIApplication.sharedApplication keyWindow] rootViewController] dismissViewControllerAnimated:YES completion:nil];
         });
     }];
 }
@@ -210,18 +210,18 @@
 
 - (void)logoutOfInstance:(NSString *)instance
 {
-    NSDictionary *instanceToRemove = [[[MSAppStore.sharedStore availableInstances] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"MS_INSTANCE_KEY LIKE[cd] %@", instance]] firstObject];
+    NSDictionary *instanceToRemove = [[MSAppStore.sharedStore.availableInstances filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"MS_INSTANCE_KEY LIKE[cd] %@", instance]] firstObject];
     
     if (instanceToRemove) {
         
-        NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-        for (NSHTTPCookie *cookie in [storage cookies]) {
+        NSHTTPCookieStorage *storage = NSHTTPCookieStorage.sharedHTTPCookieStorage;
+        for (NSHTTPCookie *cookie in storage.cookies) {
             
             if ([cookie.domain isEqualToString:instance]) {
                 [storage deleteCookie:cookie];
             }
         }
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [NSUserDefaults.standardUserDefaults synchronize];
         
         [AFOAuthCredential deleteCredentialWithIdentifier:instanceToRemove[MS_BASE_API_URL_STRING_KEY]];
         [[[MSAPIClient sharedClientWithBaseAPI:instanceToRemove[MS_BASE_API_URL_STRING_KEY]] requestSerializer] setAuthorizationHeaderFieldWithCredential:nil];
@@ -232,14 +232,14 @@
 
 - (void)switchToInstance:(NSString *)instance withCompletion:(void (^)(BOOL))completion
 {
-    [DWNotificationStore.sharedStore stopNotificationRefresh];
+    DWNotificationStore.sharedStore.stopNotificationRefresh;
     
     self.credential = nil;
-    [[[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] requestSerializer] setAuthorizationHeaderFieldWithCredential:nil];
+    [[[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] requestSerializer] setAuthorizationHeaderFieldWithCredential:nil];
 
     [MSAppStore.sharedStore setMastodonInstance:instance];
     
-    if ([self isLoggedIn]) {
+    if (self.isLoggedIn) {
         
         [DWNotificationStore.sharedStore registerForNotifications];
         
@@ -265,13 +265,13 @@
 
 - (void)requestAddInstanceAccount
 {
-    DWLoginViewController *loginController = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateInitialViewController];
+    DWLoginViewController *loginController = [[UIStoryboard storyboardWithName:@"Main" bundle:NSBundle.mainBundle] instantiateInitialViewController];
     loginController.addAccount = YES;
     loginController.modalPresentationStyle = UIModalPresentationOverFullScreen;
     loginController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
     [DWNotificationStore.sharedStore stopNotificationRefresh];
-    [[[UIApplication sharedApplication] topController] presentViewController:loginController animated:YES completion:nil];
+    [[UIApplication.sharedApplication topController] presentViewController:loginController animated:YES completion:nil];
 }
 
 
@@ -280,12 +280,12 @@
 - (void)didAuthorized:(NSDictionary *)dictResponse {
     
     self.credential = [[AFOAuthCredential alloc] initWithOAuthToken:dictResponse[kOAuth_AccessToken] tokenType:@"Bearer"];
-    [self.credential setExpiration:[NSDate distantFuture]];
-    [AFOAuthCredential storeCredential:self.credential withIdentifier:[MSAppStore.sharedStore base_api_url_string]];
+    [self.credential setExpiration:NSDate.distantFuture];
+    [AFOAuthCredential storeCredential:self.credential withIdentifier:MSAppStore.sharedStore.base_api_url_string];
     
     if (self.loginBlock != nil) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            self.loginBlock([self isLoggedIn]);
+            self.loginBlock(self.isLoggedIn);
         });
     }
 }
@@ -303,16 +303,16 @@
     dictService[kOAuth_Callback] = @"amaroq://authorize";
     dictService[kOAuth_Scope] = @"read write follow";
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:DW_DID_CANCEL_LOGIN_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter postNotificationName:DW_DID_CANCEL_LOGIN_NOTIFICATION object:nil];
     
     OAuthRequestController *oauthController = [[OAuthRequestController alloc] initWithDict:dictService];
     
-    CGRect frame = [[[[UIApplication sharedApplication] topController] view] frame];
+    CGRect frame = [[[UIApplication.sharedApplication topController] view] frame];
     frame.origin.y = 20.0f;
     
     oauthController.view.frame = frame;
     oauthController.delegate = self;
-    [[[UIApplication sharedApplication] topController] presentViewController:oauthController animated:YES completion:^{
+    [[UIApplication.sharedApplication topController] presentViewController:oauthController animated:YES completion:^{
         
     }];
 }

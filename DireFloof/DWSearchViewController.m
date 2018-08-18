@@ -72,17 +72,17 @@ typedef NS_ENUM(NSUInteger, DWSearchSectionType) {
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? UIInterfaceOrientationMaskPortrait : [topController supportedInterfaceOrientations];
+    return topController == self ? UIInterfaceOrientationMaskPortrait : topController.supportedInterfaceOrientations;
 }
 
 
 - (BOOL)shouldAutorotate
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? NO : [topController shouldAutorotate];
+    return topController == self ? NO : topController.shouldAutorotate;
 }
 
 
@@ -102,7 +102,7 @@ typedef NS_ENUM(NSUInteger, DWSearchSectionType) {
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
+    // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
     
     if ([segue.identifier isEqualToString:@"HashtagSegue"]) {
@@ -214,9 +214,9 @@ typedef NS_ENUM(NSUInteger, DWSearchSectionType) {
 {
     MSAccount *account = [self.accountSearchResults objectAtIndex:indexPath.row];
     
-    [cell.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? account.avatar_static : account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+    [cell.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:DWSettingStore.sharedStore.disableGifPlayback ? account.avatar_static : account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
         cell.avatarImageView.image = image;
-        if ([DWSettingStore.sharedStore disableGifPlayback]) {
+        if (DWSettingStore.sharedStore.disableGifPlayback) {
             [cell.avatarImageView stopAnimating];
         }
     } failure:nil];

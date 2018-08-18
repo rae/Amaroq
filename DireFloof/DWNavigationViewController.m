@@ -69,17 +69,17 @@
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? UIInterfaceOrientationMaskPortrait : [topController supportedInterfaceOrientations];
+    return topController == self ? UIInterfaceOrientationMaskPortrait : topController.supportedInterfaceOrientations;
 }
 
 
 - (BOOL)shouldAutorotate
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? NO : [topController shouldAutorotate];
+    return topController == self ? NO : topController.shouldAutorotate;
 }
 
 
@@ -99,7 +99,7 @@
  
  // In a storyboard-based application, you will often want to do a little preparation before navigation
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
+ // Get the new view controller using segue.destinationViewController.
  // Pass the selected object to the new view controller.
  }
  */

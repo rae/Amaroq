@@ -60,7 +60,7 @@
     
     NSString *filePath = [self filePathForMediaURL:mediaURL];
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+    if ([NSFileManager.defaultManager fileExistsAtPath:filePath]) {
         
         if (completion) {
             completion(YES, [NSURL fileURLWithPath:filePath], nil);
@@ -97,7 +97,7 @@
 {
     NSString *filePath = [self filePathForMediaURL:mediaURL];
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+    if ([NSFileManager.defaultManager fileExistsAtPath:filePath]) {
         return [NSURL fileURLWithPath:filePath];
     }
     
@@ -109,7 +109,7 @@
 
 - (NSString *)filePathForMediaURL:(NSURL *)mediaURL
 {
-    NSString *mediaIdentifier = [[[[mediaURL absoluteString] componentsSeparatedByString:@"?"] lastObject] stringByAppendingString:@".mp4"];
+    NSString *mediaIdentifier = [[[mediaURL.absoluteString componentsSeparatedByString:@"?"] lastObject] stringByAppendingString:@".mp4"];
     
     if ([mediaIdentifier containsString:@"/"]) {
         mediaIdentifier = [[mediaURL.path componentsSeparatedByString:@"/"] componentsJoinedByString:@""];
@@ -120,8 +120,8 @@
     BOOL isDir = NO;
     
     NSError *error;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:cachePath isDirectory:&isDir]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:cachePath withIntermediateDirectories:NO attributes:nil error:&error];
+    if (![NSFileManager.defaultManager fileExistsAtPath:cachePath isDirectory:&isDir]) {
+        [NSFileManager.defaultManager createDirectoryAtPath:cachePath withIntermediateDirectories:NO attributes:nil error:&error];
     }
     
     NSString *filePath = [cachePath stringByAppendingPathComponent:mediaIdentifier];

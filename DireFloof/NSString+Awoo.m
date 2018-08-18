@@ -15,7 +15,7 @@
 
 - (NSString *)awooString
 {
-    NSMutableString *pureStr = [NSMutableString stringWithCapacity:[self length]];
+    NSMutableString *pureStr = [NSMutableString stringWithCapacity:self.length];
     NSScanner *scanner = [NSScanner scannerWithString:self];
     scanner.charactersToBeSkipped = NULL;
     scanner.caseSensitive = NO;
@@ -23,32 +23,32 @@
     NSString *tmp = nil;
     BOOL backtracked = NO;
     
-    while (![scanner isAtEnd])
+    while (!scanner.isAtEnd)
     {
         [scanner scanUpToString:@"t" intoString:&tmp];
         NSString *firstT = nil;
-        if (![scanner isAtEnd] && !backtracked) {
+        if (!scanner.isAtEnd && !backtracked) {
             firstT = [scanner.string substringWithRange:NSMakeRange(scanner.scanLocation, 1)];
         }
         if (tmp != nil)
             [pureStr appendString:tmp];
         tmp = nil;
         
-        if (![scanner isAtEnd])
-            [scanner setScanLocation:[scanner scanLocation] + 1];
+        if (!scanner.isAtEnd)
+            [scanner setScanLocation:scanner.scanLocation + 1];
         
         
         [scanner scanUpToString:@"t" intoString:&tmp];
 
         NSString *secondT = nil;
         
-        if (![scanner isAtEnd]) {
+        if (!scanner.isAtEnd) {
             secondT = [scanner.string substringWithRange:NSMakeRange(scanner.scanLocation, 1)];
         }
         
         BOOL validToot = YES;
 
-        if (tmp.length >= 2 && ![scanner isAtEnd]) {
+        if (tmp.length >= 2 && !scanner.isAtEnd) {
             NSScanner *tmpScanner = [NSScanner scannerWithString:tmp];
             tmpScanner.charactersToBeSkipped = NULL;
             tmpScanner.caseSensitive = NO;
@@ -60,13 +60,13 @@
             }
             
             NSString *tmpO = nil;
-            while (![tmpScanner isAtEnd] && validToot) {
+            while (!tmpScanner.isAtEnd && validToot) {
                 [tmpScanner scanUpToString:@"o" intoString:&tmpO];
                 validToot = tmpScanner.scanLocation - lastLoc <= 1;
                 lastLoc = tmpScanner.scanLocation;
                 
-                if (![tmpScanner isAtEnd]) {
-                    [tmpScanner setScanLocation:[tmpScanner scanLocation] + 1];
+                if (!tmpScanner.isAtEnd) {
+                    [tmpScanner setScanLocation:tmpScanner.scanLocation + 1];
                 }
                 tmpO = nil;
             }
@@ -84,7 +84,7 @@
             }
             
             [pureStr appendString:@"aw"];
-            [pureStr appendString:[tmp lowercaseString]];
+            [pureStr appendString:tmp.lowercaseString];
             
             backtracked = NO;
         }
@@ -107,8 +107,8 @@
             }
         }
         
-        if (![scanner isAtEnd])
-            [scanner setScanLocation:[scanner scanLocation] + 1];
+        if (!scanner.isAtEnd)
+            [scanner setScanLocation:scanner.scanLocation + 1];
         tmp = nil;
     }
                                                                

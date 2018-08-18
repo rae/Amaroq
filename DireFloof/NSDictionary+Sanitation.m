@@ -16,7 +16,7 @@
 - (NSDictionary *)removeNullValues
 {
     NSMutableDictionary *dict = [self mutableCopy];
-    NSArray *keysWithNullValues = [dict allKeysForObject:[NSNull null]];
+    NSArray *keysWithNullValues = [dict allKeysForObject:NSNull.null];
     [dict removeObjectsForKeys:keysWithNullValues];
     
     return dict;

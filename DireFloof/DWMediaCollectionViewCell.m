@@ -20,7 +20,7 @@
     
     if (!self.playImageView) {
         self.playImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayIcon"]];
-        self.playImageView.tintColor = [UIColor whiteColor];
+        self.playImageView.tintColor = UIColor.whiteColor;
         self.playImageView.contentMode = UIViewContentModeScaleAspectFit;
         self.playImageView.hidden = YES;
         [self.contentView addSubview:self.playImageView];
@@ -43,13 +43,13 @@
         [self.gpuVideo cancelProcessing];
         
         self.gpuVideoImageView.accessibilityLabel = nil;
-        self.gpuVideoImageView.backgroundColor = [UIColor clearColor];
+        self.gpuVideoImageView.backgroundColor = UIColor.clearColor;
         [self.gpuVideoImageView setBackgroundColorRed:0 green:0 blue:0 alpha:0];
         self.gpuVideoImageView.hidden = YES;
         
         [self.gpuVideoImageView removeFromSuperview];
     
-        [[NSNotificationCenter defaultCenter] removeObserver:self.gpuVideo];
+        [NSNotificationCenter.defaultCenter removeObserver:self.gpuVideo];
         
         self.gpuVideoImageView = nil;
         self.gpuVideo = nil;

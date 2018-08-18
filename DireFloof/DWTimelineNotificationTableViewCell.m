@@ -131,7 +131,7 @@
             self.notificationTypeImageView.image = [UIImage imageNamed:@"ReplyIcon"];
             self.notificationTypeImageView.tintColor = DW_BASE_ICON_TINT_COLOR;
             
-            MSMention *mention = [self.status.mentions firstObject];
+            MSMention *mention = self.status.mentions.firstObject;
             
             if (self.status.in_reply_to_id && mention) {
                 mention = [[self.status.mentions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"_id = %@", self.status.in_reply_to_account_id]] firstObject];

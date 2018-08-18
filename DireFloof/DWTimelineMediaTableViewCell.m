@@ -52,7 +52,7 @@
     [(CHTCollectionViewWaterfallLayout *)self.collectionView.collectionViewLayout setMinimumInteritemSpacing:4.0f];
     [(CHTCollectionViewWaterfallLayout *)self.collectionView.collectionViewLayout setSectionInset:UIEdgeInsetsZero];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self.collectionView selector:@selector(reloadData) name:DW_DID_PURGE_CACHE_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self.collectionView selector:@selector(reloadData) name:DW_DID_PURGE_CACHE_NOTIFICATION object:nil];
 }
 
 
@@ -76,7 +76,7 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
 
@@ -150,7 +150,7 @@
 {
     MSStatus *status = self.status.reblog ? self.status.reblog : self.status;
 
-    CGFloat collectionViewWidth = self.isThreadStatus ? [UIApplication sharedApplication].keyWindow.bounds.size.width - 20.0f : [UIApplication sharedApplication].keyWindow.bounds.size.width - 80.0f;
+    CGFloat collectionViewWidth = self.isThreadStatus ? UIApplication.sharedApplication.keyWindow.bounds.size.width - 20.0f : UIApplication.sharedApplication.keyWindow.bounds.size.width - 80.0f;
     CGFloat collectionViewHeight = self.isThreadStatus ? collectionViewWidth : collectionViewWidth/2.0f;
     
     CGSize mediaSize = CGSizeMake(collectionViewWidth, collectionViewHeight);
@@ -204,7 +204,7 @@
             NSURL *cachedURL = [DWMediaStore.sharedStore cachedURLForGifvMedia:[NSURL URLWithString:mediaURL]];
             
             if (cachedURL) {
-                mediaURL = [cachedURL absoluteString];
+                mediaURL = cachedURL.absoluteString;
             }
         }
 
@@ -246,7 +246,7 @@
         [_browser dismissViewControllerAnimated:YES dismissImageView:returnCell.mediaImageView completion:nil];
     };
     
-    [[[UIApplication sharedApplication] topController] presentMHGalleryController:browser animated:YES completion:nil];
+    [[UIApplication.sharedApplication topController] presentMHGalleryController:browser animated:YES completion:nil];
 }
 
 
@@ -277,7 +277,7 @@
     
     if (media.type != MSMediaTypeImage && [mediaUrl containsString:@"mp4"]) {
         
-        if (media.type == MSMediaTypeGifv && ![DWSettingStore.sharedStore disableGifPlayback] && status.media_attachments.count == 1 && !status.sensitive && !status.spoiler_text.length) {
+        if (media.type == MSMediaTypeGifv && !DWSettingStore.sharedStore.disableGifPlayback && status.media_attachments.count == 1 && !status.sensitive && !status.spoiler_text.length) {
             
             [DWMediaStore.sharedStore downloadGifvMedia:[NSURL URLWithString:mediaUrl] withCompletion:^(BOOL success, NSURL *localURL, NSError *error) {
                 if (success) {
@@ -290,7 +290,7 @@
                                 [cell.gpuVideo cancelProcessing];
                             }
                             
-                            [cell.gpuVideoImageView removeFromSuperview];
+                            cell.gpuVideoImageView.removeFromSuperview;
                             cell.gpuVideoImageView = nil;
                             cell.gpuVideo = nil;
                         }
@@ -314,8 +314,8 @@
                         
                         [cell.gpuVideo startProcessing];
                         
-                        [[NSNotificationCenter defaultCenter] addObserver:cell.gpuVideo selector:@selector(cancelProcessing) name:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
-                        [[NSNotificationCenter defaultCenter] addObserver:cell.gpuVideo selector:@selector(removeAllTargets) name:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
+                        [NSNotificationCenter.defaultCenter addObserver:cell.gpuVideo selector:@selector(cancelProcessing) name:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
+                        [NSNotificationCenter.defaultCenter addObserver:cell.gpuVideo selector:@selector(removeAllTargets) name:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
                     }
                 }
                 else
@@ -339,7 +339,7 @@
 
     cell.mediaImageView.accessibilityLabel = media._description;
     cell.mediaImageView.isAccessibilityElement = media._description ? YES : NO;
-    [cell.mediaImageView sd_setImageWithURL:[NSURL URLWithString:media.preview_url ? media.preview_url : media.remote_url] placeholderImage:[DWMediaStore.sharedStore placeholderImage]];
+    [cell.mediaImageView sd_setImageWithURL:[NSURL URLWithString:media.preview_url ? media.preview_url : media.remote_url] placeholderImage:DWMediaStore.sharedStore.placeholderImage];
 }
 
 @end

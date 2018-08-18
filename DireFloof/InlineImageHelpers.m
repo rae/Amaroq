@@ -98,7 +98,7 @@
         
         // Continue the iteration
         NSRange nextRange = NSMakeRange(range.location + 1, self.length - range.location - 1);
-        range = [self rangeOfString:string options:(NSStringCompareOptions)0 range:nextRange locale:[NSLocale currentLocale]]; // Will this sometimes conflict with the initial range obtained with -localizedStandardRangeOfString:?
+        range = [self rangeOfString:string options:(NSStringCompareOptions)0 range:nextRange locale:NSLocale.currentLocale]; // Will this sometimes conflict with the initial range obtained with -localizedStandardRangeOfString:?
     }
 }
 

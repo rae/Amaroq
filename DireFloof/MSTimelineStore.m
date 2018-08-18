@@ -91,12 +91,12 @@
         params = @{@"max_id": self.lastId};
     }
     
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:@"timelines/home" parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] GET:@"timelines/home" parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
         self.firstId = nil;
         self.lastId = nil;
         
-        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
+        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)task.response);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
         
         MSTimeline *timeline = [[MSTimeline alloc] initWithStatuses:responseObject nextPageUrl:nextPageUrl];
@@ -130,11 +130,11 @@
         params = @{@"local": @(YES)};
     }
     
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:@"timelines/public" parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] GET:@"timelines/public" parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         self.firstId = nil;
         self.lastId = nil;
         
-        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
+        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)task.response);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
         
         MSTimeline *timeline = [[MSTimeline alloc] initWithStatuses:responseObject nextPageUrl:nextPageUrl];
@@ -162,14 +162,14 @@
         params = @{@"max_id": self.lastId};
     }
     
-    NSString *requestUrl = [[NSString stringWithFormat:@"timelines/tag/%@", hashtag] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
+    NSString *requestUrl = [[NSString stringWithFormat:@"timelines/tag/%@", hashtag] stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLPathAllowedCharacterSet];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:requestUrl parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] GET:requestUrl parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         self.firstId = nil;
         self.lastId = nil;
         
-        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
+        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)task.response);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
         
         MSTimeline *timeline = [[MSTimeline alloc] initWithStatuses:responseObject nextPageUrl:nextPageUrl];
@@ -189,8 +189,8 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"accounts/%@/statuses", userId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)task.response);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
         
         MSTimeline *timeline = [[MSTimeline alloc] initWithStatuses:responseObject nextPageUrl:nextPageUrl];
@@ -208,8 +208,8 @@
 
 - (void)getFavoriteStatusesWithCompletion:(void (^)(BOOL, MSTimeline *, NSError *))completion
 {
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:@"favourites" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] GET:@"favourites" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)task.response);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
         
         MSTimeline *timeline = [[MSTimeline alloc] initWithStatuses:responseObject nextPageUrl:nextPageUrl];
@@ -229,12 +229,12 @@
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/context", status._id];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSMutableArray *statuses = [@[] mutableCopy];
         
         [statuses addObjectsFromArray:responseObject[@"ancestors"]];
-        [statuses addObject:[status toJSON]];
+        [statuses addObject:status.toJSON];
         [statuses addObjectsFromArray:responseObject[@"descendants"]];
         
         MSTimeline *timeline = [[MSTimeline alloc] initWithStatuses:statuses nextPageUrl:nil];

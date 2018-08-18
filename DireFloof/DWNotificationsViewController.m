@@ -86,10 +86,10 @@
     [self configureViews];
     [self configureData];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCleanupNotification:) name:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCleanupNotification:) name:DW_NEEDS_REFRESH_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearData) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didReceiveCleanupNotification:) name:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didReceiveCleanupNotification:) name:DW_NEEDS_REFRESH_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(clearData) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(refreshData) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
 }
 
 
@@ -105,9 +105,9 @@
 {
     [super viewDidAppear:animated];
     
-    [DWNotificationStore.sharedStore notificationBadge].hidden = YES;
+    DWNotificationStore.sharedStore.notificationBadge.hidden = YES;
     
-    if ([[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
+    if ([self.tableView.indexPathsForVisibleRows containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
         [self refreshData];
     }
 }
@@ -128,7 +128,7 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
 
@@ -136,7 +136,7 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
+    // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
     
     if ([segue.identifier isEqualToString:@"ReplySegue"])
@@ -144,7 +144,7 @@
         UITableViewCell *selectedCell = [sender supercell];
         
         NSIndexPath *selectedIndex = [self.tableView indexPathForCell:selectedCell];
-        MSNotification *selectedNotification = [[DWNotificationStore.sharedStore notificationTimeline].statuses objectAtIndex:selectedIndex.row];
+        MSNotification *selectedNotification = [DWNotificationStore.sharedStore.notificationTimeline.statuses objectAtIndex:selectedIndex.row];
         MSStatus *selectedStatus = selectedNotification.status;
         if (selectedStatus.reblog) {
             selectedStatus = selectedStatus.reblog;
@@ -154,7 +154,7 @@
         destinationController.replyToStatus = selectedStatus;
         destinationController.postCompleteBlock = ^(BOOL success) {
             
-            if (success && [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
+            if (success && [self.tableView.indexPathsForVisibleRows containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
                 [self refreshData];
             }
             
@@ -183,7 +183,7 @@
             UITableViewCell *selectedCell = [sender supercell];
             
             NSIndexPath *selectedIndex = [self.tableView indexPathForCell:selectedCell];
-            MSNotification *selectedNotification = [[DWNotificationStore.sharedStore notificationTimeline].statuses objectAtIndex:selectedIndex.row];
+            MSNotification *selectedNotification = [DWNotificationStore.sharedStore.notificationTimeline.statuses objectAtIndex:selectedIndex.row];
             
             selectedAccount = selectedNotification.account;
         }
@@ -194,7 +194,7 @@
     else if ([segue.identifier isEqualToString:@"ThreadSegue"])
     {
         NSIndexPath *selectedIndex = [self.tableView indexPathForCell:sender];
-        MSNotification *selectedNotification = [[DWNotificationStore.sharedStore notificationTimeline].statuses objectAtIndex:selectedIndex.row];
+        MSNotification *selectedNotification = [DWNotificationStore.sharedStore.notificationTimeline.statuses objectAtIndex:selectedIndex.row];
         MSStatus *selectedStatus = selectedNotification.status;
         if (selectedStatus.reblog) {
             selectedStatus = selectedStatus.reblog;
@@ -209,7 +209,7 @@
         destinationController.mentionedUser = sender;
         destinationController.postCompleteBlock = ^(BOOL success) {
             
-            if (success && [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
+            if (success && [self.tableView.indexPathsForVisibleRows containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
                 [self refreshData];
             }
             
@@ -228,17 +228,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (![DWNotificationStore.sharedStore notificationTimeline]) {
+    if (!DWNotificationStore.sharedStore.notificationTimeline) {
         return 0;
     }
     
-    return [DWNotificationStore.sharedStore notificationTimeline].statuses.count;
+    return DWNotificationStore.sharedStore.notificationTimeline.statuses.count;
 }
 
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MSNotification *notification = [[DWNotificationStore.sharedStore notificationTimeline].statuses objectAtIndex:indexPath.row];
+    MSNotification *notification = [DWNotificationStore.sharedStore.notificationTimeline.statuses objectAtIndex:indexPath.row];
 
     NSNumber *cachedHeight = self.cachedEstimatedHeights[notification._id];
     if (cachedHeight) {
@@ -251,7 +251,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MSNotification *notification = [[DWNotificationStore.sharedStore notificationTimeline].statuses objectAtIndex:indexPath.row];
+    MSNotification *notification = [DWNotificationStore.sharedStore.notificationTimeline.statuses objectAtIndex:indexPath.row];
     
     if ([notification.type isEqualToString:MS_NOTIFICATION_TYPE_FOLLOW]) {
     
@@ -304,10 +304,10 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MSNotification *notification = [[DWNotificationStore.sharedStore notificationTimeline].statuses objectAtIndex:indexPath.row];
+    MSNotification *notification = [DWNotificationStore.sharedStore.notificationTimeline.statuses objectAtIndex:indexPath.row];
     self.cachedEstimatedHeights[notification._id] = @(cell.bounds.size.height);
     
-    if (indexPath.row >= [DWNotificationStore.sharedStore notificationTimeline].statuses.count - 10 && [DWNotificationStore.sharedStore notificationTimeline].nextPageUrl) {
+    if (indexPath.row >= DWNotificationStore.sharedStore.notificationTimeline.statuses.count - 10 && DWNotificationStore.sharedStore.notificationTimeline.nextPageUrl) {
         [self loadNextPage];
     }
 }
@@ -317,7 +317,7 @@
 {
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     
-    if (![selectedCell isKindOfClass:[DWTimelineFollowTableViewCell class]]) {
+    if (![selectedCell isKindOfClass:DWTimelineFollowTableViewCell.class]) {
         [self performSegueWithIdentifier:@"ThreadSegue" sender:selectedCell];
     }
 }
@@ -386,7 +386,7 @@
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.tintColor = [UIColor whiteColor];
+    refreshControl.tintColor = UIColor.whiteColor;
     refreshControl.tag = 9001;
     [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     
@@ -471,7 +471,7 @@
         self.loadingNextPage = YES;
         [self.pageLoadingView startAnimating];
         
-        [[DWNotificationStore.sharedStore notificationTimeline] loadNextPageWithCompletion:^(BOOL success, NSError *error) {
+        [DWNotificationStore.sharedStore.notificationTimeline loadNextPageWithCompletion:^(BOOL success, NSError *error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.pageLoadingView stopAnimating];
@@ -494,11 +494,11 @@
     switch (sender.actionType) {
         case DWAccessibilityActionTypeOpenHashtag:
         {
-            DWTimelineViewController *hashtagController = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"HashtagController"];
+            DWTimelineViewController *hashtagController = [[UIStoryboard storyboardWithName:@"Main" bundle:NSBundle.mainBundle] instantiateViewControllerWithIdentifier:@"HashtagController"];
             hashtagController.hashtag = sender.hashtag;
             DWNavigationViewController *navController = [[DWNavigationViewController alloc] initWithRootViewController:hashtagController];
             
-            [[[UIApplication sharedApplication] topController] presentViewController:navController animated:YES completion:nil];
+            [[UIApplication.sharedApplication topController] presentViewController:navController animated:YES completion:nil];
         }
             
             return YES;

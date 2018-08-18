@@ -66,7 +66,7 @@
                     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", @"Error") message:[NSString stringWithFormat:@"%@ %li", NSLocalizedString(@"Failed to mute user with error:", @"Failed to mute user with error:"), (long)error.code] preferredStyle:UIAlertControllerStyleAlert];
                     
                     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:nil]];
-                    [[[UIApplication sharedApplication] topController] presentViewController:alertController animated:YES completion:nil];
+                    [[UIApplication.sharedApplication topController] presentViewController:alertController animated:YES completion:nil];
                 }
                 
             }];
@@ -89,7 +89,7 @@
                     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", @"Error") message:[NSString stringWithFormat:@"%@ %li", NSLocalizedString(@"Failed to unmute user with error:", @"Failed to unmute user with error:"), (long)error.code] preferredStyle:UIAlertControllerStyleAlert];
                     
                     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:nil]];
-                    [[[UIApplication sharedApplication] topController] presentViewController:alertController animated:YES completion:nil];
+                    [[UIApplication.sharedApplication topController] presentViewController:alertController animated:YES completion:nil];
                 }
             }];
         }
@@ -236,7 +236,7 @@
                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", @"Error") message:[NSString stringWithFormat:@"%@ %li", NSLocalizedString(@"Failed to unblock user with error:", @"Failed to unblock user with error:"), (long)error.code] preferredStyle:UIAlertControllerStyleAlert];
                 
                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:nil]];
-                [[[UIApplication sharedApplication] topController] presentViewController:alertController animated:YES completion:nil];
+                [[UIApplication.sharedApplication topController] presentViewController:alertController animated:YES completion:nil];
             }
         }];
     }
@@ -259,7 +259,7 @@
                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", @"Error") message:[NSString stringWithFormat:@"%@ %li", NSLocalizedString(@"Failed to unfollow user with error:", @"Failed to unfollow user with error:"), (long)error.code] preferredStyle:UIAlertControllerStyleAlert];
                 
                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:nil]];
-                [[[UIApplication sharedApplication] topController] presentViewController:alertController animated:YES completion:nil];
+                [[UIApplication.sharedApplication topController] presentViewController:alertController animated:YES completion:nil];
             }
         }];
     }
@@ -269,7 +269,7 @@
 - (IBAction)rejectButtonPressed:(id)sender
 {
     [MSUserStore.sharedStore rejectFollowRequestWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:DW_DID_ANSWER_FOLLOW_REQUEST_NOTIFICATION object:self];
+        [NSNotificationCenter.defaultCenter postNotificationName:DW_DID_ANSWER_FOLLOW_REQUEST_NOTIFICATION object:self];
     }];
 }
 
@@ -277,7 +277,7 @@
 - (IBAction)authorizeButtonPressed:(id)sender
 {
     [MSUserStore.sharedStore authorizeFollowRequestWithId:self.account._id withCompletion:^(BOOL success, NSError *error) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:DW_DID_ANSWER_FOLLOW_REQUEST_NOTIFICATION object:self];
+        [NSNotificationCenter.defaultCenter postNotificationName:DW_DID_ANSWER_FOLLOW_REQUEST_NOTIFICATION object:self];
     }];
 }
 
@@ -338,9 +338,9 @@
     
     if (follower.avatar) {
         
-        [self.followerAvatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? follower.avatar_static : follower.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+        [self.followerAvatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:DWSettingStore.sharedStore.disableGifPlayback ? follower.avatar_static : follower.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
             self.followerAvatarImageView.image = image;
-            if ([DWSettingStore.sharedStore disableGifPlayback]) {
+            if (DWSettingStore.sharedStore.disableGifPlayback) {
                 [self.followerAvatarImageView stopAnimating];
             }
         } failure:nil];

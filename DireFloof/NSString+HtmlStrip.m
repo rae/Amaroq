@@ -16,11 +16,11 @@
 
 - (NSString *)removeHTML
 {
-    NSMutableString *pureStr = [NSMutableString stringWithCapacity:[self length]];
+    NSMutableString *pureStr = [NSMutableString stringWithCapacity:self.length];
     NSScanner *scanner = [NSScanner scannerWithString:self];
     scanner.charactersToBeSkipped = NULL;
     NSString *tmp = nil;
-    while (![scanner isAtEnd])
+    while (!scanner.isAtEnd)
     {
         [scanner scanUpToString:@"<" intoString:&tmp];
         if (tmp != nil)
@@ -36,8 +36,8 @@
             }
         }
         
-        if (![scanner isAtEnd])
-            [scanner setScanLocation:[scanner scanLocation] + 1];
+        if (!scanner.isAtEnd)
+            [scanner setScanLocation:scanner.scanLocation + 1];
         tmp = nil;
     }
     
@@ -47,7 +47,7 @@
 
 - (NSString *)stringByDecodingXMLEntities
 {
-    NSUInteger myLength = [self length];
+    NSUInteger myLength = self.length;
     NSUInteger ampIndex = [self rangeOfString:@"&" options:NSLiteralSearch].location;
     
     // Short-circuit if there are no ampersands.
@@ -70,7 +70,7 @@
         if ([scanner scanUpToString:@"&" intoString:&nonEntityString]) {
             [result appendString:nonEntityString];
         }
-        if ([scanner isAtEnd]) {
+        if (scanner.isAtEnd) {
             goto finish;
         }
         // Scan either a HTML or numeric character entity reference.
@@ -120,7 +120,7 @@
         }
         
     }
-    while (![scanner isAtEnd]);
+    while (!scanner.isAtEnd);
     
 finish:
     return result;

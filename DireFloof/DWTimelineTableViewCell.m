@@ -71,7 +71,7 @@
                 status.reblogged = NO;
                 self.retootButton.tintColor = DW_BASE_ICON_TINT_COLOR;
                 self.retootButton.accessibilityLabel = NSLocalizedString(@"Boost", @"Boost");
-                [[NSNotificationCenter defaultCenter] postNotificationName:DW_STATUS_UNBOOSTED_NOTIFICATION object:status._id];
+                [NSNotificationCenter.defaultCenter postNotificationName:DW_STATUS_UNBOOSTED_NOTIFICATION object:status._id];
             }
         }];
     }
@@ -84,7 +84,7 @@
                 status.reblogged = YES;
                 self.retootButton.tintColor = DW_BLUE_COLOR;
                 self.retootButton.accessibilityLabel = NSLocalizedString(@"Unboost", @"Unboost");
-                [[NSNotificationCenter defaultCenter] postNotificationName:DW_STATUS_BOOSTED_NOTIFICATION object:status._id];
+                [NSNotificationCenter.defaultCenter postNotificationName:DW_STATUS_BOOSTED_NOTIFICATION object:status._id];
             }
         }];
     }
@@ -110,7 +110,7 @@
                 status.favourited = NO;
                 self.favoriteButton.tintColor = DW_BASE_ICON_TINT_COLOR;
                 self.favoriteButton.accessibilityLabel = NSLocalizedString(@"Favorite", @"Favorite");
-                [[NSNotificationCenter defaultCenter] postNotificationName:DW_STATUS_UNFAVORITED_NOTIFICATION object:status._id];
+                [NSNotificationCenter.defaultCenter postNotificationName:DW_STATUS_UNFAVORITED_NOTIFICATION object:status._id];
             }
         }];
     }
@@ -123,7 +123,7 @@
                 status.favourited = YES;
                 self.favoriteButton.tintColor = DW_FAVORITED_ICON_TINT_COLOR;
                 self.favoriteButton.accessibilityLabel = NSLocalizedString(@"Unfavorite", @"Unfavorite");
-                [[NSNotificationCenter defaultCenter] postNotificationName:DW_STATUS_FAVORITED_NOTIFICATION object:status._id];
+                [NSNotificationCenter.defaultCenter postNotificationName:DW_STATUS_FAVORITED_NOTIFICATION object:status._id];
             }
         }];
     }
@@ -147,7 +147,7 @@
         NSArray *activityItems = [NSArray arrayWithObject:[NSURL URLWithString:status.url]];
         UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
         
-        [[[UIApplication sharedApplication] topController] presentViewController:activityViewController animated:YES completion:nil];
+        [[UIApplication.sharedApplication topController] presentViewController:activityViewController animated:YES completion:nil];
         
     }]];
     
@@ -155,7 +155,7 @@
         
         MSStatus *status = self.status.reblog ? self.status.reblog : self.status;
 
-        [UIPasteboard generalPasteboard].string = status.content;
+        UIPasteboard.generalPasteboard.string = status.content;
         
     }]];
     
@@ -163,7 +163,7 @@
         
         MSStatus *status = self.status.reblog ? self.status.reblog : self.status;
         
-        NSMutableCharacterSet *allowedCharacters = [[NSCharacterSet URLPathAllowedCharacterSet] mutableCopy];
+        NSMutableCharacterSet *allowedCharacters = [NSCharacterSet.URLPathAllowedCharacterSet mutableCopy];
         [allowedCharacters removeCharactersInString:@"/"];
 
         NSString *encodedStatus = [status.content stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
@@ -171,7 +171,7 @@
         
         if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {
             
-            NSString *language = [NSLocale preferredLanguages].firstObject;
+            NSString *language = NSLocale.preferredLanguages.firstObject;
             NSDictionary *languageDic = [NSLocale componentsFromLocaleIdentifier:language];
             NSString *languageCode = languageDic[@"kCFLocaleLanguageCodeKey"];
             
@@ -179,7 +179,7 @@
         }
         else
         {
-            url = [NSString stringWithFormat:@"https://translate.google.com/#auto/%@/%@", [NSLocale currentLocale].languageCode, encodedStatus];
+            url = [NSString stringWithFormat:@"https://translate.google.com/#auto/%@/%@", NSLocale.currentLocale.languageCode, encodedStatus];
         }
         
         [self.delegate timelineCell:self didSelectURL:[NSURL URLWithString:url]];
@@ -212,7 +212,7 @@
         }]];
     }
     
-    if ([self.status.account._id isEqualToString:[[MSUserStore.sharedStore currentUser] _id]]) {
+    if ([self.status.account._id isEqualToString:[MSUserStore.sharedStore.currentUser _id]]) {
         
         [optionController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete", @"Delete") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             
@@ -226,7 +226,7 @@
                     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", @"Error") message:[NSString stringWithFormat:@"%@ %li", NSLocalizedString(@"Failed to delete status with error:", @"Failed to delete status with error:"), (long)error.code] preferredStyle:UIAlertControllerStyleAlert];
                     
                     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:nil]];
-                    [[[UIApplication sharedApplication] topController] presentViewController:alertController animated:YES completion:nil];
+                    [[UIApplication.sharedApplication topController] presentViewController:alertController animated:YES completion:nil];
 
                 }
                 
@@ -248,7 +248,7 @@
                 
                 if (success) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [[NSNotificationCenter defaultCenter] postNotificationName:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:status.account];
+                        [NSNotificationCenter.defaultCenter postNotificationName:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:status.account];
                         [self.delegate timelineCell:self didBlockUser:status.account];
                     });
                 }
@@ -258,7 +258,7 @@
                     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", @"Error") message:[NSString stringWithFormat:@"%@ %li", NSLocalizedString(@"Failed to mute user with error:", @"Failed to mute user with error:"), (long)error.code] preferredStyle:UIAlertControllerStyleAlert];
                     
                     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:nil]];
-                    [[[UIApplication sharedApplication] topController] presentViewController:alertController animated:YES completion:nil];
+                    [[UIApplication.sharedApplication topController] presentViewController:alertController animated:YES completion:nil];
                 }
                 
             }];
@@ -272,7 +272,7 @@
                 if (success) {
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [[NSNotificationCenter defaultCenter] postNotificationName:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:status.account];
+                        [NSNotificationCenter.defaultCenter postNotificationName:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:status.account];
                         [self.delegate timelineCell:self didBlockUser:status.account];
                     });
 
@@ -282,7 +282,7 @@
                     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", @"Error") message:[NSString stringWithFormat:@"%@ %li", NSLocalizedString(@"Failed to mute user with error:", @"Failed to mute user with error:"), (long)error.code] preferredStyle:UIAlertControllerStyleAlert];
                     
                     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:nil]];
-                    [[[UIApplication sharedApplication] topController] presentViewController:alertController animated:YES completion:nil];
+                    [[UIApplication.sharedApplication topController] presentViewController:alertController animated:YES completion:nil];
                 }
             }];
         }]];
@@ -291,7 +291,7 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.delegate timelineCell:self didReportStatus:status];
-                [[NSNotificationCenter defaultCenter] postNotificationName:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:status];
+                [NSNotificationCenter.defaultCenter postNotificationName:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:status];
             });
             
         }]];
@@ -299,7 +299,7 @@
     
     [optionController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil]];
     
-    [[[UIApplication sharedApplication] topController] presentViewController:optionController animated:YES completion:nil];
+    [[UIApplication.sharedApplication topController] presentViewController:optionController animated:YES completion:nil];
 }
 
 
@@ -358,11 +358,11 @@
         }];
         
         [label handleHashtagTap:^(NSString *tag) {
-            DWTimelineViewController *hashtagController = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"HashtagController"];
+            DWTimelineViewController *hashtagController = [[UIStoryboard storyboardWithName:@"Main" bundle:NSBundle.mainBundle] instantiateViewControllerWithIdentifier:@"HashtagController"];
             hashtagController.hashtag = tag;
             DWNavigationViewController *navController = [[DWNavigationViewController alloc] initWithRootViewController:hashtagController];
             
-            [[[UIApplication sharedApplication] topController] presentViewController:navController animated:YES completion:nil];
+            [[UIApplication.sharedApplication topController] presentViewController:navController animated:YES completion:nil];
         }];
         
         [label handleMentionTap:^(NSString *user) {
@@ -484,9 +484,9 @@
     self.isThreadStatus = self.retootCountLabel != nil;
     
     if (author.avatar) {
-        [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? status.account.avatar_static : status.account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+        [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:DWSettingStore.sharedStore.disableGifPlayback ? status.account.avatar_static : status.account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
             self.avatarImageView.image = image;
-            if ([DWSettingStore.sharedStore disableGifPlayback]) {
+            if (DWSettingStore.sharedStore.disableGifPlayback) {
                 [self.avatarImageView stopAnimating];
             }
         } failure:nil];
@@ -496,11 +496,11 @@
         self.displayLabel.text = author.display_name.length ? author.display_name : author.username;
         
         if (!self.status.in_reply_to_id && !self.status.reblog) {
-            self.displayLabel.accessibilityLabel = [self.displayLabel.text stringByAppendingFormat:@" %@ %@ ", DWSettingStore.sharedStore.awooMode ? NSLocalizedString(@"howled", @"howled") : NSLocalizedString(@"tooted", @"tooted"), self.isThreadStatus ? [NSString stringWithFormat:@" %@ %@ ", [status.created_at formattedDateWithStyle:NSDateFormatterMediumStyle], [status.created_at formattedDateWithFormat:@"HH:mm"]] : [status.created_at timeAgoSinceNow]];
+            self.displayLabel.accessibilityLabel = [self.displayLabel.text stringByAppendingFormat:@" %@ %@ ", DWSettingStore.sharedStore.awooMode ? NSLocalizedString(@"howled", @"howled") : NSLocalizedString(@"tooted", @"tooted"), self.isThreadStatus ? [NSString stringWithFormat:@" %@ %@ ", [status.created_at formattedDateWithStyle:NSDateFormatterMediumStyle], [status.created_at formattedDateWithFormat:@"HH:mm"]] : status.created_at.timeAgoSinceNow];
         }
         else
         {
-            self.displayLabel.accessibilityLabel = self.isThreadStatus ? [NSString stringWithFormat:@" %@ %@ ", [status.created_at formattedDateWithStyle:NSDateFormatterMediumStyle], [status.created_at formattedDateWithFormat:@"HH:mm"]] : [status.created_at timeAgoSinceNow];
+            self.displayLabel.accessibilityLabel = self.isThreadStatus ? [NSString stringWithFormat:@" %@ %@ ", [status.created_at formattedDateWithStyle:NSDateFormatterMediumStyle], [status.created_at formattedDateWithFormat:@"HH:mm"]] : status.created_at.timeAgoSinceNow;
         }
     }
     
@@ -514,7 +514,7 @@
     }
     
     if (status.created_at) {
-        self.dateLabel.text = self.isThreadStatus ? [NSString stringWithFormat:@"%@ %@ •%@", [status.created_at formattedDateWithStyle:NSDateFormatterMediumStyle], [status.created_at formattedDateWithFormat:@"HH:mm"], status.application.name ? [NSString stringWithFormat:@" %@ •", status.application.name] : @""] : [status.created_at shortTimeAgoSinceNow];
+        self.dateLabel.text = self.isThreadStatus ? [NSString stringWithFormat:@"%@ %@ •%@", [status.created_at formattedDateWithStyle:NSDateFormatterMediumStyle], [status.created_at formattedDateWithFormat:@"HH:mm"], status.application.name ? [NSString stringWithFormat:@" %@ •", status.application.name] : @""] : status.created_at.shortTimeAgoSinceNow;
         self.dateLabel.accessibilityLabel = @"";
     }
     
@@ -524,7 +524,7 @@
     }
     
     self.retootButton.enabled = ![status.visibility isEqualToString:MS_VISIBILITY_TYPE_PRIVATE] && ![status.visibility isEqualToString:MS_VISIBILITY_TYPE_DIRECT];
-    self.contentView.backgroundColor = [status.visibility isEqualToString:MS_VISIBILITY_TYPE_DIRECT] ? DW_BAR_TINT_COLOR : [UIColor clearColor];
+    self.contentView.backgroundColor = [status.visibility isEqualToString:MS_VISIBILITY_TYPE_DIRECT] ? DW_BAR_TINT_COLOR : UIColor.clearColor;
     
     if ([status.visibility isEqualToString:MS_VISIBILITY_TYPE_DIRECT]) {
         [self.retootButton setImage:[UIImage imageNamed:@"DirectMessageIcon"] forState:UIControlStateDisabled];
@@ -563,7 +563,7 @@
     __block NSUInteger emojiLoadCount = 0;
     
     for (MSEmoji *emoji in status.emojis) {
-        [[AFImageDownloader defaultInstance] downloadImageForURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:emoji.static_url]] success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull responseObject) {
+        [AFImageDownloader.defaultInstance downloadImageForURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:emoji.static_url]] success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull responseObject) {
             
             if (responseObject) {
                 emojis[emoji.shortcode.copy] = responseObject;

@@ -47,7 +47,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configureViews) name:UIContentSizeCategoryDidChangeNotification object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(configureViews) name:UIContentSizeCategoryDidChangeNotification object:nil];
     
     NSString *appVersion = NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"];
     NSString *buildVersion = NSBundle.mainBundle.infoDictionary[@"CFBundleVersion"];
@@ -56,16 +56,16 @@
     
     NSString *textToDisplay = NSLocalizedString(@"Amaroq is named after an Inuit legend of a giant wolf, which is fitting as a companion to our friend the mastodon. May we all howl across the fediverse!\n\nAmaroq is built and maintained by a love of the Mastodon idea, which sorely has needed a mobile outlet for our iOS friends. Got a suggestion, found a bug, or just want to voice some support? You can reach us at amaroq.feedback@gmail.com. Or hit up the dev, @eurasierboy on the mastodon.social instance. Happy tooting!", @"Amaroq is named after an Inuit legend of a giant wolf, which is fitting as a companion to our friend the mastodon. May we all howl across the fediverse!\n\nAmaroq is built and maintained by a love of the Mastodon idea, which sorely has needed a mobile outlet for our iOS friends. Got a suggestion, found a bug, or just want to voice some support? You can reach us at amaroq.feedback@gmail.com. Or hit up the dev, @eurasierboy on the mastodon.social instance. Happy tooting!");
     
-    if ([DWSettingStore.sharedStore awooMode]) {
-        textToDisplay = [textToDisplay awooString];
+    if (DWSettingStore.sharedStore.awooMode) {
+        textToDisplay = textToDisplay.awooString;
     }
     
     self.textView.text = textToDisplay;
     
-    self.webView.backgroundColor = [UIColor clearColor];
-    self.webView.scrollView.backgroundColor = [UIColor clearColor];
+    self.webView.backgroundColor = UIColor.clearColor;
+    self.webView.scrollView.backgroundColor = UIColor.clearColor;
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:[[NSBundle mainBundle] URLForResource:@"PrivacyPolicy" withExtension:@"html"]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSBundle.mainBundle URLForResource:@"PrivacyPolicy" withExtension:@"html"]];
     [self.webView loadRequest:request];
     
     self.switchButton.selected = self.jumpToPrivacy;
@@ -85,7 +85,7 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
 
@@ -94,7 +94,7 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
+    // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
 }
 */

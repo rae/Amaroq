@@ -242,15 +242,15 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         NSArray *activityItems = [NSArray arrayWithObject:[NSURL URLWithString:self.account.url]];
         UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
         
-        [[[UIApplication sharedApplication] topController] presentViewController:activityViewController animated:YES completion:nil];
+        [[UIApplication.sharedApplication topController] presentViewController:activityViewController animated:YES completion:nil];
         
     }]];
     
-    if ([self.account._id isEqualToString:[[MSUserStore.sharedStore currentUser] _id]]) {
+    if ([self.account._id isEqualToString:[MSUserStore.sharedStore.currentUser _id]]) {
         
         [optionController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Edit Profile", @"Edit Profile") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
-            [MSAuthStore.sharedStore requestEditProfile];
+            MSAuthStore.sharedStore.requestEditProfile;
         }]];
     }
     else
@@ -269,7 +269,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
                     if (success) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             self.muting = YES;
-                            [[NSNotificationCenter defaultCenter] postNotificationName:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:self.account];
+                            [NSNotificationCenter.defaultCenter postNotificationName:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:self.account];
                         });
                     }
                     else
@@ -306,7 +306,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
                     if (success) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             self.blocking = YES;
-                            [[NSNotificationCenter defaultCenter] postNotificationName:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:self.account];
+                            [NSNotificationCenter.defaultCenter postNotificationName:DW_NEEDS_STATUS_CLEANUP_NOTIFICATION object:self.account];
                             [self.navigationController popViewControllerAnimated:YES];
                         });
                         
@@ -341,7 +341,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         
         if (domainComponents.count > 1) {
             
-            NSString *domain = [domainComponents lastObject];
+            NSString *domain = domainComponents.lastObject;
             
             [optionController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Block entire domain", @"Block entire domain") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
                 
@@ -367,7 +367,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
     
     [optionController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil]];
     
-    [[[UIApplication sharedApplication] topController] presentViewController:optionController animated:YES completion:nil];
+    [[UIApplication.sharedApplication topController] presentViewController:optionController animated:YES completion:nil];
 }
 
 
@@ -391,12 +391,12 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
     // Do any additional setup after loading the view.
     self.cachedEstimatedHeights = [NSMutableDictionary dictionary];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adjustFonts) name:UIContentSizeCategoryDidChangeNotification object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(adjustFonts) name:UIContentSizeCategoryDidChangeNotification object:nil];
     
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.tintColor = [UIColor whiteColor];
+    refreshControl.tintColor = UIColor.whiteColor;
     refreshControl.tag = 9001;
     [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     
@@ -423,11 +423,11 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         }];
         
         [label handleHashtagTap:^(NSString *tag) {
-            DWTimelineViewController *hashtagController = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"HashtagController"];
+            DWTimelineViewController *hashtagController = [[UIStoryboard storyboardWithName:@"Main" bundle:NSBundle.mainBundle] instantiateViewControllerWithIdentifier:@"HashtagController"];
             hashtagController.hashtag = tag;
             DWNavigationViewController *navController = [[DWNavigationViewController alloc] initWithRootViewController:hashtagController];
             
-            [[[UIApplication sharedApplication] topController] presentViewController:navController animated:YES completion:nil];
+            [[UIApplication.sharedApplication topController] presentViewController:navController animated:YES completion:nil];
         }];
     }];
     
@@ -449,7 +449,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
 {
     [super viewDidAppear:animated];
     
-    if ([[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
+    if ([self.tableView.indexPathsForVisibleRows containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
         [self refreshData];
     }
 }
@@ -459,23 +459,23 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter postNotificationName:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
 }
 
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? UIInterfaceOrientationMaskPortrait : [topController supportedInterfaceOrientations];
+    return topController == self ? UIInterfaceOrientationMaskPortrait : topController.supportedInterfaceOrientations;
 }
 
 
 - (BOOL)shouldAutorotate
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? NO : [topController shouldAutorotate];
+    return topController == self ? NO : topController.shouldAutorotate;
 }
 
 
@@ -535,7 +535,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
+    // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
     
     if ([segue.identifier isEqualToString:@"ComposeSegue"]) {
@@ -543,7 +543,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         DWComposeViewController *destinationController = segue.destinationViewController;
         destinationController.postCompleteBlock = ^(BOOL success) {
             
-            if (success && [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
+            if (success && [self.tableView.indexPathsForVisibleRows containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
                 [self refreshData];
             }
         };
@@ -562,7 +562,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         destinationController.replyToStatus = selectedStatus;
         destinationController.postCompleteBlock = ^(BOOL success) {
             
-            if (success && [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
+            if (success && [self.tableView.indexPathsForVisibleRows containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
                 [self refreshData];
             }
         };
@@ -637,7 +637,7 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
         destinationController.mentionedUser = sender;
         destinationController.postCompleteBlock = ^(BOOL success) {
             
-            if (success && [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
+            if (success && [self.tableView.indexPathsForVisibleRows containsObject:[NSIndexPath indexPathForRow:0 inSection:0]]) {
                 [self refreshData];
             }
         };
@@ -841,16 +841,16 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
 
 - (void)configureViews
 {
-    [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? self.account.avatar_static : self.account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+    [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:DWSettingStore.sharedStore.disableGifPlayback ? self.account.avatar_static : self.account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
         self.avatarImageView.image = image;
-        if ([DWSettingStore.sharedStore disableGifPlayback]) {
+        if (DWSettingStore.sharedStore.disableGifPlayback) {
             [self.avatarImageView stopAnimating];
         }
     } failure:nil];
     
-    [self.headerImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? self.account.header_static : self.account.header]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+    [self.headerImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:DWSettingStore.sharedStore.disableGifPlayback ? self.account.header_static : self.account.header]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
         self.headerImageView.image = image;
-        if ([DWSettingStore.sharedStore disableGifPlayback]) {
+        if (DWSettingStore.sharedStore.disableGifPlayback) {
             [self.headerImageView stopAnimating];
         }
     } failure:nil];
@@ -870,10 +870,10 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
     self.displayNameLabel.text = self.account.display_name.length ? self.account.display_name : self.account.username;
     self.usernameLabel.text = [NSString stringWithFormat:@"@%@", self.account.acct];
     self.bioLabel.text = self.account.note ? self.account.note : @"";
-    self.postCountLabel.text = [self.account.statuses_count stringValue];
-    self.followingCountLabel.text = [self.account.following_count stringValue];
-    self.followerCountLabel.text = [self.account.followers_count stringValue];
-    self.followingButton.hidden = [self.account._id isEqualToString:[MSUserStore.sharedStore currentUser]._id];
+    self.postCountLabel.text = self.account.statuses_count.stringValue;
+    self.followingCountLabel.text = self.account.following_count.stringValue;
+    self.followerCountLabel.text = self.account.followers_count.stringValue;
+    self.followingButton.hidden = [self.account._id isEqualToString:MSUserStore.sharedStore.currentUser._id];
     
     self.loadedFollowedStatus = NO;
     
@@ -1268,11 +1268,11 @@ typedef NS_ENUM(NSUInteger, DWProfileSectionType) {
     switch (sender.actionType) {
         case DWAccessibilityActionTypeOpenHashtag:
         {
-            DWTimelineViewController *hashtagController = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"HashtagController"];
+            DWTimelineViewController *hashtagController = [[UIStoryboard storyboardWithName:@"Main" bundle:NSBundle.mainBundle] instantiateViewControllerWithIdentifier:@"HashtagController"];
             hashtagController.hashtag = sender.hashtag;
             DWNavigationViewController *navController = [[DWNavigationViewController alloc] initWithRootViewController:hashtagController];
             
-            [[[UIApplication sharedApplication] topController] presentViewController:navController animated:YES completion:nil];
+            [[UIApplication.sharedApplication topController] presentViewController:navController animated:YES completion:nil];
         }
             
             return YES;

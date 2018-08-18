@@ -216,7 +216,7 @@ static NSInteger mediaUploadLimit = 4;
 
 - (IBAction)imageButtonSelected:(id)sender
 {
-    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    PHAuthorizationStatus status = PHPhotoLibrary.authorizationStatus;
     
     if (status == PHAuthorizationStatusDenied) {
         return;
@@ -323,17 +323,17 @@ static NSInteger mediaUploadLimit = 4;
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? UIInterfaceOrientationMaskPortrait : [topController supportedInterfaceOrientations];
+    return topController == self ? UIInterfaceOrientationMaskPortrait : topController.supportedInterfaceOrientations;
 }
 
 
 - (BOOL)shouldAutorotate
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? NO : [topController shouldAutorotate];
+    return topController == self ? NO : topController.shouldAutorotate;
 }
 
 
@@ -353,7 +353,7 @@ static NSInteger mediaUploadLimit = 4;
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
+    // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
 }
 */
@@ -607,9 +607,9 @@ static NSInteger mediaUploadLimit = 4;
 {
     MSAccount *account = [self.accountSearchResults objectAtIndex:indexPath.row];
     
-    [cell.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? account.avatar_static : account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+    [cell.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:DWSettingStore.sharedStore.disableGifPlayback ? account.avatar_static : account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
         cell.avatarImageView.image = image;
-        if ([DWSettingStore.sharedStore disableGifPlayback]) {
+        if (DWSettingStore.sharedStore.disableGifPlayback) {
             [cell.avatarImageView stopAnimating];
         }
     } failure:nil];
@@ -663,17 +663,17 @@ static NSInteger mediaUploadLimit = 4;
 
 - (void)configureViews
 {
-    MSAccount *currentUser = [MSUserStore.sharedStore currentUser];
+    MSAccount *currentUser = MSUserStore.sharedStore.currentUser;
 
     if (!self.reporting) {
-        [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? currentUser.avatar_static : currentUser.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+        [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:DWSettingStore.sharedStore.disableGifPlayback ? currentUser.avatar_static : currentUser.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
             self.avatarImageView.image = image;
-            if ([DWSettingStore.sharedStore disableGifPlayback]) {
+            if (DWSettingStore.sharedStore.disableGifPlayback) {
                 [self.avatarImageView stopAnimating];
             }
         } failure:nil];
 
-        self.usernameLabel.text = [MSAppStore.sharedStore instance];
+        self.usernameLabel.text = MSAppStore.sharedStore.instance;
     }
     else
     {
@@ -707,10 +707,10 @@ static NSInteger mediaUploadLimit = 4;
     self.contentWarningSwitch.on = NO;
     self.sensitiveMediaSwitch.on = NO;
     
-    if ([DWSettingStore.sharedStore alwaysPrivate]) {
+    if (DWSettingStore.sharedStore.alwaysPrivate) {
         self.privacyState = MS_VISIBILITY_TYPE_PRIVATE;
     }
-    else if (![DWSettingStore.sharedStore alwaysPublic])
+    else if (!DWSettingStore.sharedStore.alwaysPublic)
     {
         self.privacyState = MS_VISIBILITY_TYPE_UNLISTED;
     }
@@ -730,7 +730,7 @@ static NSInteger mediaUploadLimit = 4;
     
     self.progressBar.hidden = YES;
     
-    if ([DWSettingStore.sharedStore awooMode] && !self.reporting) {
+    if (DWSettingStore.sharedStore.awooMode && !self.reporting) {
         [self.tootButton setTitle:@"AWOO" forState:UIControlStateNormal];
         [self.tootButton setTitle:@"AWOO!" forState:UIControlStateSelected];
     }
@@ -749,20 +749,20 @@ static NSInteger mediaUploadLimit = 4;
         self.replyToUsernameLabel.text = [NSString stringWithFormat:@"@%@", self.replyToStatus.account.acct];
         self.replyToDisplayNameLabel.text = self.replyToStatus.account.display_name.length ? self.replyToStatus.account.display_name : self.replyToStatus.account.username;
         
-        [self.replyToAvatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? self.replyToStatus.account.avatar_static : self.replyToStatus.account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+        [self.replyToAvatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:DWSettingStore.sharedStore.disableGifPlayback ? self.replyToStatus.account.avatar_static : self.replyToStatus.account.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
             self.replyToAvatarImageView.image = image;
-            if ([DWSettingStore.sharedStore disableGifPlayback]) {
+            if (DWSettingStore.sharedStore.disableGifPlayback) {
                 [self.replyToAvatarImageView stopAnimating];
             }
         } failure:nil];
                 
-        NSString *replyToText = [self.replyToStatus.account.acct isEqualToString:[MSUserStore.sharedStore currentAccountString]] ? @"" : [NSString stringWithFormat:@"@%@ ", self.replyToStatus.account.acct];
+        NSString *replyToText = [self.replyToStatus.account.acct isEqualToString:MSUserStore.sharedStore.currentAccountString] ? @"" : [NSString stringWithFormat:@"@%@ ", self.replyToStatus.account.acct];
                 
         for (MSMention *entity in self.replyToStatus.mentions) {
             
             NSString *username = entity.acct;
             
-            if (![replyToText containsString:username] && ![entity.acct isEqualToString:[MSUserStore.sharedStore currentAccountString]]) {
+            if (![replyToText containsString:username] && ![entity.acct isEqualToString:MSUserStore.sharedStore.currentAccountString]) {
                 replyToText = [replyToText stringByAppendingFormat:@"@%@ ", username];
             }
         }
@@ -906,7 +906,7 @@ static NSInteger mediaUploadLimit = 4;
     options.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;
     options.resizeMode = PHImageRequestOptionsResizeModeFast;
     
-    [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:imageView.bounds.size contentMode:PHImageContentModeAspectFill options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+    [PHImageManager.defaultManager requestImageForAsset:asset targetSize:imageView.bounds.size contentMode:PHImageContentModeAspectFill options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         
         [imageView setImage:result];
     }];
@@ -936,7 +936,7 @@ static NSInteger mediaUploadLimit = 4;
     picker.toolbarTextColor = DW_LINK_TINT_COLOR;
     picker.toolbarTintColor = DW_LINK_TINT_COLOR;
     picker.navigationBarBarTintColor = DW_BAR_TINT_COLOR;
-    picker.navigationBarTextColor = [UIColor whiteColor];
+    picker.navigationBarTextColor = UIColor.whiteColor;
     picker.navigationBarTintColor = DW_LINK_TINT_COLOR;
     picker.pickerFontName = @"Roboto-Regular";
     picker.pickerBoldFontName = @"Roboto-Medium";

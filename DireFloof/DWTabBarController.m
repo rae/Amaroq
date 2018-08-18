@@ -59,7 +59,7 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
     
     [DWNotificationStore.sharedStore registerForNotifications];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configureViews) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(configureViews) name:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
 }
 
 
@@ -76,23 +76,23 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter postNotificationName:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
 }
 
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? UIInterfaceOrientationMaskPortrait : [topController supportedInterfaceOrientations];
+    return topController == self ? UIInterfaceOrientationMaskPortrait : topController.supportedInterfaceOrientations;
 }
 
 
 - (BOOL)shouldAutorotate
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? NO : [topController shouldAutorotate];
+    return topController == self ? NO : topController.shouldAutorotate;
 }
 
 
@@ -110,7 +110,7 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
 
@@ -118,7 +118,7 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
 /*
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
+    // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
 }*/
 
@@ -150,7 +150,7 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
     else
     {
         self.previousSelectedIndex = index;
-        [[NSNotificationCenter defaultCenter] postNotificationName:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
+        [NSNotificationCenter.defaultCenter postNotificationName:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
         [[[[self.viewControllers objectAtIndex:index] viewControllers] firstObject] viewDidAppear:NO];
     }
 }
@@ -173,14 +173,14 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
         item.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
         
         if ([self.tabBar.items indexOfObject:item] == DWTabItemPublic) {
-            [item setImage:[DWSettingStore.sharedStore showLocalTimeline] ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
-            [item setSelectedImage:[DWSettingStore.sharedStore showLocalTimeline] ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
+            [item setImage:DWSettingStore.sharedStore.showLocalTimeline ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
+            [item setSelectedImage:DWSettingStore.sharedStore.showLocalTimeline ? [UIImage imageNamed:@"LocalIcon"] : [UIImage imageNamed:@"PublicIcon"]];
 
         }
     }
     
     // Collect the window and determine the true width when we're in portrait mode
-    CGRect windowBounds = [UIApplication sharedApplication].keyWindow.bounds;
+    CGRect windowBounds = UIApplication.sharedApplication.keyWindow.bounds;
     CGFloat width = MIN(windowBounds.size.height, windowBounds.size.width);
     
     if (!self.notificationBadge) {
@@ -201,7 +201,7 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
     
     if (!self.centerTabOverlay) {
         self.centerTabOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width/5.0f, 49.0f)];
-        self.centerTabOverlay.backgroundColor = [UIColor clearColor];
+        self.centerTabOverlay.backgroundColor = UIColor.clearColor;
         
         UIView *buttonBackground = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 5.0f, width/5.0f - 20.0f, 39.0f)];
         buttonBackground.backgroundColor = DW_BLUE_COLOR;
@@ -212,7 +212,7 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
         [buttonBackground autoCenterInSuperview];
         
         UIButton *composeButton = [[UIButton alloc] initWithFrame:self.centerTabOverlay.bounds];
-        composeButton.backgroundColor = [UIColor clearColor];
+        composeButton.backgroundColor = UIColor.clearColor;
         [composeButton setImage:[[UIImage imageNamed:@"ComposeIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         [composeButton addTarget:self action:@selector(composeButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         composeButton.tintColor = self.tabBar.barTintColor;
@@ -237,7 +237,7 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
         self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 21.0f, 21.0f)];
         self.avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
         self.avatarImageView.clipsToBounds = YES;
-        self.avatarImageView.backgroundColor = [UIColor clearColor];
+        self.avatarImageView.backgroundColor = UIColor.clearColor;
         
         [menuOverlay addSubview:self.avatarImageView];
         [self.avatarImageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(2, 2, 2, 2)];
@@ -252,11 +252,11 @@ typedef NS_ENUM(NSUInteger, DWTabItem) {
     __weak DWTabBarController *__self = self;
     [MSUserStore.sharedStore getCurrentUserWithCompletion:^(BOOL success, MSAccount *user, NSError *error) {
         if (success) {
-            [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[DWSettingStore.sharedStore disableGifPlayback] ? user.avatar_static : user.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+            [self.avatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:DWSettingStore.sharedStore.disableGifPlayback ? user.avatar_static : user.avatar]] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
                 
                 if (image) {
                     __avatarImageView.image = image;
-                    if ([DWSettingStore.sharedStore disableGifPlayback]) {
+                    if (DWSettingStore.sharedStore.disableGifPlayback) {
                         [__avatarImageView stopAnimating];
                     }
                 }

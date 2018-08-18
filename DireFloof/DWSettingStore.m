@@ -41,15 +41,15 @@
     
     if (self) {
                 
-        _alwaysPrivate = [[NSUserDefaults standardUserDefaults] boolForKey:DW_SETTING_ALWAYS_PRIVATE_KEY];
-        _alwaysPublic = [[NSUserDefaults standardUserDefaults] boolForKey:DW_SETTING_ALWAYS_PUBLIC_KEY];
-        self.awooMode = [[NSUserDefaults standardUserDefaults] boolForKey:DW_SETTING_AWOO_MODE_KEY];
-        self.disableGifPlayback = [[NSUserDefaults standardUserDefaults] boolForKey:DW_SETTING_GIF_AUTOPLAY_KEY];
-        self.newFollowerNotifications = ![[NSUserDefaults standardUserDefaults] boolForKey:DW_SETTING_NEW_FOLLOWERS_OFF_KEY];
-        self.favoriteNotifications = ![[NSUserDefaults standardUserDefaults] boolForKey:DW_SETTING_FAVORITES_OFF_KEY];
-        self.mentionNotifications = ![[NSUserDefaults standardUserDefaults] boolForKey:DW_SETTING_MENTIONS_OFF_KEY];
-        self.boostNotifications = ![[NSUserDefaults standardUserDefaults] boolForKey:DW_SETTING_BOOSTS_OFF_KEY];
-        self.showLocalTimeline = [[NSUserDefaults standardUserDefaults] boolForKey:DW_SETTING_PUBLIC_SHOW_LOCAL_KEY];
+        _alwaysPrivate = [NSUserDefaults.standardUserDefaults boolForKey:DW_SETTING_ALWAYS_PRIVATE_KEY];
+        _alwaysPublic = [NSUserDefaults.standardUserDefaults boolForKey:DW_SETTING_ALWAYS_PUBLIC_KEY];
+        self.awooMode = [NSUserDefaults.standardUserDefaults boolForKey:DW_SETTING_AWOO_MODE_KEY];
+        self.disableGifPlayback = [NSUserDefaults.standardUserDefaults boolForKey:DW_SETTING_GIF_AUTOPLAY_KEY];
+        self.newFollowerNotifications = ![NSUserDefaults.standardUserDefaults boolForKey:DW_SETTING_NEW_FOLLOWERS_OFF_KEY];
+        self.favoriteNotifications = ![NSUserDefaults.standardUserDefaults boolForKey:DW_SETTING_FAVORITES_OFF_KEY];
+        self.mentionNotifications = ![NSUserDefaults.standardUserDefaults boolForKey:DW_SETTING_MENTIONS_OFF_KEY];
+        self.boostNotifications = ![NSUserDefaults.standardUserDefaults boolForKey:DW_SETTING_BOOSTS_OFF_KEY];
+        self.showLocalTimeline = [NSUserDefaults.standardUserDefaults boolForKey:DW_SETTING_PUBLIC_SHOW_LOCAL_KEY];
     }
     
     return self;
@@ -66,9 +66,9 @@
         _alwaysPublic = NO;
     }
     
-    [[NSUserDefaults standardUserDefaults] setBool:_alwaysPrivate forKey:DW_SETTING_ALWAYS_PRIVATE_KEY];
-    [[NSUserDefaults standardUserDefaults] setBool:_alwaysPublic forKey:DW_SETTING_ALWAYS_PUBLIC_KEY];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [NSUserDefaults.standardUserDefaults setBool:_alwaysPrivate forKey:DW_SETTING_ALWAYS_PRIVATE_KEY];
+    [NSUserDefaults.standardUserDefaults setBool:_alwaysPublic forKey:DW_SETTING_ALWAYS_PUBLIC_KEY];
+    [NSUserDefaults.standardUserDefaults synchronize];
 }
 
 
@@ -80,9 +80,9 @@
         _alwaysPrivate = NO;
     }
     
-    [[NSUserDefaults standardUserDefaults] setBool:_alwaysPrivate forKey:DW_SETTING_ALWAYS_PRIVATE_KEY];
-    [[NSUserDefaults standardUserDefaults] setBool:_alwaysPublic forKey:DW_SETTING_ALWAYS_PUBLIC_KEY];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [NSUserDefaults.standardUserDefaults setBool:_alwaysPrivate forKey:DW_SETTING_ALWAYS_PRIVATE_KEY];
+    [NSUserDefaults.standardUserDefaults setBool:_alwaysPublic forKey:DW_SETTING_ALWAYS_PUBLIC_KEY];
+    [NSUserDefaults.standardUserDefaults synchronize];
 }
      
 
@@ -90,8 +90,8 @@
 {
     _awooMode = awooMode;
     
-    [[NSUserDefaults standardUserDefaults] setBool:awooMode forKey:DW_SETTING_AWOO_MODE_KEY];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [NSUserDefaults.standardUserDefaults setBool:awooMode forKey:DW_SETTING_AWOO_MODE_KEY];
+    [NSUserDefaults.standardUserDefaults synchronize];
 }
 
 
@@ -99,8 +99,8 @@
 {
     _disableGifPlayback = disableGifPlayback;
     
-    [[NSUserDefaults standardUserDefaults] setBool:disableGifPlayback forKey:DW_SETTING_GIF_AUTOPLAY_KEY];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [NSUserDefaults.standardUserDefaults setBool:disableGifPlayback forKey:DW_SETTING_GIF_AUTOPLAY_KEY];
+    [NSUserDefaults.standardUserDefaults synchronize];
 }
 
 
@@ -108,8 +108,8 @@
 {
     _newFollowerNotifications = newFollowerNotifications;
     
-    [[NSUserDefaults standardUserDefaults] setBool:!newFollowerNotifications forKey:DW_SETTING_NEW_FOLLOWERS_OFF_KEY];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [NSUserDefaults.standardUserDefaults setBool:!newFollowerNotifications forKey:DW_SETTING_NEW_FOLLOWERS_OFF_KEY];
+    [NSUserDefaults.standardUserDefaults synchronize];
 }
 
 
@@ -117,8 +117,8 @@
 {
     _favoriteNotifications = favoriteNotifications;
     
-    [[NSUserDefaults standardUserDefaults] setBool:!favoriteNotifications forKey:DW_SETTING_FAVORITES_OFF_KEY];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [NSUserDefaults.standardUserDefaults setBool:!favoriteNotifications forKey:DW_SETTING_FAVORITES_OFF_KEY];
+    [NSUserDefaults.standardUserDefaults synchronize];
 }
 
 
@@ -126,8 +126,8 @@
 {
     _mentionNotifications = mentionNotifications;
     
-    [[NSUserDefaults standardUserDefaults] setBool:!mentionNotifications forKey:DW_SETTING_MENTIONS_OFF_KEY];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [NSUserDefaults.standardUserDefaults setBool:!mentionNotifications forKey:DW_SETTING_MENTIONS_OFF_KEY];
+    [NSUserDefaults.standardUserDefaults synchronize];
 }
 
 
@@ -135,8 +135,8 @@
 {
     _boostNotifications = boostNotifications;
     
-    [[NSUserDefaults standardUserDefaults] setBool:!boostNotifications forKey:DW_SETTING_BOOSTS_OFF_KEY];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [NSUserDefaults.standardUserDefaults setBool:!boostNotifications forKey:DW_SETTING_BOOSTS_OFF_KEY];
+    [NSUserDefaults.standardUserDefaults synchronize];
 }
 
 
@@ -144,7 +144,7 @@
 {
     _showLocalTimeline = showLocalTimeline;
     
-    [[NSUserDefaults standardUserDefaults] setBool:showLocalTimeline forKey:DW_SETTING_PUBLIC_SHOW_LOCAL_KEY];
+    [NSUserDefaults.standardUserDefaults setBool:showLocalTimeline forKey:DW_SETTING_PUBLIC_SHOW_LOCAL_KEY];
 }
 
 
@@ -157,18 +157,18 @@
     BOOL isDir = NO;
     
     NSError *error;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:cachePath isDirectory:&isDir]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:cachePath withIntermediateDirectories:NO attributes:nil error:&error];
+    if (![NSFileManager.defaultManager fileExistsAtPath:cachePath isDirectory:&isDir]) {
+        [NSFileManager.defaultManager createDirectoryAtPath:cachePath withIntermediateDirectories:NO attributes:nil error:&error];
     }
     
     NSNumber *cacheSize = [FCFileManager sizeOfDirectoryAtPath:cachePath];
     
-    AFImageDownloader *imageDownloader = [AFImageDownloader defaultInstance];
+    AFImageDownloader *imageDownloader = AFImageDownloader.defaultInstance;
     NSURLCache *urlCache = imageDownloader.sessionManager.session.configuration.URLCache;
     
     NSByteCountFormatter *formatter = [[NSByteCountFormatter alloc] init];
     
-    return [formatter stringFromByteCount:cacheSize.longLongValue + [[NSURLCache sharedURLCache] currentDiskUsage] + [urlCache currentDiskUsage] + [[SDImageCache sharedImageCache] getSize]];
+    return [formatter stringFromByteCount:cacheSize.longLongValue + [NSURLCache.sharedURLCache currentDiskUsage] + urlCache.currentDiskUsage + [SDImageCache.sharedImageCache getSize]];
 }
 
 
@@ -179,56 +179,56 @@
     BOOL isDir = NO;
     
     NSError *error;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:cachePath isDirectory:&isDir]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:cachePath withIntermediateDirectories:NO attributes:nil error:&error];
+    if (![NSFileManager.defaultManager fileExistsAtPath:cachePath isDirectory:&isDir]) {
+        [NSFileManager.defaultManager createDirectoryAtPath:cachePath withIntermediateDirectories:NO attributes:nil error:&error];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter postNotificationName:DW_WILL_PURGE_CACHE_NOTIFICATION object:nil];
     
     [FCFileManager removeFilesInDirectoryAtPath:cachePath];
     
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [NSURLCache.sharedURLCache removeAllCachedResponses];
     
-    AFImageDownloader *imageDownloader = [AFImageDownloader defaultInstance];
+    AFImageDownloader *imageDownloader = AFImageDownloader.defaultInstance;
     NSURLCache *urlCache = imageDownloader.sessionManager.session.configuration.URLCache;
     
     [urlCache removeAllCachedResponses];
     [imageDownloader.imageCache removeAllImages];
-    [[SDImageCache sharedImageCache] clearMemory];
-    [[SDImageCache sharedImageCache] clearDiskOnCompletion:nil];
+    [SDImageCache.sharedImageCache clearMemory];
+    [SDImageCache.sharedImageCache clearDiskOnCompletion:nil];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:DW_DID_PURGE_CACHE_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter postNotificationName:DW_DID_PURGE_CACHE_NOTIFICATION object:nil];
 }
 
 
 - (void)performSettingMaintenance
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:DW_MAINTENANCE_FLAG_1_1_4]) {
+    if (![NSUserDefaults.standardUserDefaults boolForKey:DW_MAINTENANCE_FLAG_1_1_4]) {
         
         if (!self.alwaysPublic && !self.alwaysPrivate) {
             self.alwaysPublic = YES;
         }
         
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:DW_MAINTENANCE_FLAG_1_1_4];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [NSUserDefaults.standardUserDefaults setBool:YES forKey:DW_MAINTENANCE_FLAG_1_1_4];
+        [NSUserDefaults.standardUserDefaults synchronize];
     }
     
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:DW_MAINTENANCE_FLAG_1_1_6]) {
+    if (![NSUserDefaults.standardUserDefaults boolForKey:DW_MAINTENANCE_FLAG_1_1_6]) {
         
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths firstObject];
+        NSString *documentsDirectory = paths.firstObject;
         NSString *instancesPlistPath = [documentsDirectory stringByAppendingPathComponent:@"instances.plist"];
         
         [FCFileManager removeItemAtPath:instancesPlistPath];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:MS_CLIENT_ID_KEY];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:MS_CLIENT_SECRET_KEY];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:MS_BASE_URL_STRING_KEY];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:MS_BASE_API_URL_STRING_KEY];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:MS_BASE_MEDIA_URL_STRING_KEY];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:MS_INSTANCE_KEY];
+        [NSUserDefaults.standardUserDefaults removeObjectForKey:MS_CLIENT_ID_KEY];
+        [NSUserDefaults.standardUserDefaults removeObjectForKey:MS_CLIENT_SECRET_KEY];
+        [NSUserDefaults.standardUserDefaults removeObjectForKey:MS_BASE_URL_STRING_KEY];
+        [NSUserDefaults.standardUserDefaults removeObjectForKey:MS_BASE_API_URL_STRING_KEY];
+        [NSUserDefaults.standardUserDefaults removeObjectForKey:MS_BASE_MEDIA_URL_STRING_KEY];
+        [NSUserDefaults.standardUserDefaults removeObjectForKey:MS_INSTANCE_KEY];
         
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:DW_MAINTENANCE_FLAG_1_1_6];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [NSUserDefaults.standardUserDefaults setBool:YES forKey:DW_MAINTENANCE_FLAG_1_1_6];
+        [NSUserDefaults.standardUserDefaults synchronize];
     }
 }
 

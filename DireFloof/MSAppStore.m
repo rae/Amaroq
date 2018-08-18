@@ -55,9 +55,9 @@
 
 + (void)loadNextPage:(NSString *)nextPageUrl withCompletion:(void (^)(NSArray *, NSString *, NSError *))completion
 {
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] GET:[nextPageUrl stringByReplacingOccurrencesOfString:[MSAppStore.sharedStore base_api_url_string] withString:@""] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] GET:[nextPageUrl stringByReplacingOccurrencesOfString:MSAppStore.sharedStore.base_api_url_string withString:@""] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
+        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)task.response);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
         
         if (completion != nil) {
@@ -80,14 +80,14 @@
     self = [super init];
     if (self) {
         
-        self.client_id = [[NSUserDefaults standardUserDefaults] objectForKey:MS_CLIENT_ID_KEY];
-        self.client_secret = [[NSUserDefaults standardUserDefaults] objectForKey:MS_CLIENT_SECRET_KEY];
-        self.base_url_string = [[NSUserDefaults standardUserDefaults] objectForKey:MS_BASE_URL_STRING_KEY];
-        self.base_api_url_string = [[NSUserDefaults standardUserDefaults] objectForKey:MS_BASE_API_URL_STRING_KEY];
-        self.base_media_url_string = [[NSUserDefaults standardUserDefaults] objectForKey:MS_BASE_MEDIA_URL_STRING_KEY];
-        self.instance = [[NSUserDefaults standardUserDefaults] objectForKey:MS_INSTANCE_KEY];
+        self.client_id = [NSUserDefaults.standardUserDefaults objectForKey:MS_CLIENT_ID_KEY];
+        self.client_secret = [NSUserDefaults.standardUserDefaults objectForKey:MS_CLIENT_SECRET_KEY];
+        self.base_url_string = [NSUserDefaults.standardUserDefaults objectForKey:MS_BASE_URL_STRING_KEY];
+        self.base_api_url_string = [NSUserDefaults.standardUserDefaults objectForKey:MS_BASE_API_URL_STRING_KEY];
+        self.base_media_url_string = [NSUserDefaults.standardUserDefaults objectForKey:MS_BASE_MEDIA_URL_STRING_KEY];
+        self.instance = [NSUserDefaults.standardUserDefaults objectForKey:MS_INSTANCE_KEY];
     
-        self.availableInstances = [FCFileManager readFileAtPathAsArray:[self availableInstancesPath]];
+        self.availableInstances = [FCFileManager readFileAtPathAsArray:self.availableInstancesPath];
 
         if (!self.availableInstances.count) {
             
@@ -101,7 +101,7 @@
                                                                                          MS_BASE_MEDIA_URL_STRING_KEY: self.base_media_url_string,
                                                                                          MS_INSTANCE_KEY: self.instance}];
                 
-                [FCFileManager writeFileAtPath:[self availableInstancesPath] content:self.availableInstances];
+                [FCFileManager writeFileAtPath:self.availableInstancesPath content:self.availableInstances];
             }
         }
     }
@@ -125,20 +125,20 @@
     self.base_api_url_string = [self.base_url_string stringByAppendingString:@"api/v1/"];
     self.base_media_url_string = [NSString stringWithFormat:@"https://files.%@/", instanceName];
     
-    NSString *previousInstance = [[NSUserDefaults standardUserDefaults] objectForKey:MS_INSTANCE_KEY];
+    NSString *previousInstance = [NSUserDefaults.standardUserDefaults objectForKey:MS_INSTANCE_KEY];
     
-    [[NSUserDefaults standardUserDefaults] setObject:self.base_url_string forKey:MS_BASE_URL_STRING_KEY];
-    [[NSUserDefaults standardUserDefaults] setObject:self.base_api_url_string forKey:MS_BASE_API_URL_STRING_KEY];
-    [[NSUserDefaults standardUserDefaults] setObject:self.base_media_url_string forKey:MS_BASE_MEDIA_URL_STRING_KEY];
-    [[NSUserDefaults standardUserDefaults] setObject:self.instance forKey:MS_INSTANCE_KEY];
+    [NSUserDefaults.standardUserDefaults setObject:self.base_url_string forKey:MS_BASE_URL_STRING_KEY];
+    [NSUserDefaults.standardUserDefaults setObject:self.base_api_url_string forKey:MS_BASE_API_URL_STRING_KEY];
+    [NSUserDefaults.standardUserDefaults setObject:self.base_media_url_string forKey:MS_BASE_MEDIA_URL_STRING_KEY];
+    [NSUserDefaults.standardUserDefaults setObject:self.instance forKey:MS_INSTANCE_KEY];
     
     if (previousInstance) {
         if (![previousInstance isEqualToString:self.instance]) {
             self.client_id = nil;
             self.client_secret = nil;
             
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:MS_CLIENT_ID_KEY];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:MS_CLIENT_SECRET_KEY];
+            [NSUserDefaults.standardUserDefaults removeObjectForKey:MS_CLIENT_ID_KEY];
+            [NSUserDefaults.standardUserDefaults removeObjectForKey:MS_CLIENT_SECRET_KEY];
             
             NSDictionary *availableInstance = [[self.availableInstances filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"MS_INSTANCE_KEY LIKE[cd] %@", self.instance]] firstObject];
             
@@ -146,8 +146,8 @@
                 self.client_id = availableInstance[MS_CLIENT_ID_KEY];
                 self.client_secret = availableInstance[MS_CLIENT_SECRET_KEY];
                 
-                [[NSUserDefaults standardUserDefaults] setObject:self.client_id forKey:MS_CLIENT_ID_KEY];
-                [[NSUserDefaults standardUserDefaults] setObject:self.client_secret forKey:MS_CLIENT_SECRET_KEY];
+                [NSUserDefaults.standardUserDefaults setObject:self.client_id forKey:MS_CLIENT_ID_KEY];
+                [NSUserDefaults.standardUserDefaults setObject:self.client_secret forKey:MS_CLIENT_SECRET_KEY];
             }
             
             [MSAuthStore.sharedStore setCredential:nil];
@@ -155,16 +155,16 @@
     }
     else
     {
-        AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[self base_api_url_string]];
+        AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.base_api_url_string];
         
         if (credential) {
             [MSAuthStore.sharedStore setCredential:nil];
         }
         
-        [AFOAuthCredential deleteCredentialWithIdentifier:[self base_api_url_string]];
+        [AFOAuthCredential deleteCredentialWithIdentifier:self.base_api_url_string];
     }
     
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [NSUserDefaults.standardUserDefaults synchronize];
 }
 
 
@@ -173,8 +173,8 @@
     NSArray *availableInstances = [self.availableInstances filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"!(MS_INSTANCE_KEY LIKE[cd] %@)", instance]];
     self.availableInstances = availableInstances;
     
-    [FCFileManager removeItemAtPath:[self availableInstancesPath]];
-    [FCFileManager writeFileAtPath:[self availableInstancesPath] content:self.availableInstances];
+    [FCFileManager removeItemAtPath:self.availableInstancesPath];
+    [FCFileManager writeFileAtPath:self.availableInstancesPath content:self.availableInstances];
 }
 
 
@@ -194,14 +194,14 @@
         
         NSString *requestUrl = [NSString stringWithFormat:@"%@%@", self.base_api_url_string, @"apps"];
         
-        [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:params constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] POST:requestUrl parameters:params constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
             self.client_id = responseObject[@"client_id"];
             self.client_secret = responseObject[@"client_secret"];
             
-            [[NSUserDefaults standardUserDefaults] setObject:self.client_id forKey:MS_CLIENT_ID_KEY];
-            [[NSUserDefaults standardUserDefaults] setObject:self.client_secret forKey:MS_CLIENT_SECRET_KEY];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            [NSUserDefaults.standardUserDefaults setObject:self.client_id forKey:MS_CLIENT_ID_KEY];
+            [NSUserDefaults.standardUserDefaults setObject:self.client_secret forKey:MS_CLIENT_SECRET_KEY];
+            [NSUserDefaults.standardUserDefaults synchronize];
             
             NSDictionary *availableInstance = [[self.availableInstances filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"MS_INSTANCE_KEY LIKE[cd] %@", self.instance]] firstObject];
             
@@ -220,8 +220,8 @@
                 self.availableInstances = @[availableInstance];
             }
             
-            [FCFileManager removeItemAtPath:[self availableInstancesPath]];
-            [FCFileManager writeFileAtPath:[self availableInstancesPath] content:self.availableInstances];
+            [FCFileManager removeItemAtPath:self.availableInstancesPath];
+            [FCFileManager writeFileAtPath:self.availableInstancesPath content:self.availableInstances];
             
             if (completion != nil) {
                 completion(self.isRegistered);
@@ -243,7 +243,7 @@
     
     [[MSAPIClient sharedClientWithBaseAPI:self.base_api_url_string] GET:requestUrl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)[task response]);
+        NSHTTPURLResponse *response = ((NSHTTPURLResponse *)task.response);
         NSString *nextPageUrl = [MSAPIClient getNextPageFromResponse:response];
         
         if (completion) {
@@ -298,7 +298,7 @@
 - (NSString *)availableInstancesPath
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
+    NSString *documentsDirectory = paths.firstObject;
     NSString *instancesPlistPath = [documentsDirectory stringByAppendingPathComponent:@"instances.plist"];
     
     return instancesPlistPath;

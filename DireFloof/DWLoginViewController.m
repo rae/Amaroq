@@ -50,7 +50,7 @@
             if (success) {
                 if (self.addAccount) {
                     // Notify the app to clear all its contents for refresh
-                    [[NSNotificationCenter defaultCenter] postNotificationName:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
+                    [NSNotificationCenter.defaultCenter postNotificationName:DW_DID_SWITCH_INSTANCES_NOTIFICATION object:nil];
                     [DWNotificationStore.sharedStore registerForNotifications];
                     [self dismissViewControllerAnimated:YES completion:nil];
                 }
@@ -78,7 +78,7 @@
     if (self.lastInstance) {
         [MSAppStore.sharedStore setMastodonInstance:self.lastInstance];
         [DWNotificationStore.sharedStore registerForNotifications];
-        [MSAuthStore.sharedStore isLoggedIn];
+        MSAuthStore.sharedStore.isLoggedIn;
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -100,14 +100,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.lastInstance = [[MSAppStore.sharedStore instance] copy];
+    self.lastInstance = [MSAppStore.sharedStore.instance copy];
     
-    self.instanceField.text = [MSAppStore.sharedStore instance];
+    self.instanceField.text = MSAppStore.sharedStore.instance;
     
     self.placeholderField.hidden = self.instanceField.text.length;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adjustFonts) name:UIContentSizeCategoryDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelLogin) name:DW_DID_CANCEL_LOGIN_NOTIFICATION object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(adjustFonts) name:UIContentSizeCategoryDidChangeNotification object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(cancelLogin) name:DW_DID_CANCEL_LOGIN_NOTIFICATION object:nil];
     
     [self adjustFonts];
     
@@ -119,7 +119,7 @@
 {
     [super viewDidAppear:animated];
     
-    if ([MSAuthStore.sharedStore isLoggedIn] && !self.addAccount) {
+    if (MSAuthStore.sharedStore.isLoggedIn && !self.addAccount) {
         [self performSegueWithIdentifier:@"LoginSegue" sender:self];
     }
 }
@@ -127,17 +127,17 @@
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? UIInterfaceOrientationMaskPortrait : [topController supportedInterfaceOrientations];
+    return topController == self ? UIInterfaceOrientationMaskPortrait : topController.supportedInterfaceOrientations;
 }
 
 
 - (BOOL)shouldAutorotate
 {
-    UIViewController *topController = [[UIApplication sharedApplication] topController];
+    UIViewController *topController = [UIApplication.sharedApplication topController];
     
-    return topController == self ? NO : [topController shouldAutorotate];
+    return topController == self ? NO : topController.shouldAutorotate;
 }
 
 
@@ -155,7 +155,7 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
 
@@ -163,7 +163,7 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
+    // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
     
     if ([segue.identifier isEqualToString:@"PrivacySegue"]) {

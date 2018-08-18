@@ -32,10 +32,10 @@
         
         [self presentViewController:safariViewController animated:YES completion:nil];
     } else if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {
-        [[UIApplication sharedApplication] openURL:url];
+        [UIApplication.sharedApplication openURL:url];
     } else {
         // iOS 10 or later
-        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+        [UIApplication.sharedApplication openURL:url options:@{} completionHandler:nil];
     }
 }
 

@@ -49,7 +49,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     self.progressBlock = progress;
     
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    NSMutableDictionary *params = NSMutableDictionary.dictionary;
     
     if (!status || !status.length) {
         status = @"\u200B";
@@ -106,7 +106,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] DELETE:requestUrl parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] DELETE:requestUrl parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -122,7 +122,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/reblog", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -138,7 +138,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/unreblog", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -155,7 +155,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/favourite", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -171,7 +171,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/unfavourite", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -204,7 +204,7 @@ static CGFloat maxDimensions = 1024.0f;
         params[@"comment"] = comments;
     }
     
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:@"reports" parameters:params constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] POST:@"reports" parameters:params constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         if (completion != nil) {
             completion(YES, nil);
@@ -223,7 +223,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/mute", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -239,7 +239,7 @@ static CGFloat maxDimensions = 1024.0f;
 {
     NSString *requestUrl = [NSString stringWithFormat:@"statuses/%@/unmute", statusId];
     
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] POST:requestUrl parameters:nil constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion != nil) {
             completion(YES, nil);
         }
@@ -255,7 +255,7 @@ static CGFloat maxDimensions = 1024.0f;
 
 - (void)postStatusWithParameters:(NSDictionary *)params withCompletion:(void (^)(BOOL, NSDictionary *, NSError *))completion
 {
-    [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:@"statuses" parameters:params constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] POST:@"statuses" parameters:params constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         self.progressBlock = nil;
         
@@ -297,7 +297,7 @@ static CGFloat maxDimensions = 1024.0f;
             options.resizeMode = PHImageRequestOptionsResizeModeNone;
             options.networkAccessAllowed = YES;
             
-            [[PHImageManager defaultManager] requestImageDataForAsset:mediaObject options:options resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+            [PHImageManager.defaultManager requestImageDataForAsset:mediaObject options:options resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
                 
                 totalProgress += 1.0f/(CGFloat)numberToUpload * 0.5f;
                 
@@ -328,7 +328,7 @@ static CGFloat maxDimensions = 1024.0f;
                     }
                 }
                 
-                [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:@"media" parameters:@{@"description": mediaDescription} constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] POST:@"media" parameters:@{@"description": mediaDescription} constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                     
                     [formData appendPartWithFileData:optimizedImageData ? optimizedImageData : imageData name:@"file" fileName:filename mimeType:MIME];
                 } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -396,7 +396,7 @@ static CGFloat maxDimensions = 1024.0f;
                 }
             };
             
-            [[PHImageManager defaultManager] requestExportSessionForVideo:mediaObject options:options exportPreset:AVAssetExportPresetMediumQuality resultHandler:^(AVAssetExportSession * _Nullable exportSession, NSDictionary * _Nullable info) {
+            [PHImageManager.defaultManager requestExportSessionForVideo:mediaObject options:options exportPreset:AVAssetExportPresetMediumQuality resultHandler:^(AVAssetExportSession * _Nullable exportSession, NSDictionary * _Nullable info) {
                 
                 exportSession.outputFileType = AVFileTypeMPEG4;
                 exportSession.shouldOptimizeForNetworkUse = YES;
@@ -409,8 +409,8 @@ static CGFloat maxDimensions = 1024.0f;
                 BOOL isDir = NO;
                 
                 NSError *error;
-                if (![[NSFileManager defaultManager] fileExistsAtPath:cachePath isDirectory:&isDir]) {
-                    [[NSFileManager defaultManager] createDirectoryAtPath:cachePath withIntermediateDirectories:NO attributes:nil error:&error];
+                if (![NSFileManager.defaultManager fileExistsAtPath:cachePath isDirectory:&isDir]) {
+                    [NSFileManager.defaultManager createDirectoryAtPath:cachePath withIntermediateDirectories:NO attributes:nil error:&error];
                 }
                 
                 NSString *filePath = [cachePath stringByAppendingPathComponent:mediaIdentifier];
@@ -429,7 +429,7 @@ static CGFloat maxDimensions = 1024.0f;
                         
                         totalProgress += 1.0f/(CGFloat)numberToUpload * 0.5f;
                         
-                        [[MSAPIClient sharedClientWithBaseAPI:[MSAppStore.sharedStore base_api_url_string]] POST:@"media" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                        [[MSAPIClient sharedClientWithBaseAPI:MSAppStore.sharedStore.base_api_url_string] POST:@"media" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                             
                             
                             [formData appendPartWithFileURL:[NSURL fileURLWithPath:filePath] name:@"file" fileName:@"file.mp4" mimeType:@"video/mp4" error:nil];
@@ -442,7 +442,7 @@ static CGFloat maxDimensions = 1024.0f;
                             
                         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                             
-                            [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
+                            [NSFileManager.defaultManager removeItemAtPath:filePath error:nil];
                             
                             totalProgress += 1.0f/(CGFloat)numberToUpload * 0.5f;
                             
@@ -465,7 +465,7 @@ static CGFloat maxDimensions = 1024.0f;
                             }
                         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                             
-                            [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
+                            [NSFileManager.defaultManager removeItemAtPath:filePath error:nil];
                             
                             numberFailed += 1;
                             

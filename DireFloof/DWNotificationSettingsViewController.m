@@ -41,7 +41,7 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
     
     [self configureData];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self.tableView selector:@selector(reloadData) name:UIContentSizeCategoryDidChangeNotification object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self.tableView selector:@selector(reloadData) name:UIContentSizeCategoryDidChangeNotification object:nil];
 }
 
 
@@ -53,7 +53,7 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self.tableView];
+    [NSNotificationCenter.defaultCenter removeObserver:self.tableView];
 }
 
 /*
@@ -61,7 +61,7 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
+    // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
 }
 */
@@ -95,16 +95,16 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
 {
     switch (indexPath.row) {
         case DWMenuRowTypeBoosts:
-            [DWSettingStore.sharedStore setBoostNotifications:![DWSettingStore.sharedStore boostNotifications]];
+            DWSettingStore.sharedStore.boostNotifications = !DWSettingStore.sharedStore.boostNotifications;
             break;
         case DWMenuRowTypeMentions:
-            [DWSettingStore.sharedStore setMentionNotifications:![DWSettingStore.sharedStore mentionNotifications]];
+            DWSettingStore.sharedStore.mentionNotifications = !DWSettingStore.sharedStore.mentionNotifications;
             break;
         case DWMenuRowTypeFavorites:
-            [DWSettingStore.sharedStore setFavoriteNotifications:![DWSettingStore.sharedStore favoriteNotifications]];
+            DWSettingStore.sharedStore.favoriteNotifications = !DWSettingStore.sharedStore.favoriteNotifications;
             break;
         case DWMenuRowTypeFollowers:
-            [DWSettingStore.sharedStore setNewFollowerNotifications:![DWSettingStore.sharedStore newFollowerNotifications]];
+            DWSettingStore.sharedStore.newFollowerNotifications = !DWSettingStore.sharedStore.newFollowerNotifications;
             break;
         default:
             break;
@@ -141,21 +141,21 @@ typedef NS_ENUM(NSUInteger, DWMenuRowType) {
     cell.detailTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     cell.detailTitleLabel.numberOfLines = 0;
     
-    cell.titleLabel.textColor = [UIColor whiteColor];
+    cell.titleLabel.textColor = UIColor.whiteColor;
     cell.detailTitleLabel.textColor = DW_LINK_TINT_COLOR;
     
     switch (indexPath.row) {
         case DWMenuRowTypeFollowers:
-            cell.accessoryType = [DWSettingStore.sharedStore newFollowerNotifications] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = DWSettingStore.sharedStore.newFollowerNotifications ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             break;
         case DWMenuRowTypeFavorites:
-            cell.accessoryType = [DWSettingStore.sharedStore favoriteNotifications] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = DWSettingStore.sharedStore.favoriteNotifications ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             break;
         case DWMenuRowTypeMentions:
-            cell.accessoryType = [DWSettingStore.sharedStore mentionNotifications] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = DWSettingStore.sharedStore.mentionNotifications ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             break;
         case DWMenuRowTypeBoosts:
-            cell.accessoryType = [DWSettingStore.sharedStore boostNotifications] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = DWSettingStore.sharedStore.boostNotifications ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             break;
         default:
             cell.accessoryType = UITableViewCellAccessoryNone;
