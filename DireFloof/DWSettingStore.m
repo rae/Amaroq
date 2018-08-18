@@ -9,9 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import <SDWebImage/SDImageCache.h>
-#import <AFNetworking/AFImageDownloader.h>
-#import <FCFileManager/FCFileManager.h>
+@import SDWebImage;
+@import AFNetworking;
+@import FCFileManager;
 #import "DWSettingStore.h"
 #import "DWConstants.h"
 #import "MastodonConstants.h"

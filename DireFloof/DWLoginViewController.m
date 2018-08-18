@@ -14,7 +14,6 @@
 #import "DWAboutViewController.h"
 #import "DWConstants.h"
 #import "DWNotificationStore.h"
-#import "UIApplication+TopController.h"
 #import "UIAlertController+SupportedInterfaceOrientations.h"
 
 @interface DWLoginViewController () <UITextFieldDelegate>

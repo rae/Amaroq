@@ -10,7 +10,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import "DWNavigationViewController.h"
-#import "UIApplication+TopController.h"
 
 @interface InteractivePopGestureDelegate : NSObject <UIGestureRecognizerDelegate>
 

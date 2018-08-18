@@ -7,7 +7,7 @@
 //
 
 #import "UIViewController+WebNavigation.h"
-#import <SafariServices/SafariServices.h>
+@import SafariServices;
 #import "DWConstants.h"
 
 @implementation UIViewController (WebNavigation)

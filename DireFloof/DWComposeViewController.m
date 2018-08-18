@@ -9,16 +9,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import <RMPickerViewController/RMPickerViewController.h>
-#import <YLProgressBar/YLProgressBar.h>
-#import <GMImagePicker/GMImagePickerController.h>
-#import <AFNetworking/UIImageView+AFNetworking.h>
+@import RMPickerViewController;
+@import YLProgressBar;
+@import GMImagePicker;
+@import AFNetworking;
+
 #import "DWComposeViewController.h"
 #import "DWConstants.h"
 #import "DWSettingStore.h"
 #import "DWSearchTableViewCell.h"
 #import "DWDraftStore.h"
-#import "UIApplication+TopController.h"
 #import "UIAlertController+SupportedInterfaceOrientations.h"
 
 typedef NS_ENUM(NSUInteger, DWPrivacyType) {

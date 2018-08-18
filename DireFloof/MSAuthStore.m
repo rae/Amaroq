@@ -9,15 +9,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import <UIKit/UIKit.h>
-#import <AFOAuth2Manager/AFHTTPRequestSerializer+OAuth2.h>
-#import <OAuth2/OAuthRequestController.h>
+@import UIKit;
+@import AFOAuth2Manager;
+@import OAuth2;
+
 #import "MSAuthStore.h"
 #import "MastodonConstants.h"
 #import "MSAppStore.h"
 #import "MSAPIClient.h"
 #import "MSUserStore.h"
-#import "UIApplication+TopController.h"
 #import "UIViewController+WebNavigation.h"
 #import "DWNotificationStore.h"
 #import "DWConstants.h"

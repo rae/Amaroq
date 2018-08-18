@@ -9,18 +9,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import <GPUImage/GPUImage.h>
-#import <AVKit/AVKit.h>
-#import <MHVideoPhotoGallery/MHGalleryController.h>
-#import <PureLayout/PureLayout.h>
-#import <CHTCollectionViewWaterfallLayout/CHTCollectionViewWaterfallLayout.h>
-#import <AFNetworking/UIImageView+AFNetworking.h>
-#import <UIKit/UIKit.h>
-#import <SDWebImage/UIImageView+WebCache.h>
+@import GPUImage;
+@import AVKit;
+@import MHVideoPhotoGallery;
+@import PureLayout;
+@import CHTCollectionViewWaterfallLayout;
+@import AFNetworking;
+@import UIKit;
+@import SDWebImage;
 #import "DWTimelineMediaTableViewCell.h"
 #import "DWMediaCollectionViewCell.h"
 #import "DWIntrinsicCollectionView.h"
-#import "UIApplication+TopController.h"
 #import "DWMediaStore.h"
 #import "DWConstants.h"
 #import "DWSettingStore.h"

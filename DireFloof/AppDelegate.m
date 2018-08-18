@@ -9,14 +9,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import <AFNetworking/AFNetworking.h>
-#import <Firebase/Firebase.h>
-#import <GoogleToolboxForMac/GTMDefines.h>
+@import AFNetworking;
+@import Firebase;
+@import GoogleToolboxForMac;
 #import "AppDelegate.h"
 #import "DWAppearanceProxies.h"
 #import "DWNotificationStore.h"
 #import "DWConstants.h"
-#import "UIApplication+TopController.h"
 #import "DWLoginViewController.h"
 #import "DWSettingStore.h"
 

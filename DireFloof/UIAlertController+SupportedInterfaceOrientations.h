@@ -6,7 +6,7 @@
 //  Copyright © 2017 Keyboard Floofs. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface UIAlertController (SupportedInterfaceOrientations)
 

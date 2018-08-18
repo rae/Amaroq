@@ -9,8 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import <PureLayout/PureLayout.h>
-#import <AFNetworking/UIImageView+AFNetworking.h>
+@import PureLayout;
+@import AFNetworking;
+
 #import "DWTabBarController.h"
 #import "Mastodon.h"
 #import "DWNotificationStore.h"
@@ -19,7 +20,6 @@
 #import "DWNotificationsViewController.h"
 #import "DWAppearanceProxies.h"
 #import "DWSettingStore.h"
-#import "UIApplication+TopController.h"
 
 typedef NS_ENUM(NSUInteger, DWTabItem) {
     DWTabItemHome = 0,

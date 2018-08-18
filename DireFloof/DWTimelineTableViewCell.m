@@ -9,13 +9,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import <ActiveLabel/ActiveLabel-Swift.h>
-#import <AFNetworking/UIImageView+AFNetworking.h>
-#import <AFNetworking/AFImageDownloader.h>
-#import <DateTools/DateTools.h>
+@import ActiveLabel;
+@import AFNetworking;
+@import DateTools;
+
 #import "DWTimelineTableViewCell.h"
 #import "DWConstants.h"
-#import "UIApplication+TopController.h"
 #import "DWTimelineViewController.h"
 #import "DWNavigationViewController.h"
 #import "DWSettingStore.h"

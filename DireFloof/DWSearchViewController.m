@@ -9,7 +9,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import <AFNetworking/UIImageView+AFNetworking.h>
+@import AFNetworking;
+
 #import "DWSearchViewController.h"
 #import "DWSearchTableViewCell.h"
 #import "Mastodon.h"
@@ -17,7 +18,6 @@
 #import "DWTimelineViewController.h"
 #import "DWProfileViewController.h"
 #import "DWSettingStore.h"
-#import "UIApplication+TopController.h"
 
 typedef NS_ENUM(NSUInteger, DWSearchSectionType) {
     DWSearchSectionTypeAccounts          = 0,

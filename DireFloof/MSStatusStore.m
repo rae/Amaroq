@@ -9,8 +9,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import <Photos/Photos.h>
-#import <UIImage_Resize/UIImage+Resize.h>
+@import Photos;
+@import UIImage_Resize;
 #import "MSStatusStore.h"
 #import "MSAPIClient.h"
 #import "MSAppStore.h"

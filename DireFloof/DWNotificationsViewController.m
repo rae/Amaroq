@@ -24,7 +24,6 @@
 #import "UIAlertController+SupportedInterfaceOrientations.h"
 #import "DWNavigationViewController.h"
 #import "DWAccessibilityAction.h"
-#import "UIApplication+TopController.h"
 
 @interface DWNotificationsViewController () <UITableViewDelegate, UITableViewDataSource, DWTimelineTableViewCellDelegate>
 

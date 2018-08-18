@@ -9,10 +9,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import <AFNetworking/UIImageView+AFNetworking.h>
+@import AFNetworking;
+
 #import "DWTimelineFollowTableViewCell.h"
 #import "DWConstants.h"
-#import "UIApplication+TopController.h"
+#import "DireFloof-swift.h"
 #import "DWSettingStore.h"
 #import "UIAlertController+SupportedInterfaceOrientations.h"
 

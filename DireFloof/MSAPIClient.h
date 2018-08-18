@@ -9,10 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import <Foundation/Foundation.h>
-#import <AFNetworking/AFHTTPSessionManager.h>
-#import <AFOAuth2Manager/AFOAuth2Manager.h>
-#import <AFOAuth2Manager/AFHTTPRequestSerializer+OAuth2.h>
+@import Foundation;
+@import AFNetworking;
+@import AFOAuth2Manager;
 
 @interface MSAPIClient : AFHTTPSessionManager
 

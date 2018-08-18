@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01E4FC402127E68200675B51 /* UIApplication+TopController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E4FC3F2127E68200675B51 /* UIApplication+TopController.swift */; };
+		01E4FC422128860100675B51 /* UIViewController+NearestNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E4FC412128860100675B51 /* UIViewController+NearestNavigationController.swift */; };
 		0408CABF1E7208B3009A893D /* DWAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0408CABE1E7208B3009A893D /* DWAboutViewController.m */; };
 		04095B0D1E4A5E880082401A /* MSAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 04095B0C1E4A5E880082401A /* MSAPIClient.m */; };
 		04095B101E4A63C90082401A /* MSAuthStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 04095B0F1E4A63C90082401A /* MSAuthStore.m */; };
@@ -14,11 +16,9 @@
 		040C61291E7079E400509F32 /* DWAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 040C61281E7079E400509F32 /* DWAppSettingsViewController.m */; };
 		040C612C1E707E0900509F32 /* DWSettingStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 040C612B1E707E0900509F32 /* DWSettingStore.m */; };
 		040C612F1E7090E300509F32 /* NSString+Awoo.m in Sources */ = {isa = PBXBuildFile; fileRef = 040C612E1E7090E300509F32 /* NSString+Awoo.m */; };
-		040C61321E70C52300509F32 /* UIViewController+NearestNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 040C61311E70C52300509F32 /* UIViewController+NearestNavigationController.m */; };
 		0411D15C1E63813900CED5A6 /* DWSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0411D15B1E63813900CED5A6 /* DWSearchViewController.m */; };
 		0411D15F1E63815200CED5A6 /* DWSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0411D15E1E63815200CED5A6 /* DWSearchTableViewCell.m */; };
 		0411D1621E6397B600CED5A6 /* DWTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0411D1611E6397B600CED5A6 /* DWTimelineViewController.m */; };
-		0411D1651E639D2100CED5A6 /* UIApplication+TopController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0411D1641E639D2100CED5A6 /* UIApplication+TopController.m */; };
 		0411D5C11E64C47A00CED5A6 /* DWProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0411D5C01E64C47A00CED5A6 /* DWProfileViewController.m */; };
 		0411D5C41E65002A00CED5A6 /* UIView+Supercell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0411D5C31E65002A00CED5A6 /* UIView+Supercell.m */; };
 		0411D5CB1E66038B00CED5A6 /* DWMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0411D5CA1E66038B00CED5A6 /* DWMenuViewController.m */; };
@@ -124,6 +124,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		01E4FC3E2127E68100675B51 /* DireFloof-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DireFloof-Bridging-Header.h"; sourceTree = "<group>"; };
+		01E4FC3F2127E68200675B51 /* UIApplication+TopController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+TopController.swift"; sourceTree = "<group>"; };
+		01E4FC412128860100675B51 /* UIViewController+NearestNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+NearestNavigationController.swift"; sourceTree = "<group>"; };
+		01E4FC43212887BC00675B51 /* Amarok-prefix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Amarok-prefix.h"; sourceTree = "<group>"; };
 		0408CABD1E7208B3009A893D /* DWAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWAboutViewController.h; sourceTree = "<group>"; };
 		0408CABE1E7208B3009A893D /* DWAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWAboutViewController.m; sourceTree = "<group>"; };
 		04095B0A1E4A5D850082401A /* Mastodon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mastodon.h; sourceTree = "<group>"; };
@@ -140,16 +144,12 @@
 		040C612B1E707E0900509F32 /* DWSettingStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWSettingStore.m; sourceTree = "<group>"; };
 		040C612D1E7090E300509F32 /* NSString+Awoo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Awoo.h"; sourceTree = "<group>"; };
 		040C612E1E7090E300509F32 /* NSString+Awoo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Awoo.m"; sourceTree = "<group>"; };
-		040C61301E70C52300509F32 /* UIViewController+NearestNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+NearestNavigationController.h"; sourceTree = "<group>"; };
-		040C61311E70C52300509F32 /* UIViewController+NearestNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+NearestNavigationController.m"; sourceTree = "<group>"; };
 		0411D15A1E63813900CED5A6 /* DWSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWSearchViewController.h; sourceTree = "<group>"; };
 		0411D15B1E63813900CED5A6 /* DWSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DWSearchViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0411D15D1E63815200CED5A6 /* DWSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWSearchTableViewCell.h; sourceTree = "<group>"; };
 		0411D15E1E63815200CED5A6 /* DWSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DWSearchTableViewCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0411D1601E6397B600CED5A6 /* DWTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWTimelineViewController.h; sourceTree = "<group>"; };
 		0411D1611E6397B600CED5A6 /* DWTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWTimelineViewController.m; sourceTree = "<group>"; };
-		0411D1631E639D2100CED5A6 /* UIApplication+TopController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+TopController.h"; sourceTree = "<group>"; };
-		0411D1641E639D2100CED5A6 /* UIApplication+TopController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+TopController.m"; sourceTree = "<group>"; };
 		0411D5BF1E64C47A00CED5A6 /* DWProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWProfileViewController.h; sourceTree = "<group>"; };
 		0411D5C01E64C47A00CED5A6 /* DWProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DWProfileViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0411D5C21E65002A00CED5A6 /* UIView+Supercell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Supercell.h"; sourceTree = "<group>"; };
@@ -291,6 +291,7 @@
 		04C9350A1E4BB520004376F3 /* MSStatusStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MSStatusStore.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		04C9350E1E4C25D1004376F3 /* MSNotificationStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSNotificationStore.h; sourceTree = "<group>"; };
 		04C9350F1E4C25D1004376F3 /* MSNotificationStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MSNotificationStore.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		04CF1DCDD3D18E74F4432E77 /* Pods-DireFloofUITests.debug reid.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DireFloofUITests.debug reid.xcconfig"; path = "Pods/Target Support Files/Pods-DireFloofUITests/Pods-DireFloofUITests.debug reid.xcconfig"; sourceTree = "<group>"; };
 		04DA37F61E665F0B0059A2A6 /* DWBlockedUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWBlockedUsersViewController.h; sourceTree = "<group>"; };
 		04DA37F71E665F0B0059A2A6 /* DWBlockedUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWBlockedUsersViewController.m; sourceTree = "<group>"; };
 		04DBE7F61FC3BF8D00240367 /* UIAlertController+SupportedInterfaceOrientations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+SupportedInterfaceOrientations.h"; sourceTree = "<group>"; };
@@ -336,9 +337,13 @@
 		04F56C3D1F0051D50053FC84 /* DWDraftStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWDraftStore.h; sourceTree = "<group>"; };
 		04F56C3E1F0051D50053FC84 /* DWDraftStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWDraftStore.m; sourceTree = "<group>"; };
 		04FE35F81E627E5600E34407 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		1591E38311D40810C6F67B01 /* Pods-DireFloof.release reid.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DireFloof.release reid.xcconfig"; path = "Pods/Target Support Files/Pods-DireFloof/Pods-DireFloof.release reid.xcconfig"; sourceTree = "<group>"; };
+		215D90C2EB0B40E2F6431D93 /* Pods-DireFloof.debug reid.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DireFloof.debug reid.xcconfig"; path = "Pods/Target Support Files/Pods-DireFloof/Pods-DireFloof.debug reid.xcconfig"; sourceTree = "<group>"; };
 		22B330691EC6002B0022BB78 /* UIViewController+WebNavigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WebNavigation.h"; sourceTree = "<group>"; };
 		22B3306A1EC6002B0022BB78 /* UIViewController+WebNavigation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WebNavigation.m"; sourceTree = "<group>"; };
 		22B3306C1EC600590022BB78 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		3160E7BA75885700D3D67260 /* Pods-DireFloofTests.debug reid.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DireFloofTests.debug reid.xcconfig"; path = "Pods/Target Support Files/Pods-DireFloofTests/Pods-DireFloofTests.debug reid.xcconfig"; sourceTree = "<group>"; };
+		3357795D09120D71C4E83374 /* Pods-DireFloofUITests.release reid.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DireFloofUITests.release reid.xcconfig"; path = "Pods/Target Support Files/Pods-DireFloofUITests/Pods-DireFloofUITests.release reid.xcconfig"; sourceTree = "<group>"; };
 		3A2379964B2057680274665D /* Pods-DireFloofTests.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DireFloofTests.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-DireFloofTests/Pods-DireFloofTests.adhoc.xcconfig"; sourceTree = "<group>"; };
 		3AA8B4A3626D6C8622613371 /* Pods-DireFloof.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DireFloof.release.xcconfig"; path = "Pods/Target Support Files/Pods-DireFloof/Pods-DireFloof.release.xcconfig"; sourceTree = "<group>"; };
 		3C75D7D21F6D9CF0006D4FFD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
@@ -356,6 +361,7 @@
 		C448DA33BB8B254F9A8757CE /* Pods-DireFloof.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DireFloof.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DireFloof/Pods-DireFloof.debug.xcconfig"; sourceTree = "<group>"; };
 		D5461B0E07A4CFC6E2ADF2E3 /* Pods-DireFloofUITests.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DireFloofUITests.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-DireFloofUITests/Pods-DireFloofUITests.adhoc.xcconfig"; sourceTree = "<group>"; };
 		D7C335A521992C48767534F0 /* Pods-DireFloofTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DireFloofTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DireFloofTests/Pods-DireFloofTests.release.xcconfig"; sourceTree = "<group>"; };
+		D8A2171E3B26F07095CB0B87 /* Pods-DireFloofTests.release reid.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DireFloofTests.release reid.xcconfig"; path = "Pods/Target Support Files/Pods-DireFloofTests/Pods-DireFloofTests.release reid.xcconfig"; sourceTree = "<group>"; };
 		E4A0332E3C43DB011FC8E4DF /* Pods-DireFloofUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DireFloofUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DireFloofUITests/Pods-DireFloofUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -600,10 +606,8 @@
 		04610BE61E54EE5D0023763D /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				0411D1631E639D2100CED5A6 /* UIApplication+TopController.h */,
-				0411D1641E639D2100CED5A6 /* UIApplication+TopController.m */,
-				040C61301E70C52300509F32 /* UIViewController+NearestNavigationController.h */,
-				040C61311E70C52300509F32 /* UIViewController+NearestNavigationController.m */,
+				01E4FC3F2127E68200675B51 /* UIApplication+TopController.swift */,
+				01E4FC412128860100675B51 /* UIViewController+NearestNavigationController.swift */,
 				22B330691EC6002B0022BB78 /* UIViewController+WebNavigation.h */,
 				22B3306A1EC6002B0022BB78 /* UIViewController+WebNavigation.m */,
 				0411D5C21E65002A00CED5A6 /* UIView+Supercell.h */,
@@ -616,6 +620,7 @@
 				04DBE7F71FC3BF8D00240367 /* UIAlertController+SupportedInterfaceOrientations.m */,
 				048902EF1FBE77F900ED07A6 /* InlineImageHelpers.h */,
 				048902F01FBE77F900ED07A6 /* InlineImageHelpers.m */,
+				01E4FC3E2127E68100675B51 /* DireFloof-Bridging-Header.h */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -671,6 +676,7 @@
 				0469EA771E75B50200492AF5 /* GoogleService-Info.plist */,
 				04EC14031E46A966000E15A6 /* Info.plist */,
 				04EC13F01E46A966000E15A6 /* main.m */,
+				01E4FC43212887BC00675B51 /* Amarok-prefix.h */,
 				04610BE51E54E8720023763D /* DWConstants.h */,
 				04FE35F81E627E5600E34407 /* Settings.bundle */,
 				04AAFB691E726029009E15B2 /* PrivacyPolicy.html */,
@@ -721,6 +727,12 @@
 				E4A0332E3C43DB011FC8E4DF /* Pods-DireFloofUITests.debug.xcconfig */,
 				4262CBE7EF38E5503CA7F47D /* Pods-DireFloofUITests.release.xcconfig */,
 				D5461B0E07A4CFC6E2ADF2E3 /* Pods-DireFloofUITests.adhoc.xcconfig */,
+				215D90C2EB0B40E2F6431D93 /* Pods-DireFloof.debug reid.xcconfig */,
+				1591E38311D40810C6F67B01 /* Pods-DireFloof.release reid.xcconfig */,
+				3160E7BA75885700D3D67260 /* Pods-DireFloofTests.debug reid.xcconfig */,
+				D8A2171E3B26F07095CB0B87 /* Pods-DireFloofTests.release reid.xcconfig */,
+				04CF1DCDD3D18E74F4432E77 /* Pods-DireFloofUITests.debug reid.xcconfig */,
+				3357795D09120D71C4E83374 /* Pods-DireFloofUITests.release reid.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -738,6 +750,7 @@
 				04EC13EA1E46A966000E15A6 /* Resources */,
 				04DA37F91E666D6F0059A2A6 /* Build Versioning */,
 				6D67C0BB1102B5D415CD37B8 /* [CP] Embed Pods Frameworks */,
+				C6B33ACCCD7F4CFA88CE7DEB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -756,6 +769,8 @@
 				04EC14041E46A966000E15A6 /* Sources */,
 				04EC14051E46A966000E15A6 /* Frameworks */,
 				04EC14061E46A966000E15A6 /* Resources */,
+				6B06A3509BF91433FEF1BF14 /* [CP] Embed Pods Frameworks */,
+				688B9E644334035D15048A0F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -775,6 +790,8 @@
 				04EC140F1E46A966000E15A6 /* Sources */,
 				04EC14101E46A966000E15A6 /* Frameworks */,
 				04EC14111E46A966000E15A6 /* Resources */,
+				9F228D28CAF5C5330D8EF6F3 /* [CP] Embed Pods Frameworks */,
+				91CF44583D237C6A437E0853 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -798,6 +815,7 @@
 					04EC13EB1E46A966000E15A6 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = J8ZUY53AC3;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -917,6 +935,36 @@
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\n\n#  update_build_number.sh\n#  Usage: `update_build_number.sh [branch]`\n#  Run this script after the 'Copy Bundle Resources' build phase\n#  Ref: http://tgoode.com/2014/06/05/sensible-way-increment-bundle-version-cfbundleversion-xcode/\n\nbranch=${1:-'staging'}\nbuildNumber=$(expr 311 + $(git rev-list $branch --count) - $(git rev-list HEAD..$branch --count))\necho \"Updating build number to $buildNumber using branch '$branch'.\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\nif [ -f \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}.dSYM/Contents/Info.plist\" ]; then\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}.dSYM/Contents/Info.plist\"\nfi";
 		};
+		688B9E644334035D15048A0F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DireFloofTests/Pods-DireFloofTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6B06A3509BF91433FEF1BF14 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DireFloofTests/Pods-DireFloofTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		6D67C0BB1102B5D415CD37B8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -983,6 +1031,36 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DireFloof/Pods-DireFloof-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		91CF44583D237C6A437E0853 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DireFloofUITests/Pods-DireFloofUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9F228D28CAF5C5330D8EF6F3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DireFloofUITests/Pods-DireFloofUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		BEAA9B26D18643F2C4E99A5C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -999,6 +1077,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C6B33ACCCD7F4CFA88CE7DEB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DireFloof/Pods-DireFloof-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C8FE5817A2A75E37F10B7432 /* [CP] Check Pods Manifest.lock */ = {
@@ -1054,7 +1147,6 @@
 				0485B97D1E55685F0063B2B8 /* DWIntrinsicCollectionView.m in Sources */,
 				043155271E53B1990066C511 /* DWLoginViewController.m in Sources */,
 				0408CABF1E7208B3009A893D /* DWAboutViewController.m in Sources */,
-				040C61321E70C52300509F32 /* UIViewController+NearestNavigationController.m in Sources */,
 				040C61291E7079E400509F32 /* DWAppSettingsViewController.m in Sources */,
 				043154F51E50F6C70066C511 /* MSMention.m in Sources */,
 				0411D5CB1E66038B00CED5A6 /* DWMenuViewController.m in Sources */,
@@ -1063,7 +1155,9 @@
 				04C9350B1E4BB520004376F3 /* MSStatusStore.m in Sources */,
 				04610BE41E54E1D80023763D /* DWTimelineTableViewCell.m in Sources */,
 				043154E31E5005D20066C511 /* MSUserStore.m in Sources */,
+				01E4FC402127E68200675B51 /* UIApplication+TopController.swift in Sources */,
 				0459AB1D1E6DBBBB0052E722 /* DWMediaStore.m in Sources */,
+				01E4FC422128860100675B51 /* UIViewController+NearestNavigationController.swift in Sources */,
 				046A4C761E8D62BC00F54E15 /* DWNotificationSettingsViewController.m in Sources */,
 				04C935101E4C25D1004376F3 /* MSNotificationStore.m in Sources */,
 				04363AF21E5553C30018A564 /* DWTimelineMediaTableViewCell.m in Sources */,
@@ -1095,7 +1189,6 @@
 				0411D1621E6397B600CED5A6 /* DWTimelineViewController.m in Sources */,
 				04E9F09D1E5694F600D4EE73 /* DWTimelineNotificationTableViewCell.m in Sources */,
 				043154EF1E50EBFD0066C511 /* MSAccount.m in Sources */,
-				0411D1651E639D2100CED5A6 /* UIApplication+TopController.m in Sources */,
 				04F425CF1E566DBD001A11C0 /* DWNotificationsViewController.m in Sources */,
 				0411D15C1E63813900CED5A6 /* DWSearchViewController.m in Sources */,
 				048902EE1FBE6F3700ED07A6 /* MSEmoji.m in Sources */,
@@ -1297,23 +1390,29 @@
 		};
 		01E4FC372127905600675B51 /* Debug Reid */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C448DA33BB8B254F9A8757CE /* Pods-DireFloof.debug.xcconfig */;
+			baseConfigurationReference = 215D90C2EB0B40E2F6431D93 /* Pods-DireFloof.debug reid.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = DireFloof/DireFloof.entitlements;
 				DEVELOPMENT_TEAM = B4B222G88M;
+				GCC_PREFIX_HEADER = "DireFloof/Amarok-prefix.h";
 				INFOPLIST_FILE = DireFloof/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ca.tnir.amarok;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "DireFloof/DireFloof-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 			};
 			name = "Debug Reid";
 		};
 		01E4FC382127905600675B51 /* Debug Reid */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5385A8BFB3CC7CA2D3EC3C8F /* Pods-DireFloofTests.debug.xcconfig */;
+			baseConfigurationReference = 3160E7BA75885700D3D67260 /* Pods-DireFloofTests.debug reid.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = PVMKAYEWNU;
 				INFOPLIST_FILE = DireFloofTests/Info.plist;
@@ -1326,8 +1425,9 @@
 		};
 		01E4FC392127905600675B51 /* Debug Reid */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E4A0332E3C43DB011FC8E4DF /* Pods-DireFloofUITests.debug.xcconfig */;
+			baseConfigurationReference = 04CF1DCDD3D18E74F4432E77 /* Pods-DireFloofUITests.debug reid.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = PVMKAYEWNU;
 				INFOPLIST_FILE = DireFloofUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1380,23 +1480,28 @@
 		};
 		01E4FC3B2127905E00675B51 /* Release Reid */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3AA8B4A3626D6C8622613371 /* Pods-DireFloof.release.xcconfig */;
+			baseConfigurationReference = 1591E38311D40810C6F67B01 /* Pods-DireFloof.release reid.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = DireFloof/DireFloof.entitlements;
 				DEVELOPMENT_TEAM = B4B222G88M;
+				GCC_PREFIX_HEADER = "DireFloof/Amarok-prefix.h";
 				INFOPLIST_FILE = DireFloof/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ca.tnir.amarok;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "DireFloof/DireFloof-Bridging-Header.h";
+				SWIFT_VERSION = 4.2;
 			};
 			name = "Release Reid";
 		};
 		01E4FC3C2127905E00675B51 /* Release Reid */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D7C335A521992C48767534F0 /* Pods-DireFloofTests.release.xcconfig */;
+			baseConfigurationReference = D8A2171E3B26F07095CB0B87 /* Pods-DireFloofTests.release reid.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = PVMKAYEWNU;
 				INFOPLIST_FILE = DireFloofTests/Info.plist;
@@ -1409,8 +1514,9 @@
 		};
 		01E4FC3D2127905E00675B51 /* Release Reid */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4262CBE7EF38E5503CA7F47D /* Pods-DireFloofUITests.release.xcconfig */;
+			baseConfigurationReference = 3357795D09120D71C4E83374 /* Pods-DireFloofUITests.release reid.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = PVMKAYEWNU;
 				INFOPLIST_FILE = DireFloofUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1466,13 +1572,17 @@
 			baseConfigurationReference = A855AC4855853CC23E2334AF /* Pods-DireFloof.adhoc.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = DireFloof/DireFloof.entitlements;
 				DEVELOPMENT_TEAM = J8ZUY53AC3;
+				GCC_PREFIX_HEADER = "DireFloof/Amarok-prefix.h";
 				INFOPLIST_FILE = DireFloof/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.keyboardfloofs.amarok;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "DireFloof/DireFloof-Bridging-Header.h";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Adhoc;
 		};
@@ -1480,6 +1590,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3A2379964B2057680274665D /* Pods-DireFloofTests.adhoc.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = PVMKAYEWNU;
 				INFOPLIST_FILE = DireFloofTests/Info.plist;
@@ -1494,6 +1605,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D5461B0E07A4CFC6E2ADF2E3 /* Pods-DireFloofUITests.adhoc.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = PVMKAYEWNU;
 				INFOPLIST_FILE = DireFloofUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1596,13 +1708,18 @@
 			baseConfigurationReference = C448DA33BB8B254F9A8757CE /* Pods-DireFloof.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = DireFloof/DireFloof.entitlements;
 				DEVELOPMENT_TEAM = J8ZUY53AC3;
+				GCC_PREFIX_HEADER = "DireFloof/Amarok-prefix.h";
 				INFOPLIST_FILE = DireFloof/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.keyboardfloofs.amarok;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "DireFloof/DireFloof-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1611,13 +1728,17 @@
 			baseConfigurationReference = 3AA8B4A3626D6C8622613371 /* Pods-DireFloof.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = DireFloof/DireFloof.entitlements;
 				DEVELOPMENT_TEAM = J8ZUY53AC3;
+				GCC_PREFIX_HEADER = "DireFloof/Amarok-prefix.h";
 				INFOPLIST_FILE = DireFloof/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.keyboardfloofs.amarok;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "DireFloof/DireFloof-Bridging-Header.h";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -1625,6 +1746,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5385A8BFB3CC7CA2D3EC3C8F /* Pods-DireFloofTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = PVMKAYEWNU;
 				INFOPLIST_FILE = DireFloofTests/Info.plist;
@@ -1639,6 +1761,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D7C335A521992C48767534F0 /* Pods-DireFloofTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = PVMKAYEWNU;
 				INFOPLIST_FILE = DireFloofTests/Info.plist;
@@ -1653,6 +1776,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E4A0332E3C43DB011FC8E4DF /* Pods-DireFloofUITests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = PVMKAYEWNU;
 				INFOPLIST_FILE = DireFloofUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1666,6 +1790,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4262CBE7EF38E5503CA7F47D /* Pods-DireFloofUITests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = PVMKAYEWNU;
 				INFOPLIST_FILE = DireFloofUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
